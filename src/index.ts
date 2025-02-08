@@ -1,6 +1,5 @@
+import 'dotenv/config'
 import 'reflect-metadata'
-import dotenv from 'dotenv'
-dotenv.config() // Load environment variables before anything else
 
 import express from 'express'
 import cors from 'cors'

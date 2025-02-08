@@ -7,6 +7,6 @@ export const env = {
   DB_USER: process.env.DB_USER || 'root',
   DB_PASSWORD: process.env.DB_PASSWORD || 'root',
   DB_NAME: process.env.DB_NAME || 'test',
-  DB_SYNC: process.env.DB_SYNC || false,
+  DB_SYNC: process.env.DB_SYNCHRONIZE || false,
   DB_LOGGING: process.env.DB_LOGGING || false
 }
