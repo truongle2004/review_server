@@ -72,3 +72,18 @@ import "reflect-metadata";
 - By the default typeOrm will create a table for the entity in the database by scanning all entities in the entities folder
 
 - The entity file should be end with `.entity.ts` (for example `todo.entity.ts`)
+
+# 3. The .env will be look like this
+
+```bash
+PORT=3000
+DB_HOST=localhost
+DB_NAME=reviews
+DB_USER=root
+DB_PASS=root
+DB_PORT=3306
+DB_DIALECT=mysql
+DB_LOGGING=true
+DB_SYNCHRONIZE=true
+
+```
