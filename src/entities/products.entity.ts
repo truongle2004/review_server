@@ -12,8 +12,8 @@ import { Reviews } from './reviews.entity'
 
 @Entity('products')
 export class Products extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  public id: string
+  @PrimaryGeneratedColumn()
+  public id: number
 
   @Column({
     type: 'tinyint'
@@ -21,7 +21,8 @@ export class Products extends BaseEntity {
   public rating: number
 
   @Column({
-    type: 'varchar'
+    type: 'varchar',
+    unique: true
   })
   public title: string
 
@@ -40,7 +41,7 @@ export class Products extends BaseEntity {
   public reviews: Reviews[]
 
   constructor(
-    id: string,
+    id: number,
     description: string,
     category: Categories,
     images: Images[],

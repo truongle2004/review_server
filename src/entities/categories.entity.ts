@@ -11,12 +11,14 @@ export class Categories extends BaseEntity {
 
   @Column({
     type: 'varchar',
-    length: 200
+    length: 200,
+    unique: true
   })
   public name: string
 
   @Column({
     type: 'varchar',
+    nullable: true,
     length: 255
   })
   public description: string

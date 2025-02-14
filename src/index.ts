@@ -1,14 +1,15 @@
 import 'dotenv/config'
 import 'reflect-metadata'
-
-import express from 'express'
-import cors from 'cors'
-import cookieParser from 'cookie-parser'
-import logger from './config/logger'
+import './modules/product/di'
 import './modules/todo/dependencyInjection'
-import { v1Router } from './routes/v1'
+
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
+import express from 'express'
 import { AppDataSource } from './config/data-source'
 import { env } from './config/enviroment'
+import logger from './config/logger'
+import { v1Router } from './routes/v1'
 
 // Server Configuration
 const PORT = env.PORT || 3000
