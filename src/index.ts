@@ -36,7 +36,7 @@ const startServer = () => {
   app.use(cors())
   app.use(cookieParser())
   app.use(express.json())
-
+  app.use(express.urlencoded({ extended: false }))
   // API Routes
   app.use('/v1', v1Router)
 

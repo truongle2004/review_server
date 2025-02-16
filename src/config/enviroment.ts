@@ -10,3 +10,4 @@ export const env = {
   DB_SYNC: process.env.DB_SYNCHRONIZE || false,
   DB_LOGGING: process.env.DB_LOGGING || false
 }
+
