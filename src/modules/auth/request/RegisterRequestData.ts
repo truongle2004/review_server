@@ -1,4 +1,4 @@
-import {RequestData} from "../interfaces/RequestData";
+import {RequestData} from "../../../shared/interfaces/RequestData";
 import {RegisterInputDTO} from "../dtos/RegisterDTO";
 
 export class RegisterRequestData implements RequestData<RegisterInputDTO> {

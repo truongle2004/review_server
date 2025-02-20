@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FindAccountOutputDTO } from "../dtos/FindAccountDTO";
-import { OutputBoundary } from "../interfaces/OutputBoundary";
-import { ResponseData } from "../interfaces/ResponseData";
+import { OutputBoundary } from "../../../shared/interfaces/OutputBoundary";
+import { ResponseData } from "../../../shared/interfaces/ResponseData";
 import { FindAccountByEmailViewModel } from "../view_model/FindAccountByEmailViewModel";
 
 export class FindAccountByEmailPresenter implements OutputBoundary{

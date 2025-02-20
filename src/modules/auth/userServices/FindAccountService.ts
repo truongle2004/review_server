@@ -1,7 +1,7 @@
-import {InputBoundary} from "../interfaces/InputBoundary";
-import {RequestData} from "../interfaces/RequestData";
-import {OutputBoundary} from "../interfaces/OutputBoundary";
-import {DatabaseBoundary} from "../interfaces/DatabaseBoundary";
+import {InputBoundary} from "../../../shared/interfaces/InputBoundary";
+import {RequestData} from "../../../shared/interfaces/RequestData";
+import {OutputBoundary} from "../../../shared/interfaces/OutputBoundary";
+import {DatabaseBoundary} from "../../../shared/interfaces/DatabaseBoundary";
 import {FindAccountInputDTO, FindAccountOutputDTO} from "../dtos/FindAccountDTO";
 import { FindAccountByEmailResponseData } from "../response/FindAccountByEmailResponseData";
 

@@ -1,9 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import {Column, Entity, ManyToOne,  PrimaryGeneratedColumn} from 'typeorm'
 import { BaseEntity } from '../shared/baseEntity'
 import { Reviews } from './reviews.entity'
+import {Users} from "./users.entity";
 
 @Entity('comments')
-export class Commnets extends BaseEntity {
+export class Comments extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string
 
@@ -13,18 +14,28 @@ export class Commnets extends BaseEntity {
   public text: string
 
   @Column({
-    type: 'int'
+    type: 'string'
   })
-  public parentId: number
+  public parentId: string
+
+  @ManyToOne(() => Users, (user) => user.comments)
+  public user: Users
 
   @ManyToOne(() => Reviews, (review) => review.comments)
   public reviews: Reviews
 
-  constructor(id: string, text: string, parentId: number, reviews: Reviews) {
+  constructor(
+    id: string,
+    text: string,
+    parentId: string,
+    user: Users,
+    reviews: Reviews
+  ) {
     super()
     this.id = id
     this.text = text
     this.parentId = parentId
+    this.user = user
     this.reviews = reviews
   }
 

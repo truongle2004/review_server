@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken";
 
 export class LoginViewModel{
   private _isSuccess: string;

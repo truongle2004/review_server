@@ -3,7 +3,7 @@ import {
   BeforeInsert,
   Column,
   Entity,
-  JoinColumn,
+  JoinColumn, ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
@@ -11,6 +11,7 @@ import {
 import { BaseEntity } from '../shared/baseEntity'
 import { Reviews } from './reviews.entity'
 import { Profile } from './profile.entity'
+import {Comments} from "./comments.entity";
 
 export enum Status {
   ACTIVE = 'ACTIVE',
@@ -39,7 +40,10 @@ export class Users extends BaseEntity {
   public status: string
 
   @OneToMany(() => Users, (user) => user.reviews)
-  public reviews: Reviews
+  public reviews: Reviews[]
+
+  @ManyToMany(() => Comments, (comment) => comment.user)
+  public comments: Comments[]  | any
 
   @Column({
     type: 'enum',
@@ -53,24 +57,24 @@ export class Users extends BaseEntity {
   @JoinColumn()
   public profile: Profile
 
-constructor(
-  id: string, // Có thể undefined khi tạo mới
-  email: string,
-  password: string,
-  status: Status = Status.ACTIVE,
-  roles:string,
-  reviews?: Reviews | any,
-  profile?: Profile | any,
-) {
-  super()
-  this.id = id ?? crypto.randomUUID() // Nếu không có id, tự tạo UUID (hoặc để TypeORM tự tạo)
-  this.email = email
-  this.password = password
-  this.status = status
-  this.reviews = reviews 
-  this.roles = roles
-  this.profile = profile 
-}
+  constructor(
+    id: string, // Có thể undefined khi tạo mới
+    email: string,
+    password: string,
+    status: Status = Status.ACTIVE,
+    roles: string,
+    reviews?: Reviews | any,
+    profile?: Profile | any
+  ) {
+    super()
+    this.id = id ?? crypto.randomUUID() // Nếu không có id, tự tạo UUID (hoặc để TypeORM tự tạo)
+    this.email = email
+    this.password = password
+    this.status = status
+    this.reviews = reviews
+    this.roles = roles
+    this.profile = profile
+  }
 
   public isActive(): boolean {
     return this.status === Status.ACTIVE

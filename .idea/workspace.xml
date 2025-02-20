@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="28e24ef4-3641-49ed-a961-403d91280c76" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/config/enviroment.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/enviroment.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entities/comments.entity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/comments.entity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entities/reviews.entity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/reviews.entity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entities/users.entity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/users.entity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/controllers/FindAccountByEmailController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/controllers/FindAccountByEmailController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/controllers/LoginController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/controllers/LoginController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/controllers/RegisterController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/controllers/RegisterController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/databases/FindAccountByEmailDatabase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/databases/FindAccountByEmailDatabase.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/databases/LoginDatabase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/databases/LoginDatabase.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/databases/RegisterDatabase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/databases/RegisterDatabase.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/interfaces/DatabaseBoundary.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/interfaces/InputBoundary.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/interfaces/OutputBoundary.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/interfaces/RequestData.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/interfaces/ResponseData.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/presenters/FindAccountByEmailPresenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/presenters/FindAccountByEmailPresenter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/presenters/LoginPresenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/presenters/LoginPresenter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/presenters/RegisterPresenter.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/presenters/RegisterPresenter.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/request/FindAccountByEmailRequestData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/request/FindAccountByEmailRequestData.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/request/LoginRequestData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/request/LoginRequestData.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/request/RegisterRequestData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/request/RegisterRequestData.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/response/FindAccountByEmailResponseData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/response/FindAccountByEmailResponseData.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/response/LoginResponseData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/response/LoginResponseData.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/response/RegisterResponseData.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/response/RegisterResponseData.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/userServices/FindAccountService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/userServices/FindAccountService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/userServices/LoginService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/userServices/LoginService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/userServices/RegisterService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/userServices/RegisterService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/view_model/LoginViewModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/auth/view_model/LoginViewModel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/auth/view_model/RegisterViewModel copy.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2t7h89vXmTj2koawGAQHSGAUC8p" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.codeium.enabled": "true",
+    "git-widget-placeholder": "auth",
+    "last_opened_file_path": "C:/Users/nphv8/Documents/NODEJS/lib-project",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "C:\\Users\\nphv8\\Documents\\NODEJS\\review_server\\node_modules\\prettier",
+    "ts.external.directory.path": "C:\\Users\\nphv8\\Documents\\NODEJS\\review_server\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\nphv8\Documents\NODEJS\review_server\src\shared" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-WS-243.23654.157" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="28e24ef4-3641-49ed-a961-403d91280c76" name="Changes" comment="" />
+      <created>1739708859347</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1739708859347</updated>
+      <workItem from="1739708861831" duration="5252000" />
+      <workItem from="1739977575764" duration="34000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

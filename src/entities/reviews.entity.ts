@@ -9,7 +9,7 @@ import {
 import { BaseEntity } from '../shared/baseEntity'
 import { Products } from './products.entity'
 import { Users } from './users.entity'
-import { Commnets } from './comments.entity'
+import {Comments} from './comments.entity'
 
 @Entity('reviews')
 export class Reviews extends BaseEntity {
@@ -32,8 +32,8 @@ export class Reviews extends BaseEntity {
   @ManyToOne(() => Users, (user) => user.reviews)
   public user: Users
 
-  @OneToMany(() => Commnets, (comment) => comment.reviews)
-  public comments: Commnets
+  @OneToMany(() => Comments, (comment) => comment.reviews)
+  public comments:Comments
 
   constructor(
     id: string,
@@ -41,7 +41,7 @@ export class Reviews extends BaseEntity {
     content: string,
     product: Products,
     user: Users,
-    comments: Commnets
+    comments:Comments
   ) {
     super()
     this.id = id

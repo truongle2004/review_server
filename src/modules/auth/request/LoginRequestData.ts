@@ -1,4 +1,4 @@
-import {RequestData} from "../interfaces/RequestData";
+import {RequestData} from "../../../shared/interfaces/RequestData";
 import {LoginInputDTO} from "../dtos/LoginDTO";
 
 export class LoginRequestData implements RequestData<LoginInputDTO> {
