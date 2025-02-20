@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import { RegisterInputDTO, RegisterOutputDTO } from "../dtos/RegisterDTO";
-import { InputBoundary } from "../interfaces/InputBoundary";
-import { OutputBoundary } from "../interfaces/OutputBoundary";
+import { InputBoundary } from "../../../shared/interfaces/InputBoundary";
+import { OutputBoundary } from "../../../shared/interfaces/OutputBoundary";
 import { Request, Response } from "express";
 import { RegisterRequestData } from '../request/RegisterRequestData'
 export class RegisterController {

@@ -1,12 +1,12 @@
-import {ResponseData} from "../../../shared/interfaces/ResponseData";
-import {FindAccountOutputDTO} from "../dtos/FindAccountDTO";
+import {RequestData} from "../../../shared/interfaces/RequestData";
+import {CreateCommentOutputDTO} from "../dtos/CreateCommentDTO";
 
-export class FindAccountByEmailResponseData implements ResponseData<FindAccountOutputDTO> {
+export class CreateCommentRequestData implements RequestData<CreateCommentOutputDTO> {
     private _status: number
     private _message: string
-    private _data:FindAccountOutputDTO
+    private _data: CreateCommentOutputDTO
 
-    constructor(status: number, message: string, data: FindAccountOutputDTO) {
+    constructor(status: number, message: string, data: CreateCommentOutputDTO) {
         this._status = status;
         this._message = message;
         this._data = data;
@@ -28,12 +28,11 @@ export class FindAccountByEmailResponseData implements ResponseData<FindAccountO
         this._message = value;
     }
 
-
-    get data(): FindAccountOutputDTO {
+    get data(): CreateCommentOutputDTO {
         return this._data;
     }
 
-    set data(value: FindAccountOutputDTO) {
+    set data(value: CreateCommentOutputDTO) {
         this._data = value;
     }
 }

@@ -1,6 +1,6 @@
 import { AppDataSource } from "../../../config/data-source";
 import { Users } from "../../../entities/users.entity";
-import { DatabaseBoundary } from "../interfaces/DatabaseBoundary";
+import { DatabaseBoundary } from "../../../shared/interfaces/DatabaseBoundary";
 export class FindAccountByEmailDatabase implements DatabaseBoundary {
     async execute(data: string): Promise<Users> {
         const userRepo = AppDataSource.getRepository(Users)
@@ -8,8 +8,6 @@ export class FindAccountByEmailDatabase implements DatabaseBoundary {
             where: { email: data },
             select: ["email", "password", "roles"]
         });
-        // @ts-ignore
-        console.log(`::User :::${user.roles}`)
         if (!user) {
             throw new Error("User not found");
         }else {

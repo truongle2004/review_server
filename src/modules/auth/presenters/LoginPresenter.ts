@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { LoginOutputDTO } from "../dtos/LoginDTO";
-import { OutputBoundary } from "../interfaces/OutputBoundary";
-import { ResponseData } from "../interfaces/ResponseData";
+import { OutputBoundary } from "../../../shared/interfaces/OutputBoundary";
+import { ResponseData } from "../../../shared/interfaces/ResponseData";
 import { LoginViewModel } from "../view_model/LoginViewModel";
 
 export class LoginPresenter implements OutputBoundary {

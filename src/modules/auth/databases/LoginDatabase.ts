@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Users } from "../../../entities/users.entity";
-import { DatabaseBoundary } from "../interfaces/DatabaseBoundary";
+import { DatabaseBoundary } from "../../../shared/interfaces/DatabaseBoundary";
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 export class LoginDatabase implements DatabaseBoundary {

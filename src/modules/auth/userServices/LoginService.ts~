@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { LoginInputDTO, LoginOutputDTO } from '../dtos/LoginDTO'
-import { InputBoundary } from '../../../shared/interfaces/InputBoundary'
-import { OutputBoundary } from '../../../shared/interfaces/OutputBoundary'
-import { DatabaseBoundary } from '../../../shared/interfaces/DatabaseBoundary'
-import {RequestData} from "../../../shared/interfaces/RequestData";
+import { InputBoundary } from '../../interfaces/InputBoundary'
+import { OutputBoundary } from '../../interfaces/OutputBoundary'
+import { DatabaseBoundary } from '../../interfaces/DatabaseBoundary'
+import {RequestData} from "../../interfaces/RequestData";
 import {ITokenService} from "../tokenServices/ITokenService";
 import { FindAccountInputDTO } from '../dtos/FindAccountDTO';
 import { LoginResponseData } from '../response/LoginResponseData';

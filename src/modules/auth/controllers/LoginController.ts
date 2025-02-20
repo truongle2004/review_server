@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import { Request, Response } from 'express'
-import { InputBoundary } from '../interfaces/InputBoundary';
-import { OutputBoundary } from '../interfaces/OutputBoundary';
+import { InputBoundary } from '../../../shared/interfaces/InputBoundary';
+import { OutputBoundary } from '../../../shared/interfaces/OutputBoundary';
 import { LoginInputDTO, LoginOutputDTO } from '../dtos/LoginDTO';
 import { LoginRequestData } from '../request/LoginRequestData';
 

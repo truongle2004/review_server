@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { RegisterOutputDTO } from "../dtos/RegisterDTO";
-import { OutputBoundary } from "../interfaces/OutputBoundary";
-import { ResponseData } from "../interfaces/ResponseData";
+import { OutputBoundary } from "../../../shared/interfaces/OutputBoundary";
+import { ResponseData } from "../../../shared/interfaces/ResponseData";
 import {RegisterViewModel} from "../view_model/RegisterViewModel";
 
 export class RegisterPresenter implements OutputBoundary{
