@@ -1,10 +1,22 @@
 import 'reflect-metadata'
 import { container } from 'tsyringe'
 import { ProductController } from './controllers/product.controller'
-import { ProductRepository } from './repositories/impl/product.repository'
-import { IGetProductService } from './services/get-product.interface.service'
-import { GetProductService } from './services/impl/get-product.service'
-import { IProductRepository } from './repositories/product.repository.interface'
+import { IAddCategoryRepository } from './repositories/addCategory.repository.interface'
+import { IGetAllCategoriesRepository } from './repositories/getAllCategories.repository.interface'
+import { IProductRepository } from './repositories/getAllProduct.repository.interface'
+import { IGetProductByIdRepository } from './repositories/getProductById.repository.interface'
+import { AddCategoryRepository } from './repositories/impl/addCategory.repository'
+import { GetAllCategoriesRepository } from './repositories/impl/getAllCategories.repository'
+import { ProductRepository } from './repositories/impl/getAllProduct.repository'
+import { GetProductByIdRepository } from './repositories/impl/getProductById.repository'
+import { IAddCategoryService } from './services/addCategory.service.interface'
+import { IGetAllCategoriesService } from './services/getAllCategories.service.interface'
+import { IGetProductService } from './services/getAllProduct.interface.service'
+import { IGetProductByIdService } from './services/getProductById.service.interface'
+import { AddCategoryService } from './services/impl/addCategory.service'
+import { GetAllCategoriesService } from './services/impl/getAllCategories.service'
+import { GetProductService } from './services/impl/getAllProduct.service'
+import { GetProductByIdService } from './services/impl/getProductById.service'
 
 container.register<IProductRepository>('IProductRepository', {
   useClass: ProductRepository
@@ -14,5 +26,28 @@ container.register<IGetProductService>('IGetProductService', {
   useClass: GetProductService
 })
 
-const res = container.resolve(ProductController)
-console.log(res)
+container.register<IGetProductByIdRepository>('IGetProductByIdRepository', {
+  useClass: GetProductByIdRepository
+})
+
+container.register<IGetProductByIdService>('IGetProductByIdService', {
+  useClass: GetProductByIdService
+})
+
+container.register<IGetAllCategoriesRepository>('IGetAllCategoriesRepository', {
+  useClass: GetAllCategoriesRepository
+})
+
+container.register<IGetAllCategoriesService>('IGetAllCategoriesService', {
+  useClass: GetAllCategoriesService
+})
+
+container.register<IAddCategoryRepository>('IAddCategoryRepository', {
+  useClass: AddCategoryRepository
+})
+
+container.register<IAddCategoryService>('IAddCategoryService', {
+  useClass: AddCategoryService
+})
+
+container.resolve(ProductController)

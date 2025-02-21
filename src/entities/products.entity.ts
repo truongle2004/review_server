@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  Index,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn
@@ -20,9 +21,11 @@ export class Products extends BaseEntity {
   })
   public rating: number
 
-  @Column({
-    type: 'varchar',
+  @Index({
     unique: true
+  })
+  @Column({
+    type: 'varchar'
   })
   public title: string
 

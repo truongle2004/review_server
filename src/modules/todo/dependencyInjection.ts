@@ -16,5 +16,4 @@ container.register<IGetTodoService>('IGetTodoService', {
 })
 
 // NOTE: the tsyringe handles recursive resolution, we only need to resolve the top-level dependency (TodoController). All the dependencies will automatically resolved and injected
-const res = container.resolve(TodoController)
-console.log(res)
+container.resolve(TodoController)

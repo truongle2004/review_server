@@ -3,21 +3,24 @@ import {
   Column,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
 import { BaseEntity } from '../shared/baseEntity'
-import { Reviews } from './reviews.entity'
-import { Roles } from './roles.entity'
 import { Profile } from './profile.entity'
+import { Reviews } from './reviews.entity'
+import { Comments } from './comments.entity'
 
 enum Status {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
   DELETED = 'DELETED'
+}
+
+enum Roles {
+  ADMIN = 'ADMIN',
+  USER = 'USER'
 }
 
 @Entity('users')
@@ -40,33 +43,27 @@ export class Users extends BaseEntity {
   @OneToMany(() => Users, (user) => user.reviews)
   public reviews: Reviews
 
-  @ManyToMany(() => Roles, (role) => role.users, {
-    cascade: ['insert', 'update']
+  @Column({
+    type: 'enum',
+    enum: Roles
   })
-  @JoinTable({
-    name: 'users_roles',
-    joinColumn: {
-      name: 'user_id',
-      referencedColumnName: 'id'
-    },
-    inverseJoinColumn: {
-      name: 'role_id',
-      referencedColumnName: 'id'
-    }
-  })
-  public roles: Roles[]
+  public roles: string
 
   @OneToOne(() => Profile, (profile) => profile.user)
   @JoinColumn()
   public profile: Profile
 
+  @OneToMany(() => Comments, (comment) => comment.user)
+  public comments: Comments[]
+
   constructor(
     id: string,
+    comments: Comments[],
     password: string,
     email: string,
     status: string,
     reviews: Reviews,
-    roles: Roles[],
+    roles: string,
     profile: Profile
   ) {
     super()
@@ -75,6 +72,7 @@ export class Users extends BaseEntity {
     this.email = email
     this.status = status
     this.reviews = reviews
+    this.comments = comments
     this.roles = roles
     this.profile = profile
   }

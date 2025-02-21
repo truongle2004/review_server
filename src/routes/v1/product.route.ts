@@ -9,4 +9,6 @@ const productController = container.resolve(ProductController)
 
 router.route('/').get(productController.getProducts)
 
+router.route('/:id').get(productController.getProductById)
+
 export const productRoute = router
