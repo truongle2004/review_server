@@ -17,6 +17,10 @@ import { AddCategoryService } from './services/impl/addCategory.service'
 import { GetAllCategoriesService } from './services/impl/getAllCategories.service'
 import { GetProductService } from './services/impl/getAllProduct.service'
 import { GetProductByIdService } from './services/impl/getProductById.service'
+import { IGetProductByCategoryRepository } from './repositories/getProductByCategory.repository.interface'
+import { GetProductByCategoryRepository } from './repositories/impl/getProductByCategory.repository'
+import { IGetProductByCategoryService } from './services/getProductByCategory.service.interface'
+import { GetProductByCategoryService } from './services/impl/getProductByCategory.service'
 
 container.register<IProductRepository>('IProductRepository', {
   useClass: ProductRepository
@@ -49,5 +53,19 @@ container.register<IAddCategoryRepository>('IAddCategoryRepository', {
 container.register<IAddCategoryService>('IAddCategoryService', {
   useClass: AddCategoryService
 })
+
+container.register<IGetProductByCategoryRepository>(
+  'IGetProductByCategoryRepository',
+  {
+    useClass: GetProductByCategoryRepository
+  }
+)
+
+container.register<IGetProductByCategoryService>(
+  'IGetProductByCategoryService',
+  {
+    useClass: GetProductByCategoryService
+  }
+)
 
 container.resolve(ProductController)

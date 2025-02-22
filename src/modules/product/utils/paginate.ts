@@ -4,7 +4,8 @@ export const paginate = async <T>(
   repository: any,
   page: number = 1,
   limit: number = 10,
-  relations: string[] = []
+  relations: string[] = [],
+  categoryId?: number
 ): Promise<PaginationResult<T>> => {
   // findAndCount to fetch paginated data with total count
   const queryBuilder = repository.createQueryBuilder('entity')
@@ -14,8 +15,12 @@ export const paginate = async <T>(
     queryBuilder.leftJoinAndSelect(`entity.${relation}`, relation)
   })
 
-  // Get total count before applying pagination
-  const total = await queryBuilder.getCount()
+  if (categoryId) {
+    queryBuilder.where('entity.categoryId = :categoryId', { categoryId })
+  }
+
+  // Clone the query to calculate the correct total count
+  const total = await queryBuilder.clone().getCount()
 
   // Apply pagination
   const data = await queryBuilder

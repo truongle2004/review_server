@@ -11,4 +11,6 @@ router.route('/').get(productController.getProducts)
 
 router.route('/:id').get(productController.getProductById)
 
+router.route('/category/:id').get(productController.getProductByCategory)
+
 export const productRoute = router
