@@ -29,7 +29,9 @@ export class Images extends BaseEntity {
   })
   public position: number
 
-  @ManyToOne(() => Products, (product) => product.images)
+  @ManyToOne(() => Products, (product) => product.images, {
+    onDelete: 'CASCADE'
+  })
   public product: Products
 
   constructor(

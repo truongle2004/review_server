@@ -9,9 +9,8 @@ import express, { NextFunction, Request, Response } from 'express'
 import { AppDataSource } from './config/data-source'
 import { env } from './config/enviroment'
 import logger from './config/logger'
-import { v1Router } from './routes/v1'
-import { DuplicateExeception } from './modules/product/exception/duplicate.exception'
 import errorHandle from './middleware/errorHandler'
+import { v1Router } from './routes/v1'
 
 // Server Configuration
 const PORT = env.PORT || 3000

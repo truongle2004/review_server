@@ -26,13 +26,17 @@ export class Reviews extends BaseEntity {
   })
   public content: string
 
-  @ManyToOne(() => Products, (product) => product.reviews)
+  @ManyToOne(() => Products, (product) => product.reviews, {
+    onDelete: 'CASCADE'
+  })
   public product: Products
 
   @ManyToOne(() => Users, (user) => user.reviews)
   public user: Users
 
-  @OneToMany(() => Comments, (comment) => comment.reviews)
+  @OneToMany(() => Comments, (comment) => comment.reviews, {
+    cascade: true
+  })
   public comments: Comments
 
   constructor(

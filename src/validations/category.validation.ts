@@ -5,7 +5,7 @@ import { BadRequestException } from '../shared/badRequest.exeception'
 
 const addCategory = async (req: Request, res: Response, next: NextFunction) => {
   const correctConditions = Joi.object({
-    category: Joi.string().required().message('category is required'),
+    name: Joi.string().required().message('category name is required'),
     description: Joi.string().optional()
   })
 

@@ -21,6 +21,10 @@ import { IGetProductByCategoryRepository } from './repositories/getProductByCate
 import { GetProductByCategoryRepository } from './repositories/impl/getProductByCategory.repository'
 import { IGetProductByCategoryService } from './services/getProductByCategory.service.interface'
 import { GetProductByCategoryService } from './services/impl/getProductByCategory.service'
+import { IDeleteProductService } from './services/deleteProduct.service.interface'
+import { DeleteProductService } from './services/impl/deleteProduct.service'
+import { IDeleteProductRepository } from './repositories/deleteProduct.repository.interface'
+import { DeleteProductRepository } from './repositories/impl/deleteProduct.repository'
 
 container.register<IProductRepository>('IProductRepository', {
   useClass: ProductRepository
@@ -67,5 +71,13 @@ container.register<IGetProductByCategoryService>(
     useClass: GetProductByCategoryService
   }
 )
+
+container.register<IDeleteProductService>('IDeleteProductService', {
+  useClass: DeleteProductService
+})
+
+container.register<IDeleteProductRepository>('IDeleteProductRepository', {
+  useClass: DeleteProductRepository
+})
 
 container.resolve(ProductController)

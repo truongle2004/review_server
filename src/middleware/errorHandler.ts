@@ -8,7 +8,7 @@ const errorHandle = (
   next: NextFunction
 ) => {
   const errorCode = err.status && StatusCodes.INTERNAL_SERVER_ERROR
-  const message = err.message && StatusCodes[errorCode]
+  const message = err.message && 'Something went wrong'
   res.status(errorCode).json({
     message
   })
