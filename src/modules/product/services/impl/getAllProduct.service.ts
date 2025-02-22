@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express'
+import type { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'tsyringe'
 import { ProductBuilder } from '../../../../entities/builder/products.builder'
 import { AppConstant } from '../../../../utils/constant'
@@ -14,7 +14,11 @@ export class GetProductService implements IGetProductService {
     @inject('IProductRepository')
     private readonly productRepository: IProductRepository
   ) {}
-  public execute = async (req: Request, res: Response): Promise<void> => {
+  public execute = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const pageRequest = Number(req.query.page) || 1
       const limitRequest = Number(req.query.limit) || 10
@@ -46,8 +50,7 @@ export class GetProductService implements IGetProductService {
         total
       })
     } catch (err) {
-      logger.error('Error fetching products:', err)
-      throw new InternalServerException()
+      next(err)
     }
   }
 }

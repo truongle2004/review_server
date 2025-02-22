@@ -18,16 +18,28 @@ export class ProductController {
     private readonly deleteProductService: IDeleteProductService
   ) {}
 
-  public getProducts = async (req: Request, res: Response) => {
-    return await this.getProductService.execute(req, res)
+  public getProducts = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    return await this.getProductService.execute(req, res, next)
   }
 
-  public getProductById = async (req: Request, res: Response) => {
-    return await this.getProductByIdService.execute(req, res)
+  public getProductById = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    return await this.getProductByIdService.execute(req, res, next)
   }
 
-  public getProductByCategory = async (req: Request, res: Response) => {
-    return await this.getProductByCategoryService.execute(req, res)
+  public getProductByCategory = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    return await this.getProductByCategoryService.execute(req, res, next)
   }
 
   public deleteProductById = async (

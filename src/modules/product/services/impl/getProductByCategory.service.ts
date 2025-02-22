@@ -1,10 +1,8 @@
-import { Request, Response } from 'express'
+import { Request, Response, type NextFunction } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'tsyringe'
-import logger from '../../../../config/logger'
 import { ProductBuilder } from '../../../../entities/builder/products.builder'
 import { AppConstant } from '../../../../utils/constant'
-import { InternalServerException } from '../../exception/internalServer.exception'
 import { IGetProductByCategoryRepository } from '../../repositories/getProductByCategory.repository.interface'
 import { IGetProductByCategoryService } from '../getProductByCategory.service.interface'
 
@@ -16,7 +14,11 @@ export class GetProductByCategoryService
     @inject('IGetProductByCategoryRepository')
     private readonly getProductByCategoryRepository: IGetProductByCategoryRepository
   ) {}
-  public execute = async (req: Request, res: Response): Promise<void> => {
+  public execute = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     console.log('is called')
 
     const categoryId = Number(req.params.id)
@@ -53,8 +55,7 @@ export class GetProductByCategoryService
         total
       })
     } catch (err) {
-      logger.error('Error fetching products:', err)
-      throw new InternalServerException()
+      next(err)
     }
   }
 }

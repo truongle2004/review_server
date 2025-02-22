@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Request, Response, type NextFunction } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'tsyringe'
 import { QueryFailedError } from 'typeorm'
@@ -14,7 +14,11 @@ export class AddCategoryService implements IAddCategoryService {
     @inject('IAddCategoryRepository')
     private readonly addCategoryRepository: IAddCategoryRepository
   ) {}
-  public execute = async (req: Request, res: Response): Promise<void> => {
+  public execute = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
       const name: string = req.body.name
       const description: string = req.body.description
@@ -23,19 +27,14 @@ export class AddCategoryService implements IAddCategoryService {
 
       res.status(StatusCodes.CREATED).json(saved)
     } catch (err) {
-      logger.error('Error in addCategory service', err)
       if (
         err instanceof QueryFailedError &&
         err.message.includes('Duplicate')
       ) {
-        // res.status(StatusCodes.CONFLICT).json({
-        //   message: 'Category already exists'
-        // })
-        // return
-        throw new DuplicateExeception('Category already exists')
+        return next(new DuplicateExeception('Category already exists'))
       }
 
-      throw new InternalServerException()
+      next(new InternalServerException())
     }
   }
 }

@@ -18,8 +18,6 @@ export class AddCategoryRepository implements IAddCategoryRepository {
       .setProducts([])
       .build()
 
-    console.log(newCategory)
-
     return await databaseSource.save(newCategory)
   }
 }

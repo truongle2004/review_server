@@ -1,8 +1,6 @@
-import { Request, Response } from 'express'
+import { Request, Response, type NextFunction } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'tsyringe'
-import logger from '../../../../config/logger'
-import { InternalServerException } from '../../exception/internalServer.exception'
 import { NotFoundException } from '../../exception/notFound.exeception'
 import { IGetProductByIdRepository } from '../../repositories/getProductById.repository.interface'
 import { IGetProductByIdService } from '../getProductById.service.interface'
@@ -13,7 +11,11 @@ export class GetProductByIdService implements IGetProductByIdService {
     @inject('IGetProductByIdRepository')
     private readonly getProductByIdRepository: IGetProductByIdRepository
   ) {}
-  public execute = async (req: Request, res: Response): Promise<void> => {
+  public execute = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     const productId = Number(req.params.id)
 
     if (isNaN(productId)) {
@@ -29,8 +31,7 @@ export class GetProductByIdService implements IGetProductByIdService {
 
       res.status(StatusCodes.OK).json(product)
     } catch (error) {
-      logger.error(error)
-      throw new InternalServerException()
+      next(error)
     }
   }
 }

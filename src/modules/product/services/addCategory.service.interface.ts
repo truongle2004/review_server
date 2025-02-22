@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Request, Response, type NextFunction } from 'express'
 
 export interface IAddCategoryService {
   /**
@@ -7,5 +7,5 @@ export interface IAddCategoryService {
    * @param res express response
    * @returns {Promise<void>}
    * */
-  execute(req: Request, res: Response): Promise<void>
+  execute(req: Request, res: Response, next: NextFunction): Promise<void>
 }
