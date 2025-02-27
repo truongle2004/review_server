@@ -25,8 +25,6 @@ export class GetProductPaginationService
       const categoryId = Number(req.params.id) || null
       const rating = Number(req.query.rating) || null
 
-      console.log(pageRequest, limitRequest, categoryId)
-
       const { data, page, limit, total } =
         await this.getProductPaginationRepository.execute(
           pageRequest,

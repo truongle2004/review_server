@@ -20,9 +20,9 @@ export const paginate = async <T>(
     queryBuilder.where('entity.categoryId = :categoryId', { categoryId })
   }
 
-  // if (rating) {
-  //   queryBuilder.andWhere('entity.rating <= :rating', { rating })
-  // }
+  if (rating) {
+    queryBuilder.andWhere('entity.rating <= :rating', { rating })
+  }
 
   // Clone the query to calculate the correct total count
   const total = await queryBuilder.clone().getCount()

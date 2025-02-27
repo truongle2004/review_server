@@ -44,7 +44,7 @@ const getProductById = async (
   }
 }
 
-const getProductByCategory = async (
+const getProductPagination = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -112,5 +112,5 @@ export const productValidation = {
   getProductById,
   getProduct,
   deleteProduct,
-  getProductByCategory
+  getProductByCategory: getProductPagination
 }
