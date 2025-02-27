@@ -1,7 +1,6 @@
 import { Request, Response, type NextFunction } from 'express'
-import { Products } from '../../../entities/products.entity'
 
-export interface IGetProductByCategoryService {
+export interface IGetProductPaginationService {
   /**
    * Get product by category
    * @param req express request

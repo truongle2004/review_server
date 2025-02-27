@@ -1,7 +1,6 @@
 import { Response, type NextFunction, type Request } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'tsyringe'
-import { InternalServerException } from '../../exception/internalServer.exception'
 import { IGetAllCategoriesRepository } from '../../repositories/getAllCategories.repository.interface'
 import { IGetAllCategoriesService } from '../getAllCategories.service.interface'
 

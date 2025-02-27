@@ -1,7 +1,7 @@
 import { Products } from '../../../entities/products.entity'
 import type { PaginationResult } from '../types'
 
-export interface IGetProductByCategoryRepository {
+export interface IGetProductPaginationRepository {
   /**
    * return product pagination by category id
    * @param categoryId category id
@@ -10,8 +10,9 @@ export interface IGetProductByCategoryRepository {
    * @returns {Promise<PaginationResult<Products>>}
    */
   execute(
-    categoryId: number,
     page: number,
-    limit: number
+    limit: number,
+    categoryId: number | null,
+    rating: number | null
   ): Promise<PaginationResult<Products>>
 }

@@ -17,10 +17,10 @@ import { AddCategoryService } from './services/impl/addCategory.service'
 import { GetAllCategoriesService } from './services/impl/getAllCategories.service'
 import { GetProductService } from './services/impl/getAllProduct.service'
 import { GetProductByIdService } from './services/impl/getProductById.service'
-import { IGetProductByCategoryRepository } from './repositories/getProductByCategory.repository.interface'
-import { GetProductByCategoryRepository } from './repositories/impl/getProductByCategory.repository'
-import { IGetProductByCategoryService } from './services/getProductByCategory.service.interface'
-import { GetProductByCategoryService } from './services/impl/getProductByCategory.service'
+import { IGetProductPaginationRepository } from './repositories/getProductPagination.repository.interface'
+import { GetProductPaginationRepository } from './repositories/impl/getProductPagination.repository'
+import { IGetProductPaginationService } from './services/getProductPagination.service.interface'
+import { GetProductPaginationService } from './services/impl/getProductPagination.service'
 import { IDeleteProductService } from './services/deleteProduct.service.interface'
 import { DeleteProductService } from './services/impl/deleteProduct.service'
 import { IDeleteProductRepository } from './repositories/deleteProduct.repository.interface'
@@ -58,17 +58,17 @@ container.register<IAddCategoryService>('IAddCategoryService', {
   useClass: AddCategoryService
 })
 
-container.register<IGetProductByCategoryRepository>(
-  'IGetProductByCategoryRepository',
+container.register<IGetProductPaginationRepository>(
+  'IGetProductPaginationRepository',
   {
-    useClass: GetProductByCategoryRepository
+    useClass: GetProductPaginationRepository
   }
 )
 
-container.register<IGetProductByCategoryService>(
-  'IGetProductByCategoryService',
+container.register<IGetProductPaginationService>(
+  'IGetProductPaginationService',
   {
-    useClass: GetProductByCategoryService
+    useClass: GetProductPaginationService
   }
 )
 

@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express'
+import type { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'tsyringe'
 import type { IAddCategoryService } from '../services/addCategory.service.interface'
 import type { IGetAllCategoriesService } from '../services/getAllCategories.service.interface'
@@ -12,11 +12,19 @@ export class CategoryController {
     private readonly addCategoryService: IAddCategoryService
   ) {}
 
-  public addCategory = async (req: Request, res: Response) => {
-    return await this.addCategoryService.execute(req, res)
+  public addCategory = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    return await this.addCategoryService.execute(req, res, next)
   }
 
-  public getAllCategories = async (req: Request, res: Response) => {
-    return await this.getAllCategoriesService.execute(res)
+  public getAllCategories = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    return await this.getAllCategoriesService.execute(req, res, next)
   }
 }

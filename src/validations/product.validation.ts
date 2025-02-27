@@ -5,12 +5,6 @@ import { BadRequestException } from '../shared/badRequest.exeception'
 
 const getProduct = async (req: Request, res: Response, next: NextFunction) => {
   const correctConditions = Joi.object({
-    id: Joi.number().integer().positive().required().messages({
-      'number.base': 'Category ID must be a number',
-      'number.integer': 'Category ID must be an integer',
-      'number.positive': 'Category ID must be a positive number',
-      'any.required': 'Category ID is required'
-    }),
     page: Joi.number().integer().positive().default(1).messages({
       'number.base': 'Page must be a number',
       'number.integer': 'Page must be an integer',

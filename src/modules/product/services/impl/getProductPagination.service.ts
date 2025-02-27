@@ -3,34 +3,36 @@ import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'tsyringe'
 import { ProductBuilder } from '../../../../entities/builder/products.builder'
 import { AppConstant } from '../../../../utils/constant'
-import { IGetProductByCategoryRepository } from '../../repositories/getProductByCategory.repository.interface'
-import { IGetProductByCategoryService } from '../getProductByCategory.service.interface'
+import { IGetProductPaginationRepository } from '../../repositories/getProductPagination.repository.interface'
+import { IGetProductPaginationService } from '../getProductPagination.service.interface'
 
 @injectable()
-export class GetProductByCategoryService
-  implements IGetProductByCategoryService
+export class GetProductPaginationService
+  implements IGetProductPaginationService
 {
   constructor(
-    @inject('IGetProductByCategoryRepository')
-    private readonly getProductByCategoryRepository: IGetProductByCategoryRepository
+    @inject('IGetProductPaginationRepository')
+    private readonly getProductPaginationRepository: IGetProductPaginationRepository
   ) {}
   public execute = async (
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> => {
-    console.log('is called')
-
-    const categoryId = Number(req.params.id)
     try {
       const pageRequest = Number(req.query.page) || 1
       const limitRequest = Number(req.query.limit) || 10
+      const categoryId = Number(req.params.id) || null
+      const rating = Number(req.query.rating) || null
+
+      console.log(pageRequest, limitRequest, categoryId)
 
       const { data, page, limit, total } =
-        await this.getProductByCategoryRepository.execute(
-          categoryId,
+        await this.getProductPaginationRepository.execute(
           pageRequest,
-          limitRequest
+          limitRequest,
+          categoryId,
+          rating
         )
 
       const response_data = data.map((product) => {

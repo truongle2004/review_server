@@ -20,7 +20,7 @@ router
   .route('/category/:id')
   .get(
     productValidation.getProductByCategory,
-    productController.getProductByCategory
+    productController.getProductPagination
   )
 
 router
