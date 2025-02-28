@@ -5,3 +5,8 @@ export interface PaginationResult<T> {
   limit: number
 }
 
+export enum SortOrder {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}
+

@@ -14,4 +14,6 @@ router
 
 router.route('/').get(categoryController.getAllCategories)
 
+router.route('/:id').delete(categoryController.deleteCategory)
+
 export const categoryRoute = router

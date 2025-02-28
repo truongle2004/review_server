@@ -40,48 +40,67 @@ const getProductById = async (
     next()
   } catch (err) {
     logger.error(err)
-    throw new BadRequestException('Bad request')
+    next(new BadRequestException('Bad request'))
   }
 }
-
 const getProductPagination = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   const correctConditions = Joi.object({
-    id: Joi.number().integer().positive().required().messages({
+    id: Joi.number().integer().positive().allow(null).optional().messages({
       'number.base': 'Category ID must be a number',
       'number.integer': 'Category ID must be an integer',
-      'number.positive': 'Category ID must be a positive number',
-      'any.required': 'Category ID is required'
+      'number.positive': 'Category ID must be a positive number'
     }),
-    page: Joi.number().integer().positive().default(1).messages({
+    page: Joi.number().integer().positive().default(1).optional().messages({
       'number.base': 'Page must be a number',
       'number.integer': 'Page must be an integer',
       'number.positive': 'Page must be greater than 0'
     }),
-    limit: Joi.number().integer().positive().default(10).max(100).messages({
-      'number.base': 'Limit must be a number',
-      'number.integer': 'Limit must be an integer',
-      'number.positive': 'Limit must be greater than 0',
-      'number.max': 'Limit cannot exceed 100'
+    limit: Joi.number()
+      .integer()
+      .positive()
+      .default(10)
+      .max(100)
+      .optional()
+      .messages({
+        'number.base': 'Limit must be a number',
+        'number.integer': 'Limit must be an integer',
+        'number.positive': 'Limit must be greater than 0',
+        'number.max': 'Limit cannot exceed 100'
+      }),
+    rating: Joi.number()
+      .integer()
+      .min(1)
+      .max(100)
+      .default(100)
+      .optional()
+      .messages({
+        'number.base': 'Rating must be a number',
+        'number.integer': 'Rating must be an integer',
+        'number.min': 'Rating must be greater than or equal to 1',
+        'number.max': 'Rating must be less than or equal to 100'
+      }),
+    sort: Joi.string().valid('asc', 'desc').default('asc').optional().messages({
+      'string.base': 'Sort must be a string',
+      'any.only': 'Sort must be either "asc" or "desc"'
     })
   })
 
   try {
-    const id = Number(req.params.id)
-    const page = Number(req.query.page) || undefined
-    const limit = Number(req.query.limit) || undefined
+    const validationData = {
+      id: req.params.id ? Number(req.params.id) : undefined,
+      page: req.query.page ? Number(req.query.page) : undefined,
+      limit: req.query.limit ? Number(req.query.limit) : undefined,
+      rating: req.query.rating ? Number(req.query.rating) : undefined
+    }
 
-    await correctConditions.validateAsync(
-      { id, page, limit },
-      { abortEarly: false }
-    )
+    await correctConditions.validateAsync(validationData, { abortEarly: false })
     next()
   } catch (err) {
-    logger.error(err)
-    throw new BadRequestException('Bad request')
+    next(new BadRequestException('Bad request'))
   }
 }
 
@@ -104,7 +123,7 @@ const deleteProduct = async (
     next()
   } catch (err) {
     logger.error(err)
-    throw new BadRequestException('Bad request')
+    next(new BadRequestException('Bad request'))
   }
 }
 

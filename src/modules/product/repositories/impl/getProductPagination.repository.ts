@@ -1,7 +1,7 @@
 import { injectable } from 'tsyringe'
 import { AppDataSource } from '../../../../config/data-source'
 import { Products } from '../../../../entities/products.entity'
-import type { PaginationResult } from '../../types'
+import type { PaginationResult, SortOrder } from '../../types'
 import { paginate } from '../../utils/paginate'
 import { IGetProductPaginationRepository } from '../getProductPagination.repository.interface'
 
@@ -13,7 +13,8 @@ export class GetProductPaginationRepository
     page: number,
     limit: number,
     categoryId: number,
-    rating: number
+    rating: number,
+    sortBy: SortOrder
   ): Promise<PaginationResult<Products>> => {
     const productRepository = AppDataSource.getRepository(Products)
     const ralations = ['category', 'images']
@@ -24,7 +25,8 @@ export class GetProductPaginationRepository
       limit,
       ralations,
       categoryId,
-      rating
+      rating,
+      sortBy
     )
   }
 }

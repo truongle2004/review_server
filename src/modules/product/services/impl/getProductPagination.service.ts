@@ -5,6 +5,7 @@ import { ProductBuilder } from '../../../../entities/builder/products.builder'
 import { AppConstant } from '../../../../utils/constant'
 import { IGetProductPaginationRepository } from '../../repositories/getProductPagination.repository.interface'
 import { IGetProductPaginationService } from '../getProductPagination.service.interface'
+import { SortOrder } from '../../types'
 
 @injectable()
 export class GetProductPaginationService
@@ -19,18 +20,20 @@ export class GetProductPaginationService
     res: Response,
     next: NextFunction
   ): Promise<void> => {
+    const pageRequest = Number(req.query.page) || 1
     try {
-      const pageRequest = Number(req.query.page) || 1
       const limitRequest = Number(req.query.limit) || 10
       const categoryId = Number(req.params.id) || null
       const rating = Number(req.query.rating) || null
+      const sortBy = (req.query.sort as SortOrder) || SortOrder.ASC
 
       const { data, page, limit, total } =
         await this.getProductPaginationRepository.execute(
           pageRequest,
           limitRequest,
           categoryId,
-          rating
+          rating,
+          sortBy
         )
 
       const response_data = data.map((product) => {

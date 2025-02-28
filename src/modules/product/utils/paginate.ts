@@ -1,4 +1,4 @@
-import { PaginationResult } from '../types/index'
+import { PaginationResult, SortOrder } from '../types/index'
 
 export const paginate = async <T>(
   repository: any,
@@ -6,7 +6,8 @@ export const paginate = async <T>(
   limit: number = 10,
   relations: string[] = [],
   categoryId?: number,
-  rating?: number
+  rating?: number,
+  sort?: SortOrder
 ): Promise<PaginationResult<T>> => {
   // findAndCount to fetch paginated data with total count
   const queryBuilder = repository.createQueryBuilder('entity')
@@ -16,13 +17,13 @@ export const paginate = async <T>(
     queryBuilder.leftJoinAndSelect(`entity.${relation}`, relation)
   })
 
-  if (categoryId) {
+  if (categoryId)
     queryBuilder.where('entity.categoryId = :categoryId', { categoryId })
-  }
 
-  if (rating) {
-    queryBuilder.andWhere('entity.rating <= :rating', { rating })
-  }
+  if (rating) queryBuilder.andWhere('entity.rating <= :rating', { rating })
+
+  if (sort) queryBuilder.orderBy('entity.title', sort)
+  // queryBuilder.andWhere('entity.isDeleted = :isDeleted', { isDeleted: false })
 
   // Clone the query to calculate the correct total count
   const total = await queryBuilder.clone().getCount()
