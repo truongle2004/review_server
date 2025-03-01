@@ -41,10 +41,13 @@ const startServer = () => {
   app.use(errorHandle)
 
   app.use(express.json())
+
   app.use((req: Request, res: Response, next: NextFunction) => {
     logger.warn(req.method + ' ' + req.originalUrl)
     next()
   })
+
+  app.use(express.urlencoded({ extended: false }))
 
   // API Routes
   app.use('/v1', v1Router)

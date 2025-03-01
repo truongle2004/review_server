@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import {Column, Entity, ManyToOne,  PrimaryGeneratedColumn} from 'typeorm'
 import { BaseEntity } from '../shared/baseEntity'
 import { Reviews } from './reviews.entity'
 import { Users } from './users.entity'
+
 
 @Entity('comments')
 export class Comments extends BaseEntity {
@@ -14,9 +15,12 @@ export class Comments extends BaseEntity {
   public text: string
 
   @Column({
-    type: 'int'
+    type: 'string'
   })
-  public parentId: number
+  public parentId: string
+
+  @ManyToOne(() => Users, (user) => user.comments)
+  public user: Users
 
   @ManyToOne(() => Reviews, (review) => review.comments)
   public reviews: Reviews
@@ -29,6 +33,7 @@ export class Comments extends BaseEntity {
     user: Users,
     text: string,
     parentId: number,
+
     reviews: Reviews
   ) {
     super()
@@ -36,6 +41,7 @@ export class Comments extends BaseEntity {
     this.user = user
     this.text = text
     this.parentId = parentId
+    this.user = user
     this.reviews = reviews
   }
 

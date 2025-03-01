@@ -11,6 +11,7 @@ import { Products } from './products.entity'
 import { Users } from './users.entity'
 import { Comments } from './comments.entity'
 
+
 @Entity('reviews')
 export class Reviews extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -34,10 +35,10 @@ export class Reviews extends BaseEntity {
   @ManyToOne(() => Users, (user) => user.reviews)
   public user: Users
 
-  @OneToMany(() => Comments, (comment) => comment.reviews, {
-    cascade: true
-  })
-  public comments: Comments
+
+  @OneToMany(() => Comments, (comment) => comment.reviews)
+  public comments:Comments
+
 
   constructor(
     id: string,
@@ -45,7 +46,7 @@ export class Reviews extends BaseEntity {
     content: string,
     product: Products,
     user: Users,
-    comments: Comments
+    comments:Comments
   ) {
     super()
     this.id = id

@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   BeforeInsert,
   Column,
   Entity,
-  JoinColumn,
+  JoinColumn, 
+  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
@@ -12,13 +14,14 @@ import { Profile } from './profile.entity'
 import { Reviews } from './reviews.entity'
 import { Comments } from './comments.entity'
 
-enum Status {
+
+export enum Status {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
   DELETED = 'DELETED'
 }
 
-enum Roles {
+export enum Role{
   ADMIN = 'ADMIN',
   USER = 'USER'
 }
@@ -41,11 +44,17 @@ export class Users extends BaseEntity {
   public status: string
 
   @OneToMany(() => Users, (user) => user.reviews)
-  public reviews: Reviews
+  public reviews: Reviews[]
+
+
+  @ManyToMany(() => Comments, (comment) => comment.user)
+  public comments: Comments[]  | any
 
   @Column({
     type: 'enum',
-    enum: Roles
+    enum: Role,
+    default: Role.USER,
+    select: true
   })
   public roles: string
 
@@ -57,19 +66,18 @@ export class Users extends BaseEntity {
   public comments: Comments[]
 
   constructor(
-    id: string,
-    comments: Comments[],
-    password: string,
+    id: string, // Có thể undefined khi tạo mới
     email: string,
-    status: string,
-    reviews: Reviews,
+    password: string,
+    status: Status = Status.ACTIVE,
     roles: string,
-    profile: Profile
+    reviews?: Reviews | any,
+    profile?: Profile | any
   ) {
     super()
-    this.id = id
-    this.password = password
+    this.id = id ?? crypto.randomUUID() // Nếu không có id, tự tạo UUID (hoặc để TypeORM tự tạo)
     this.email = email
+    this.password = password
     this.status = status
     this.reviews = reviews
     this.comments = comments
