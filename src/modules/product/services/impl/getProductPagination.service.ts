@@ -25,7 +25,7 @@ export class GetProductPaginationService
       const limitRequest = Number(req.query.limit) || 10
       const categoryId = Number(req.params.id) || null
       const rating = Number(req.query.rating) || null
-      const sortBy = (req.query.sort as SortOrder) || SortOrder.ASC
+      const sortBy = (req.query.sortBy as SortOrder) || SortOrder.ASC
 
       const { data, page, limit, total } =
         await this.getProductPaginationRepository.execute(

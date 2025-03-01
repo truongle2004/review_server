@@ -16,7 +16,6 @@ const getProduct = async (req: Request, res: Response, next: NextFunction) => {
     await correctConditions.validateAsync(req.body, { abortEarly: false })
     next()
   } catch (err) {
-    logger.error(err)
     throw new BadRequestException('Bad request')
   }
 }
@@ -49,7 +48,7 @@ const getProductPagination = async (
   next: NextFunction
 ) => {
   const correctConditions = Joi.object({
-    id: Joi.number().integer().positive().allow(null).optional().messages({
+    id: Joi.any().optional().messages({
       'number.base': 'Category ID must be a number',
       'number.integer': 'Category ID must be an integer',
       'number.positive': 'Category ID must be a positive number'
@@ -100,6 +99,7 @@ const getProductPagination = async (
     await correctConditions.validateAsync(validationData, { abortEarly: false })
     next()
   } catch (err) {
+    logger.error(err)
     next(new BadRequestException('Bad request'))
   }
 }
