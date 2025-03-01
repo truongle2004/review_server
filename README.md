@@ -87,3 +87,10 @@ DB_LOGGING=true
 DB_SYNCHRONIZE=true
 
 ```
+
+# 4. All the func in controller have to use arrow function for make sure that the `this` keyword is bound to the correct object instance.
+```ts
+public getProducts = async (req: Request, res: Response) => {
+    return await this.getProductService.execute(req, res)
+}
+```

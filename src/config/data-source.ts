@@ -11,8 +11,7 @@ export const AppDataSource = new DataSource({
   password: env.DB_PASSWORD,
   database: env.DB_NAME,
   entities: ['src/entities/*.entity.ts'],
-  synchronize:true,
-  logging: env.DB_LOGGING === 'true',
-  entitySkipConstructor: true
+  synchronize: env.DB_SYNC === 'true',
+  logging: env.DB_LOGGING === 'true'
 })
 
