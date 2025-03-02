@@ -24,12 +24,26 @@ export class Images extends BaseEntity {
   })
   public alt: string
 
-  @ManyToOne(() => Products, (product) => product.images)
+  @Column({
+    type: 'tinyint'
+  })
+  public position: number
+
+  @ManyToOne(() => Products, (product) => product.images, {
+    onDelete: 'CASCADE'
+  })
   public product: Products
 
-  constructor(id: number, src: string, alt: string, product: Products) {
+  constructor(
+    id: number,
+    src: string,
+    alt: string,
+    position: number,
+    product: Products
+  ) {
     super()
     this.id = id
+    this.position = position
     this.src = src
     this.alt = alt
     this.product = product

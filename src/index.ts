@@ -1,14 +1,16 @@
 import 'dotenv/config'
 import 'reflect-metadata'
-
-import express from 'express'
-import cors from 'cors'
-import cookieParser from 'cookie-parser'
-import logger from './config/logger'
+import './modules/product/di'
 import './modules/todo/dependencyInjection'
-import { v1Router } from './routes/v1'
+
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
+import express, { NextFunction, Request, Response } from 'express'
 import { AppDataSource } from './config/data-source'
 import { env } from './config/enviroment'
+import logger from './config/logger'
+import errorHandle from './middleware/errorHandler'
+import { v1Router } from './routes/v1'
 
 // Server Configuration
 const PORT = env.PORT || 3000
@@ -35,8 +37,18 @@ const startServer = () => {
   // Middlewares
   app.use(cors())
   app.use(cookieParser())
+
+  app.use(errorHandle)
+
   app.use(express.json())
+
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    logger.warn(req.method + ' ' + req.originalUrl)
+    next()
+  })
+
   app.use(express.urlencoded({ extended: false }))
+
   // API Routes
   app.use('/v1', v1Router)
 

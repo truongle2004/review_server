@@ -9,19 +9,22 @@ import {
   PrimaryGeneratedColumn
 } from 'typeorm'
 import { BaseEntity } from '../shared/baseEntity'
-import { Reviews } from './reviews.entity'
 import { Profile } from './profile.entity'
-import {Comments} from "./comments.entity";
+import { Reviews } from './reviews.entity'
+import { Comments } from './comments.entity'
+
 
 export enum Status {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
   DELETED = 'DELETED'
 }
+
 export enum Role{
   ADMIN = 'ADMIN',
   USER = 'USER'
 }
+
 @Entity('users')
 export class Users extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -44,8 +47,10 @@ export class Users extends BaseEntity {
   public reviews: Reviews[]
 
 
+
   @OneToMany(() => Comments, (comment) => comment.user)
   public comments : Comments[];
+
 
   @Column({
     type: 'enum',
@@ -58,6 +63,9 @@ export class Users extends BaseEntity {
   @OneToOne(() => Profile, (profile) => profile.user)
   @JoinColumn()
   public profile: Profile
+
+  @OneToMany(() => Comments, (comment) => comment.user)
+  public comments: Comments[]
 
   constructor(
     id: string, // Có thể undefined khi tạo mới
@@ -74,6 +82,7 @@ export class Users extends BaseEntity {
     this.password = password
     this.status = status
     this.reviews = reviews
+    this.comments = comments
     this.roles = roles
     this.profile = profile
   }

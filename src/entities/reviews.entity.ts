@@ -9,7 +9,8 @@ import {
 import { BaseEntity } from '../shared/baseEntity'
 import { Products } from './products.entity'
 import { Users } from './users.entity'
-import {Comments} from './comments.entity'
+import { Comments } from './comments.entity'
+
 
 @Entity('reviews')
 export class Reviews extends BaseEntity {
@@ -26,14 +27,18 @@ export class Reviews extends BaseEntity {
   })
   public content: string
 
-  @ManyToOne(() => Products, (product) => product.reviews)
+  @ManyToOne(() => Products, (product) => product.reviews, {
+    onDelete: 'CASCADE'
+  })
   public product: Products
 
   @ManyToOne(() => Users, (user) => user.reviews)
   public user: Users
 
+
   @OneToMany(() => Comments, (comment) => comment.reviews)
   public comments:Comments
+
 
   constructor(
     id: string,
