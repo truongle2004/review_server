@@ -1,7 +1,6 @@
-import {ResponseData} from "../../../shared/interfaces/ResponseData";
 import {FindAccountOutputDTO} from "../dtos/FindAccountDTO";
 
-export class FindAccountByEmailResponseData implements ResponseData<FindAccountOutputDTO> {
+export class FindAccountByEmailResponseData  {
     private _status: number
     private _message: string
     private _data:FindAccountOutputDTO

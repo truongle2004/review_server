@@ -1,7 +1,7 @@
-import {RequestData} from "../../../shared/interfaces/RequestData";
-import {CreateCommentOutputDTO} from "../dtos/CreateCommentDTO";
+import { CreateCommentOutputDTO } from '../dtos/CreateCommentDTO'
 
-export class CreateCommentRequestData implements RequestData<CreateCommentOutputDTO> {
+
+export class CreateCommentResponseData  {
     private _status: number
     private _message: string
     private _data: CreateCommentOutputDTO

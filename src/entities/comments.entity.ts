@@ -4,48 +4,41 @@ import { Reviews } from './reviews.entity'
 import { Users } from './users.entity'
 
 
+
 @Entity('comments')
 export class Comments extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  public id: string
 
-  @Column({
-    type: 'text'
-  })
-  public text: string
+  public id: string;
 
-  @Column({
-    type: 'string'
-  })
-  public parentId: string
+  @Column({ type: 'text' })
+  public text: string;
 
-  @ManyToOne(() => Users, (user) => user.comments)
-  public user: Users
+  @Column({ type: 'int', unsigned: true })
+  public lft: number; // Giá trị left trong Nested Set
 
-  @ManyToOne(() => Reviews, (review) => review.comments)
-  public reviews: Reviews
+  @Column({ type: 'int', unsigned: true })
+  public rgt: number; // Giá trị right trong Nested Set
 
-  @ManyToOne(() => Users, (user) => user.comments)
-  public user: Users
+  @Column({ type: 'uuid', nullable: true })
+  public parentId: string | null; // ID của comment cha, để hỗ trợ khi thêm mới
 
-  constructor(
-    id: string,
-    user: Users,
-    text: string,
-    parentId: number,
+  @ManyToOne(() => Users, (user) => user.comments, { nullable: false })
+  public user: Users;
 
-    reviews: Reviews
-  ) {
-    super()
-    this.id = id
-    this.user = user
-    this.text = text
-    this.parentId = parentId
-    this.user = user
-    this.reviews = reviews
+  @ManyToOne(() => Reviews, (review) => review.comments, { nullable: false })
+  public reviews: Reviews;
+
+  constructor(text: string, user: Users, reviews: Reviews, parentId?: string) {
+    super();
+    this.text = text;
+    this.user = user;
+    this.reviews = reviews;
+    this.parentId = parentId || null;
+    // lft và rgt sẽ được tính toán khi thêm/sửa/xóa comment
   }
 
   public isRoot(): boolean {
-    return this.parentId === null
+    return this.parentId === null;
   }
 }

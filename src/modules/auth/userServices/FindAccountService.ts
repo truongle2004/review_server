@@ -1,9 +1,9 @@
 import {InputBoundary} from "../../../shared/interfaces/InputBoundary";
-import {RequestData} from "../../../shared/interfaces/RequestData";
 import {OutputBoundary} from "../../../shared/interfaces/OutputBoundary";
 import {DatabaseBoundary} from "../../../shared/interfaces/DatabaseBoundary";
-import {FindAccountInputDTO, FindAccountOutputDTO} from "../dtos/FindAccountDTO";
+import {FindAccountOutputDTO} from "../dtos/FindAccountDTO";
 import { FindAccountByEmailResponseData } from "../response/FindAccountByEmailResponseData";
+import { FindAccountByEmailRequestData } from '../request/FindAccountByEmailRequestData'
 
 export class FindAccountService implements InputBoundary{
    private presenter:OutputBoundary
@@ -14,7 +14,7 @@ export class FindAccountService implements InputBoundary{
         this.database = database;
     }
 
-   async execute(data: RequestData<FindAccountInputDTO>): Promise<void> {
+   async execute(data:FindAccountByEmailRequestData): Promise<void> {
        const email :string = data.data.email
        const isValidEmail = this.isValidEmail(email);
        if (!isValidEmail) {

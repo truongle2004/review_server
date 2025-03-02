@@ -1,7 +1,6 @@
-import {ResponseData} from "../../../shared/interfaces/ResponseData";
 import {LoginOutputDTO} from "../dtos/LoginDTO";
 
-export class LoginResponseData implements ResponseData<LoginOutputDTO> {
+export class LoginResponseData {
 
     private _status: number;
     private _message: string;

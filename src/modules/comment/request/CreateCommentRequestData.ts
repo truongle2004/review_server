@@ -1,7 +1,6 @@
-import {RequestData} from "../../../shared/interfaces/RequestData";
 import {CreateCommentInputDTO} from "../dtos/CreateCommentDTO";
 
-export class CreateCommentRequestData implements RequestData<CreateCommentInputDTO> {
+export class CreateCommentRequestData {
     private _data: CreateCommentInputDTO;
 
     constructor(data: CreateCommentInputDTO) {
