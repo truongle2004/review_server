@@ -1,7 +1,6 @@
-import {RequestData} from "../../../shared/interfaces/RequestData";
 import {RegisterInputDTO} from "../dtos/RegisterDTO";
 
-export class RegisterRequestData implements RequestData<RegisterInputDTO> {
+export class RegisterRequestData  {
     private _data: RegisterInputDTO;
 
     constructor(data: RegisterInputDTO) {

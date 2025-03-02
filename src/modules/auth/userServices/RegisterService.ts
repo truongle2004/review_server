@@ -1,17 +1,18 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { v4 } from "uuid";
 import { Role, Status, Users } from "../../../entities/users.entity";
 import { hashPassword } from "../../../utils/utils";
 import { FindAccountInputDTO } from "../dtos/FindAccountDTO";
-import { RegisterInputDTO, RegisterOutputDTO } from "../dtos/RegisterDTO";
+import { RegisterOutputDTO } from "../dtos/RegisterDTO";
 import { DatabaseBoundary } from "../../../shared/interfaces/DatabaseBoundary";
 import { InputBoundary } from "../../../shared/interfaces/InputBoundary";
 import { OutputBoundary } from "../../../shared/interfaces/OutputBoundary";
-import { RequestData } from "../../../shared/interfaces/RequestData";
 import { FindAccountByEmailRequestData } from "../request/FindAccountByEmailRequestData";
 import { RegisterResponseData } from "../response/RegisterResponseData";
 import { FindAccountByEmailViewModel } from "../view_model/FindAccountByEmailViewModel";
+import { RegisterRequestData } from '../request/RegisterRequestData'
 
 export class RegisterService implements InputBoundary {
 
@@ -26,7 +27,7 @@ export class RegisterService implements InputBoundary {
         this.findAccountPresenter = findAccountPresenter;
     }
 
-    async execute(data: RequestData<RegisterInputDTO>): Promise<any> {
+    async execute(data: RegisterRequestData): Promise<any> {
         const {email, password, confirmPassword} = data.data
         console.log(email, password, confirmPassword)
         const isValidEmail : boolean = this.isValidEmail(email);

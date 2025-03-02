@@ -1,10 +1,10 @@
 import { OutputBoundary } from '../../../shared/interfaces/OutputBoundary'
-import { ResponseData } from '../../../shared/interfaces/ResponseData'
-import {CreateCommentOutputDTO} from "../dtos/CreateCommentDTO";
+import { CreateCommentResponseData } from '../response/CreateCommentResponseData'
 
 export class CreateCommentPresenter implements OutputBoundary {
 
-  execute(data: ResponseData<CreateCommentOutputDTO>): void {
+  execute(data: CreateCommentResponseData): void {
+    console.log(data)
     throw new Error('Method not implemented.')
   }
   getDataViewModel() {

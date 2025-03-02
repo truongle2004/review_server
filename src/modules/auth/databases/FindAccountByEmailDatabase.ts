@@ -1,7 +1,9 @@
-import { AppDataSource } from "../../../config/data-source";
-import { Users } from "../../../entities/users.entity";
-import { DatabaseBoundary } from "../../../shared/interfaces/DatabaseBoundary";
+import { DatabaseBoundary } from '../../../shared/interfaces/DatabaseBoundary'
+import { Users } from '../../../entities/users.entity'
+import { AppDataSource } from '../../../config/data-source'
+
 export class FindAccountByEmailDatabase implements DatabaseBoundary {
+
     async execute(data: string): Promise<Users> {
         const userRepo = AppDataSource.getRepository(Users)
         const user = await userRepo.findOne({

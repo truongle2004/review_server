@@ -3,7 +3,7 @@ import {
   BeforeInsert,
   Column,
   Entity,
-  JoinColumn, ManyToMany,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
@@ -39,11 +39,13 @@ export class Users extends BaseEntity {
   })
   public status: string
 
-  @OneToMany(() => Users, (user) => user.reviews)
+
+  @OneToMany(() => Reviews, (review) => review.user)
   public reviews: Reviews[]
 
-  @ManyToMany(() => Comments, (comment) => comment.user)
-  public comments: Comments[]  | any
+
+  @OneToMany(() => Comments, (comment) => comment.user)
+  public comments : Comments[];
 
   @Column({
     type: 'enum',
