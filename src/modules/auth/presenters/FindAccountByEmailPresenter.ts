@@ -11,7 +11,7 @@ export class FindAccountByEmailPresenter implements OutputBoundary{
         // ts-ignore
         const {status, message, data} = data2
         this._dataViewModel = new FindAccountByEmailViewModel(status>=200 && status<399? "Success" : "Fail"
-            ,message,data.email,data.password,data.roles);
+            ,message,data.username,data.email,data.password,data.roles);
         console.log("DataViewModelFindAccoutn::: "+JSON.stringify(this._dataViewModel))
         return
     }

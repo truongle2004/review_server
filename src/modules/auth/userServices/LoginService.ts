@@ -62,7 +62,7 @@ export class LoginService implements InputBoundary {
           this.presenter.execute(responseData)
          return
        } else {
-         const payload = {email: result.email, roles: result.roles}
+         const payload = {username: result.username, email: result.email, roles: result.roles}
          const jwtCode = await this.tokenService.generateToken(payload)
          const dto = new LoginOutputDTO(jwtCode)
          const responseData = new LoginResponseData(200, "Login successfully", dto)

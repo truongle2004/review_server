@@ -10,11 +10,9 @@ export class CreateCommentPresenter implements OutputBoundary {
   }
   execute(data: CreateCommentResponseData): void {
     if (data.status >= 200 && data.status < 399) {
-      this.data.status = "true";
-      this.data.message = data.message;
+      this.data = new CreateCommentViewModel(data.status >= 200 && data.status < 399 ? "true" : "false", data.message);
     }else{
-      this.data.status = "false";
-      this.data.message = data.message;
+      this.data = new CreateCommentViewModel(data.status >= 200 && data.status < 399 ? "true" : "false", data.message);
     }
   }
   getDataViewModel() {

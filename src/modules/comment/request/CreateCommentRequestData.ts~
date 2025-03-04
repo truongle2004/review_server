@@ -6,5 +6,4 @@ export class CreateCommentRequestData {
     constructor(data: CreateCommentInputDTO) {
         this.data = data;
     }
-
 }

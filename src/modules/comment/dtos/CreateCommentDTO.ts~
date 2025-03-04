@@ -10,7 +10,10 @@ export class CreateCommentInputDTO{
          this.parentId = parentId;
          this.content = content;
     }
+
 }
 
 export class CreateCommentOutputDTO{
+
+
 }

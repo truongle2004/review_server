@@ -1,8 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { Roles } from "../../entities/roles.entity";
 import { Role } from "../../entities/users.entity";
 
 declare module "express-serve-static-core" {
@@ -12,11 +9,11 @@ declare module "express-serve-static-core" {
 }
 // Định nghĩa kiểu dữ liệu cho Token payload
 interface JwtPayload {
+    username:string;
     email: string;
     roles: "USER" | "ADMIN";
 }
 
-// Middleware kiểm tra Token và quyền truy cập
 // Middleware xác thực token
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -35,13 +32,12 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
   }
 };
 
-// Middleware chỉ cho phép USER truy cập
+// Middleware cho phép USER và ADMIN truy cập
 export const userMiddleware = (req: Request, res: Response, next: NextFunction) => {
   if (!req.user) {
     return res.status(403).json({ message: "Bạn không có quyền truy cập!" });
   }
 
-  // Cho phép cả USER & ADMIN truy cập
   if (req.user.roles === "USER" || req.user.roles === "ADMIN") {
     return next();
   }

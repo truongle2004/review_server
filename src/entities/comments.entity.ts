@@ -13,13 +13,13 @@ export class Comments extends BaseEntity {
   public text: string;
 
   @Column({ type: 'int', unsigned: true })
-  public lft: number; // Giá trị left trong Nested Set
+  public lft: number;
 
   @Column({ type: 'int', unsigned: true })
-  public rgt: number; // Giá trị right trong Nested Set
+  public rgt: number;
 
   @Column({ type: 'uuid', nullable: true })
-  public parentId: string | null; // ID của comment cha, để hỗ trợ khi thêm mới
+  public parentId: string | null ; // ID của comment cha
 
   @ManyToOne(() => Users, (user) => user.comments, { nullable: false })
   public user: Users;
@@ -27,16 +27,4 @@ export class Comments extends BaseEntity {
   @ManyToOne(() => Reviews, (review) => review.comments, { nullable: false })
   public reviews: Reviews;
 
-  constructor(text: string, user: Users, reviews: Reviews, parentId?: string) {
-    super();
-    this.text = text;
-    this.user = user;
-    this.reviews = reviews;
-    this.parentId = parentId || null;
-    // lft và rgt sẽ được tính toán khi thêm/sửa/xóa comment
-  }
-
-  public isRoot(): boolean {
-    return this.parentId === null;
-  }
 }

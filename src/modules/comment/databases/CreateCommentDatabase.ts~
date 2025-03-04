@@ -74,8 +74,4 @@ export class CreateCommentDatabase implements ICreateCommentDatabase {
     if (!user) throw new Error("User not found");
     return user;
   }
-
-  updateLeftAndRight(commentId: string, left: number, right: number): Promise<any> {
-    return Promise.resolve(undefined)
-  }
 }

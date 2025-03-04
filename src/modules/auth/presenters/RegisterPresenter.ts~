@@ -1,0 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { OutputBoundary } from "../../../shared/interfaces/OutputBoundary";
+import {RegisterViewModel} from "../view_model/RegisterViewModel";
+import { RegisterResponseData } from '../response/RegisterResponseData'
+
+export class RegisterPresenter implements OutputBoundary{
+     registerViewModel!: RegisterViewModel;
+
+    execute(data: RegisterResponseData): void {
+        this.registerViewModel = new RegisterViewModel(data.status >= 200 && data.status < 399 ? "true" : "false", data.message);
+    }
+
+}

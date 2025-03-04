@@ -35,6 +35,7 @@ export class Profile extends BaseEntity {
   public user: Users
 
   constructor(
+
     phone: string,
     id: string,
     gender: Gender,
@@ -45,6 +46,7 @@ export class Profile extends BaseEntity {
     user: Users
   ) {
     super()
+
     this.phone = phone
     this.id = id
     this.gender = gender
