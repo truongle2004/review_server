@@ -5,24 +5,26 @@ import { Products } from './products.entity'
 @Entity('categories')
 export class Categories extends BaseEntity {
   @PrimaryGeneratedColumn({
-    type: 'tinyint'
+    type: 'int'
   })
   public id: number
 
   @Column({
     type: 'varchar',
-    length: 200
+    length: 200,
+    unique: true
   })
   public name: string
 
   @Column({
     type: 'varchar',
+    nullable: true,
     length: 255
   })
   public description: string
 
   @OneToMany(() => Products, (product) => product.category)
-  public products: Products[]
+  public products!: Products[]
 
   constructor(
     id: number,

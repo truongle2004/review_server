@@ -17,6 +17,7 @@
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-requests-logger": "^4.0.1",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "reflect-metadata": "^0.2.2",
@@ -31,6 +32,9 @@
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+
+    "@types/express-requests-logger": "^4.0.0",
+
     "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^22.10.5",
     "bcryptjs": "^2.4.3",

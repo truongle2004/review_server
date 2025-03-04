@@ -1,12 +1,14 @@
 import {Column, Entity, ManyToOne,  PrimaryGeneratedColumn} from 'typeorm'
 import { BaseEntity } from '../shared/baseEntity'
 import { Reviews } from './reviews.entity'
-import {Users} from "./users.entity";
+import { Users } from './users.entity'
+
 
 
 @Entity('comments')
 export class Comments extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
+
   public id: string;
 
   @Column({ type: 'text' })
