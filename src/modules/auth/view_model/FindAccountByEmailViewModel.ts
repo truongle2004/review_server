@@ -1,14 +1,16 @@
 export class FindAccountByEmailViewModel{
   private _isSuccess: string
   private _message: string
+  private _userId:string
   private _username:string
   private _email: string
   private _password: string
   private _roles: string
 
-  constructor(isSuccess: string, message: string, username:string,email: string, password: string, roles: string) {
+  constructor(isSuccess: string, message: string,userId:string, username:string,email: string, password: string, roles: string) {
     this._isSuccess = isSuccess;
     this._message = message;
+    this._userId = userId;
     this._username = username
     this._email = email;
     this._password = password;
@@ -61,5 +63,12 @@ export class FindAccountByEmailViewModel{
 
   set username(value: string) {
     this._username = value
+  }
+  get userId():string{
+    return this._userId
+  }
+
+  set userId(value:string){
+    this._userId = value
   }
 }

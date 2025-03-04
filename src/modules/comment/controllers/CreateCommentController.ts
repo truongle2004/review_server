@@ -14,7 +14,8 @@ export class CreateCommentController{
   }
 
   createComment = async (req:Request<CreateCommentInputDTO>,res:Response<CreateCommentOutputDTO>) => {
-    const { reviewId, content, userId, parentId } = req.body
+    const { reviewId, content, parentId } = req.body
+    const {userId} = req.user?.userId
     const dto = new CreateCommentInputDTO(reviewId,userId,parentId,content)
     const inputData = new CreateCommentRequestData(dto)
 

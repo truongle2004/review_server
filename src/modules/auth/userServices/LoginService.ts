@@ -3,23 +3,21 @@ import { LoginOutputDTO } from '../dtos/LoginDTO'
 import { InputBoundary } from '../../../shared/interfaces/InputBoundary'
 import { OutputBoundary } from '../../../shared/interfaces/OutputBoundary'
 import { DatabaseBoundary } from '../../../shared/interfaces/DatabaseBoundary'
-import {ITokenService} from "../tokenServices/ITokenService";
 import { FindAccountInputDTO } from '../dtos/FindAccountDTO';
 import { LoginResponseData } from '../response/LoginResponseData';
 import { FindAccountByEmailRequestData } from '../request/FindAccountByEmailRequestData';
 import { comparePassword } from '../../../utils/utils';
 import { LoginRequestData } from '../request/LoginRequestData'
-
+import jwt from 'jsonwebtoken'
+import { jwtConfig } from '../../../config/jwtConfig';
 export class LoginService implements InputBoundary {
   presenter: OutputBoundary;
   database: DatabaseBoundary;
-  tokenService: ITokenService;
   findAccountService: InputBoundary;
   findAccountPresenter: OutputBoundary;
-  constructor(presenter: OutputBoundary, database: DatabaseBoundary, tokenService: ITokenService,findAccountService: InputBoundary, findAccountPresenter: OutputBoundary) {
+  constructor(presenter: OutputBoundary, database: DatabaseBoundary,findAccountService: InputBoundary, findAccountPresenter: OutputBoundary) {
     this.presenter = presenter;
     this.database = database;
-    this.tokenService = tokenService;
     this.findAccountPresenter = findAccountPresenter;
     this.findAccountService = findAccountService
   }
@@ -49,7 +47,6 @@ export class LoginService implements InputBoundary {
      const requestData = new FindAccountByEmailRequestData(dataInput)
      await this.findAccountService.execute(requestData)
      const result = await this.findAccountPresenter.getDataViewModel()
-     console.log("GetDataViewModelFindAccountByEmail:::  "+result)
      if (result.isSuccess === "Fail") {
        const dto = new LoginOutputDTO("")
        const responseData = new LoginResponseData(400, result.message, dto)
@@ -62,8 +59,8 @@ export class LoginService implements InputBoundary {
           this.presenter.execute(responseData)
          return
        } else {
-         const payload = {username: result.username, email: result.email, roles: result.roles}
-         const jwtCode = await this.tokenService.generateToken(payload)
+         const payload = {userId: result.userId,username: result.username, email: result.email, roles: result.roles}
+         const jwtCode = await jwt.sign(payload,jwtConfig.secret,{expiresIn:jwtConfig.expiresIn})
          const dto = new LoginOutputDTO(jwtCode)
          const responseData = new LoginResponseData(200, "Login successfully", dto)
          await this.presenter.execute(responseData)
