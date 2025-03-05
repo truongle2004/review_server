@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   BeforeInsert,
   Column,
@@ -9,45 +8,47 @@ import {
   PrimaryGeneratedColumn
 } from 'typeorm'
 import { BaseEntity } from '../shared/baseEntity'
-import { Reviews } from './reviews.entity'
+import { Comments } from './comments.entity'
 import { Profile } from './profile.entity'
-import {Comments} from "./comments.entity";
+import { RatingEntity } from './rating.entity'
+import { Reviews } from './reviews.entity'
 
 export enum Status {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
   DELETED = 'DELETED'
 }
-export enum Role{
+
+export enum Role {
   ADMIN = 'ADMIN',
   USER = 'USER'
 }
 @Entity('users')
 export class Users extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  public id: string
+  public id!: string
 
-  @Column({ type: 'varchar', nullable:false })
-  public password: string
+  @Column({ type: 'varchar' })
+  public password!: string
 
-  @Column({ type: 'varchar' , nullable:false})
-  public email: string
+  @Column({ type: 'varchar' })
+  public email!: string
 
-  @Column({type:'varchar',nullable:false})
-  public username:string
+  @Column({ type: 'varchar', nullable: false })
+  public username: string
 
   @Column({
     type: 'enum',
     enum: Status,
     default: Status.ACTIVE
   })
-  public status: string
+  public status!: string
 
-  @OneToMany(() => Reviews, (review) => review.user)
-  public reviews: Reviews[]
+  @OneToMany(() => Users, (user) => user.reviews)
+  public reviews!: Reviews[]
 
-  @OneToMany(() => Comments, (comment) => comment.user)
-  public comments : Comments[];
+  // @ManyToMany(() => Comments, (comment) => comment.user)
+  // public comments: Comments[]  | any
 
   @Column({
     type: 'enum',
@@ -55,10 +56,25 @@ export class Users extends BaseEntity {
     default: Role.USER,
     select: true
   })
-  public roles: string
+  public roles!: string
 
   @OneToOne(() => Profile, (profile) => profile.user)
   @JoinColumn()
-  public profile: Profile
+  public profile!: Profile
 
+  @OneToMany(() => Comments, (comment) => comment.user)
+  public comments!: Comments[]
+
+  @OneToMany(() => RatingEntity, (rating) => rating.user)
+  public ratings!: RatingEntity
+
+  public isActive(): boolean {
+    return this.status === Status.ACTIVE
+  }
+
+  @BeforeInsert()
+  public hashPassword() {
+    // TODO hash password here
+    // this.password = 'hashed password'
+  }
 }

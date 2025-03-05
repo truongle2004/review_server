@@ -1,32 +1,32 @@
-import {Column, Entity, ManyToOne,  PrimaryGeneratedColumn} from 'typeorm'
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { BaseEntity } from '../shared/baseEntity'
 import { Reviews } from './reviews.entity'
 import { Users } from './users.entity'
 
-
-
 @Entity('comments')
 export class Comments extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
+  public id: string
 
-  public id: string;
-
+  @Column({
+    type: 'varchar'
+  })
+  public parentId: string
   @Column({ type: 'text' })
-  public text: string;
+  public text: string
 
   @Column({ type: 'int', unsigned: true })
-  public lft: number;
+  public lft: number
 
   @Column({ type: 'int', unsigned: true })
-  public rgt: number;
+  public rgt: number
 
   @Column({ type: 'uuid', nullable: true })
-  public parentId: string | null ; // ID của comment cha
+  public parentId: string | null // ID của comment cha
 
   @ManyToOne(() => Users, (user) => user.comments, { nullable: false })
-  public user: Users;
+  public user: Users
 
   @ManyToOne(() => Reviews, (review) => review.comments, { nullable: false })
-  public reviews: Reviews;
-
+  public reviews: Reviews
 }

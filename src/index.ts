@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import 'reflect-metadata'
 import './modules/product/di'
+import './modules/review/di'
 import './modules/todo/dependencyInjection'
 
 import cookieParser from 'cookie-parser'
