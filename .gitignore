@@ -5,3 +5,5 @@ dist
 app.log
 .idea
 launch.json
+.vscode
+*.ts~

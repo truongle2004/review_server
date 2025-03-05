@@ -14,7 +14,7 @@ export class RegisterController {
     }
 
     execute = async (req:Request<{},{},RegisterInputDTO,{}>,res:Response<RegisterOutputDTO>) => {
-        const inputData = new RegisterInputDTO(req.body.email, req.body.password, req.body.confirmPassword)
+        const inputData = new RegisterInputDTO(req.body.username,req.body.email, req.body.password, req.body.confirmPassword)
         const inputRequestData = new RegisterRequestData(inputData)
        await this.inputBoundary.execute(inputRequestData)
         res.send(this.presenter.getDataViewModel())

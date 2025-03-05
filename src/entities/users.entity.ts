@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   BeforeInsert,
   Column,
@@ -24,7 +23,6 @@ export enum Role {
   ADMIN = 'ADMIN',
   USER = 'USER'
 }
-
 @Entity('users')
 export class Users extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -36,9 +34,13 @@ export class Users extends BaseEntity {
   @Column({ type: 'varchar' })
   public email!: string
 
+  @Column({ type: 'varchar', nullable: false })
+  public username: string
+
   @Column({
     type: 'enum',
-    enum: Status
+    enum: Status,
+    default: Status.ACTIVE
   })
   public status!: string
 
