@@ -13,12 +13,6 @@ export class Profile extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string
 
-  @Column({ type: 'varchar', length: 50 })
-  public first_name: string
-
-  @Column({ type: 'varchar', length: 50 })
-  public last_name: string
-
   @Column({ type: 'varchar', length: 20, unique: true })
   public phone: string
 
@@ -41,8 +35,6 @@ export class Profile extends BaseEntity {
   public user: Users
 
   constructor(
-    first_name: string,
-    last_name: string,
     phone: string,
     id: string,
     gender: Gender,
@@ -53,8 +45,6 @@ export class Profile extends BaseEntity {
     user: Users
   ) {
     super()
-    this.first_name = first_name
-    this.last_name = last_name
     this.phone = phone
     this.id = id
     this.gender = gender

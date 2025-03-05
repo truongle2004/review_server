@@ -1,7 +1,6 @@
-import {ResponseData} from "../../../shared/interfaces/ResponseData";
 import {RegisterOutputDTO} from "../dtos/RegisterDTO";
 
-export class RegisterResponseData implements ResponseData<RegisterOutputDTO>{
+export class RegisterResponseData {
     private _status: number;
     private _message: string;
     private _data: RegisterOutputDTO;

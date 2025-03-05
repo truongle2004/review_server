@@ -1,7 +1,6 @@
-import {RequestData} from "../../../shared/interfaces/RequestData";
 import {FindAccountInputDTO} from "../dtos/FindAccountDTO";
 
-export class FindAccountByEmailRequestData implements RequestData<FindAccountInputDTO>{
+export class FindAccountByEmailRequestData {
 
     private _data: FindAccountInputDTO;
 

@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ITokenService } from './ITokenService'
 import jwt from 'jsonwebtoken'
-import { jwtConfig } from './jwtConfig'
+import { jwtConfig } from '../../../config/jwtConfig'
 
 export class TokenService implements ITokenService {
 

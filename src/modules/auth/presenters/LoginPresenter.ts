@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LoginOutputDTO } from "../dtos/LoginDTO";
 import { OutputBoundary } from "../../../shared/interfaces/OutputBoundary";
-import { ResponseData } from "../../../shared/interfaces/ResponseData";
 import { LoginViewModel } from "../view_model/LoginViewModel";
+import { LoginResponseData } from '../response/LoginResponseData'
 
 export class LoginPresenter implements OutputBoundary {
   private _dataViewModel!: LoginViewModel;
 
 
-  execute(data2: ResponseData<LoginOutputDTO>): void {
-    // @ts-ignore
+  execute(data2: LoginResponseData): void {
     const {status, message, data} = data2
       this._dataViewModel = new LoginViewModel(status >= 200 && status < 399 ? "true" : "false", message, data.getJwtCode());
   }

@@ -1,9 +1,9 @@
 import {InputBoundary} from "../../../shared/interfaces/InputBoundary";
-import {RequestData} from "../../../shared/interfaces/RequestData";
 import {OutputBoundary} from "../../../shared/interfaces/OutputBoundary";
 import {DatabaseBoundary} from "../../../shared/interfaces/DatabaseBoundary";
-import {FindAccountInputDTO, FindAccountOutputDTO} from "../dtos/FindAccountDTO";
+import {FindAccountOutputDTO} from "../dtos/FindAccountDTO";
 import { FindAccountByEmailResponseData } from "../response/FindAccountByEmailResponseData";
+import { FindAccountByEmailRequestData } from '../request/FindAccountByEmailRequestData'
 
 export class FindAccountService implements InputBoundary{
    private presenter:OutputBoundary
@@ -14,11 +14,11 @@ export class FindAccountService implements InputBoundary{
         this.database = database;
     }
 
-   async execute(data: RequestData<FindAccountInputDTO>): Promise<void> {
+   async execute(data:FindAccountByEmailRequestData): Promise<void> {
        const email :string = data.data.email
        const isValidEmail = this.isValidEmail(email);
        if (!isValidEmail) {
-           const outputDTO = new FindAccountOutputDTO("","","");
+           const outputDTO = new FindAccountOutputDTO("","","","");
            const responseData = new FindAccountByEmailResponseData(400, "Invalid email", outputDTO)
            await this.presenter.execute(responseData);
            return;
@@ -27,12 +27,12 @@ export class FindAccountService implements InputBoundary{
                const response  = await this.database.execute(email);
                console.log("Response Sau khi goi database service Find::::  "+response)
                if (!response) {
-                   const outputDTO = new FindAccountOutputDTO("","","");
+                   const outputDTO = new FindAccountOutputDTO("","","","");
                    const responseData = new FindAccountByEmailResponseData(400, "User not found", outputDTO)
                    await this.presenter.execute(responseData);
                    return;
                }else {
-                   const dto = new FindAccountOutputDTO( response.email, response.password, response.roles);
+                   const dto = new FindAccountOutputDTO(response.username, response.email, response.password, response.roles);
                    console.log("dto response.roles LOGGER::::+ "+response.roles);
                    const responseData = new FindAccountByEmailResponseData(201, "Success", dto);
                    await this.presenter.execute(responseData);
@@ -40,7 +40,7 @@ export class FindAccountService implements InputBoundary{
                }
            } catch (error) {
                console.log(error);
-               const dto = new FindAccountOutputDTO("", "","");
+               const dto = new FindAccountOutputDTO("","", "","");
                const responseData = new FindAccountByEmailResponseData(400, "User not found", dto);
                await this.presenter.execute(responseData);
                return;

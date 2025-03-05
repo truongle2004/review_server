@@ -33,14 +33,6 @@ export class RegisterInputDTO  {
     set confirmPassword(value: string) {
         this._confirmPassword = value;
     }
-
-    get username(): string {
-        return this._username
-    }
-
-    set username(value: string) {
-        this._username = value
-    }
 }
 
 export class RegisterOutputDTO  {

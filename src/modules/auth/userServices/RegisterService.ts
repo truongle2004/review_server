@@ -1,17 +1,18 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { v4 } from "uuid";
 import { Role, Status, Users } from "../../../entities/users.entity";
 import { hashPassword } from "../../../utils/utils";
 import { FindAccountInputDTO } from "../dtos/FindAccountDTO";
-import { RegisterInputDTO, RegisterOutputDTO } from "../dtos/RegisterDTO";
+import { RegisterOutputDTO } from "../dtos/RegisterDTO";
 import { DatabaseBoundary } from "../../../shared/interfaces/DatabaseBoundary";
 import { InputBoundary } from "../../../shared/interfaces/InputBoundary";
 import { OutputBoundary } from "../../../shared/interfaces/OutputBoundary";
-import { RequestData } from "../../../shared/interfaces/RequestData";
 import { FindAccountByEmailRequestData } from "../request/FindAccountByEmailRequestData";
 import { RegisterResponseData } from "../response/RegisterResponseData";
 import { FindAccountByEmailViewModel } from "../view_model/FindAccountByEmailViewModel";
+import { RegisterRequestData } from '../request/RegisterRequestData'
 
 export class RegisterService implements InputBoundary {
 
@@ -26,9 +27,9 @@ export class RegisterService implements InputBoundary {
         this.findAccountPresenter = findAccountPresenter;
     }
 
-    async execute(data: RequestData<RegisterInputDTO>): Promise<any> {
-        const {email, password, confirmPassword} = data.data
-        console.log(email, password, confirmPassword)
+    async execute(data: RegisterRequestData): Promise<any> {
+        const {username,email, password, confirmPassword} = data.data
+        console.log(username,email, password, confirmPassword)
         const isValidEmail : boolean = this.isValidEmail(email);
         const isValidPassword :boolean= this.isValidPassword(password);
         const isValidTwoPassword :boolean= this.isValidTwoPassword(password, confirmPassword);
@@ -71,7 +72,12 @@ export class RegisterService implements InputBoundary {
                     //mã hoá mật khẩu
                     const hashedPassword = await this.maHoaMatKhau(password)
                     const uuid = v4()
-                    const user = new Users(uuid, email, hashedPassword, Status.ACTIVE, Role.USER)
+                    const user = new Users()
+                    user.id = uuid
+                    user.username = username
+                    user.password = hashedPassword
+                    user.email = email
+                    //role va status mac dinh la USER va ACTIVE
                     const responseFromDatabase = await this.registerDatabase.execute(user)
                     console.log(responseFromDatabase)
                     if (responseFromDatabase[0]){

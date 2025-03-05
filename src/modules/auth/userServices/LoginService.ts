@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { LoginInputDTO, LoginOutputDTO } from '../dtos/LoginDTO'
+import { LoginOutputDTO } from '../dtos/LoginDTO'
 import { InputBoundary } from '../../../shared/interfaces/InputBoundary'
 import { OutputBoundary } from '../../../shared/interfaces/OutputBoundary'
 import { DatabaseBoundary } from '../../../shared/interfaces/DatabaseBoundary'
-import {RequestData} from "../../../shared/interfaces/RequestData";
 import {ITokenService} from "../tokenServices/ITokenService";
 import { FindAccountInputDTO } from '../dtos/FindAccountDTO';
 import { LoginResponseData } from '../response/LoginResponseData';
 import { FindAccountByEmailRequestData } from '../request/FindAccountByEmailRequestData';
 import { comparePassword } from '../../../utils/utils';
-import { injectAllWithTransform } from 'tsyringe'
+import { LoginRequestData } from '../request/LoginRequestData'
 
 export class LoginService implements InputBoundary {
   presenter: OutputBoundary;
@@ -25,7 +24,7 @@ export class LoginService implements InputBoundary {
     this.findAccountService = findAccountService
   }
 
-  execute = async (data: RequestData<LoginInputDTO>) => {
+  execute = async (data: LoginRequestData) => {
 
     const {email, password}  = data.data
     const isValidEmail : boolean = this.isValidEmail(email);
@@ -63,7 +62,7 @@ export class LoginService implements InputBoundary {
           this.presenter.execute(responseData)
          return
        } else {
-         const payload = {email: result.email, roles: result.roles}
+         const payload = {username: result.username, email: result.email, roles: result.roles}
          const jwtCode = await this.tokenService.generateToken(payload)
          const dto = new LoginOutputDTO(jwtCode)
          const responseData = new LoginResponseData(200, "Login successfully", dto)

@@ -1,13 +1,23 @@
 import { OutputBoundary } from '../../../shared/interfaces/OutputBoundary'
-import { ResponseData } from '../../../shared/interfaces/ResponseData'
-import {CreateCommentOutputDTO} from "../dtos/CreateCommentDTO";
+import { CreateCommentResponseData } from '../response/CreateCommentResponseData'
+import { CreateCommentViewModel } from '../ViewModel/CreateCommentViewModel'
 
 export class CreateCommentPresenter implements OutputBoundary {
+  data: CreateCommentViewModel;
 
-  execute(data: ResponseData<CreateCommentOutputDTO>): void {
-    throw new Error('Method not implemented.')
+  constructor() {
+    this.data = new CreateCommentViewModel("", "");
+  }
+  execute(data: CreateCommentResponseData): void {
+    if (data.status >= 200 && data.status < 399) {
+      this.data.status = "true";
+      this.data.message = data.message;
+    }else{
+      this.data.status = "false";
+      this.data.message = data.message;
+    }
   }
   getDataViewModel() {
-    throw new Error('Method not implemented.')
+    return this.data
   }
 }

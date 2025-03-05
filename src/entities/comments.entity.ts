@@ -4,48 +4,29 @@ import { Reviews } from './reviews.entity'
 import { Users } from './users.entity'
 
 
+
 @Entity('comments')
 export class Comments extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  public id: string
 
-  @Column({
-    type: 'text'
-  })
-  public text: string
+  public id: string;
 
-  @Column({
-    type: 'string'
-  })
-  public parentId: string
+  @Column({ type: 'text' })
+  public text: string;
 
-  @ManyToOne(() => Users, (user) => user.comments)
-  public user: Users
+  @Column({ type: 'int', unsigned: true })
+  public lft: number;
 
-  @ManyToOne(() => Reviews, (review) => review.comments)
-  public reviews: Reviews
+  @Column({ type: 'int', unsigned: true })
+  public rgt: number;
 
-  @ManyToOne(() => Users, (user) => user.comments)
-  public user: Users
+  @Column({ type: 'uuid', nullable: true })
+  public parentId: string | null ; // ID của comment cha
 
-  constructor(
-    id: string,
-    user: Users,
-    text: string,
-    parentId: number,
+  @ManyToOne(() => Users, (user) => user.comments, { nullable: false })
+  public user: Users;
 
-    reviews: Reviews
-  ) {
-    super()
-    this.id = id
-    this.user = user
-    this.text = text
-    this.parentId = parentId
-    this.user = user
-    this.reviews = reviews
-  }
+  @ManyToOne(() => Reviews, (review) => review.comments, { nullable: false })
+  public reviews: Reviews;
 
-  public isRoot(): boolean {
-    return this.parentId === null
-  }
 }
