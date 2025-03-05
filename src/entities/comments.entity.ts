@@ -1,8 +1,7 @@
-import {Column, Entity, ManyToOne,  PrimaryGeneratedColumn} from 'typeorm'
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { BaseEntity } from '../shared/baseEntity'
 import { Reviews } from './reviews.entity'
 import { Users } from './users.entity'
-
 
 @Entity('comments')
 export class Comments extends BaseEntity {
@@ -15,7 +14,7 @@ export class Comments extends BaseEntity {
   public text: string
 
   @Column({
-    type: 'string'
+    type: 'varchar'
   })
   public parentId: string
 
@@ -25,15 +24,11 @@ export class Comments extends BaseEntity {
   @ManyToOne(() => Reviews, (review) => review.comments)
   public reviews: Reviews
 
-  @ManyToOne(() => Users, (user) => user.comments)
-  public user: Users
-
   constructor(
     id: string,
     user: Users,
     text: string,
-    parentId: number,
-
+    parentId: string,
     reviews: Reviews
   ) {
     super()

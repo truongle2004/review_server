@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express'
 import Joi from 'joi'
 import logger from '../config/logger'
-import { BadRequestException } from '../shared/badRequest.exeception'
+import { BadRequestException } from '../shared/BadRequest.exeception'
 
 const addCategory = async (req: Request, res: Response, next: NextFunction) => {
   const correctConditions = Joi.object({

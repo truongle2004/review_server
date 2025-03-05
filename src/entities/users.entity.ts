@@ -3,17 +3,16 @@ import {
   BeforeInsert,
   Column,
   Entity,
-  JoinColumn, 
-  ManyToMany,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
 import { BaseEntity } from '../shared/baseEntity'
-import { Profile } from './profile.entity'
-import { Reviews } from './reviews.entity'
 import { Comments } from './comments.entity'
-
+import { Profile } from './profile.entity'
+import { RatingEntity } from './rating.entity'
+import { Reviews } from './reviews.entity'
 
 export enum Status {
   ACTIVE = 'ACTIVE',
@@ -21,7 +20,7 @@ export enum Status {
   DELETED = 'DELETED'
 }
 
-export enum Role{
+export enum Role {
   ADMIN = 'ADMIN',
   USER = 'USER'
 }
@@ -29,26 +28,25 @@ export enum Role{
 @Entity('users')
 export class Users extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  public id: string
+  public id!: string
 
   @Column({ type: 'varchar' })
-  public password: string
+  public password!: string
 
   @Column({ type: 'varchar' })
-  public email: string
+  public email!: string
 
   @Column({
     type: 'enum',
     enum: Status
   })
-  public status: string
+  public status!: string
 
   @OneToMany(() => Users, (user) => user.reviews)
-  public reviews: Reviews[]
+  public reviews!: Reviews[]
 
-
-  @ManyToMany(() => Comments, (comment) => comment.user)
-  public comments: Comments[]  | any
+  // @ManyToMany(() => Comments, (comment) => comment.user)
+  // public comments: Comments[]  | any
 
   @Column({
     type: 'enum',
@@ -56,34 +54,17 @@ export class Users extends BaseEntity {
     default: Role.USER,
     select: true
   })
-  public roles: string
+  public roles!: string
 
   @OneToOne(() => Profile, (profile) => profile.user)
   @JoinColumn()
-  public profile: Profile
+  public profile!: Profile
 
   @OneToMany(() => Comments, (comment) => comment.user)
-  public comments: Comments[]
+  public comments!: Comments[]
 
-  constructor(
-    id: string, // Có thể undefined khi tạo mới
-    email: string,
-    password: string,
-    status: Status = Status.ACTIVE,
-    roles: string,
-    reviews?: Reviews | any,
-    profile?: Profile | any
-  ) {
-    super()
-    this.id = id ?? crypto.randomUUID() // Nếu không có id, tự tạo UUID (hoặc để TypeORM tự tạo)
-    this.email = email
-    this.password = password
-    this.status = status
-    this.reviews = reviews
-    this.comments = comments
-    this.roles = roles
-    this.profile = profile
-  }
+  @OneToMany(() => RatingEntity, (rating) => rating.user)
+  public ratings!: RatingEntity
 
   public isActive(): boolean {
     return this.status === Status.ACTIVE
