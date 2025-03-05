@@ -17,12 +17,14 @@ export class FindAccountInputDTO{
 
 
 export class FindAccountOutputDTO {
+  private _userId:string
     private _username: string
     private _email: string
     private _password: string
     private _roles: string
 
-  constructor(username:string,email: string, password: string, roles: string) {
+  constructor(userId:string,username:string,email: string, password: string, roles: string) {
+    this._userId = userId
       this._username = username
     this._email = email
     this._password = password
@@ -60,4 +62,10 @@ export class FindAccountOutputDTO {
   set username(value: string) {
     this._username = value
   }
+   get userId(): string { 
+      return this._userId
+    }
+    set userId(value: string) {
+      this._userId = value
+    }
 }

@@ -1,11 +1,9 @@
 import { InputBoundary } from '../../../shared/interfaces/InputBoundary'
 import {OutputBoundary} from "../../../shared/interfaces/OutputBoundary";
-import {DatabaseBoundary} from "../../../shared/interfaces/DatabaseBoundary";
 import { CreateCommentRequestData } from '../request/CreateCommentRequestData'
 import { ICreateCommentDatabase } from '../databases/ICreateCommentDatabase'
 import { CreateCommentOutputDTO } from '../dtos/CreateCommentDTO'
 import { CreateCommentResponseData } from '../response/CreateCommentResponseData'
-import { Comments } from '../../../entities/comments.entity'
 
 export class CreateCommentService implements InputBoundary {
     _createCommentPresenter: OutputBoundary
@@ -16,11 +14,6 @@ export class CreateCommentService implements InputBoundary {
     }
 
     async execute(data: CreateCommentRequestData): Promise<void> {
-        console.log(`Review ID: ${data.data.reviewId}`)
-        console.log(`Content: ${data.data.content}`)
-        console.log(`User ID: ${data.data.userId}`)
-        console.log(`Parent ID: ${data.data.parentId}`)
-
         const user = await this._createCommentDatabase.findUser(data.data.userId)
         if (!user) {
           const outputDTO = new CreateCommentOutputDTO()

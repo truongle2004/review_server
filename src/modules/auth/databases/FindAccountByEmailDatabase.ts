@@ -8,7 +8,7 @@ export class FindAccountByEmailDatabase implements DatabaseBoundary {
         const userRepo = AppDataSource.getRepository(Users)
         const user = await userRepo.findOne({
             where: { email: data },
-            select: ["username","email", "password", "roles"]
+            select: ["id","username","email", "password", "roles"]
         });
         if (!user) {
             throw new Error("User not found");
