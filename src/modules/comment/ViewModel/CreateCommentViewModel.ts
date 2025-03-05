@@ -6,5 +6,4 @@ export class CreateCommentViewModel{
     this.status = status;
     this.message = message;
   }
-
 }

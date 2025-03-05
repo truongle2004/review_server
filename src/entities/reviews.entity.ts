@@ -35,7 +35,6 @@ export class Reviews extends BaseEntity {
   @ManyToOne(() => Users, (user) => user.reviews)
   public user: Users
 
-
   @OneToMany(() => Comments, (comment) => comment.reviews)
   public comments:Comments
 

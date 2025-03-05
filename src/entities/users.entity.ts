@@ -12,6 +12,8 @@ import { BaseEntity } from '../shared/baseEntity'
 import { Reviews } from './reviews.entity'
 import { Profile } from './profile.entity'
 import {Comments} from "./comments.entity";
+import { profile } from 'winston'
+import { id } from 'inversify'
 
 export enum Status {
   ACTIVE = 'ACTIVE',
@@ -27,14 +29,14 @@ export class Users extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string
 
-  @Column({ type: 'varchar', nullable:false })
+  @Column({ type: 'varchar', nullable: false })
   public password: string
 
-  @Column({ type: 'varchar' , nullable:false})
+  @Column({ type: 'varchar', nullable: false })
   public email: string
 
-  @Column({type:'varchar',nullable:false})
-  public username:string
+  @Column({ type: 'varchar', nullable: false })
+  public username: string
 
   @Column({
     type: 'enum',
@@ -44,10 +46,10 @@ export class Users extends BaseEntity {
   public status: string
 
   @OneToMany(() => Reviews, (review) => review.user)
-  public reviews: Reviews[]
+  public reviews: Reviews[] | undefined
 
   @OneToMany(() => Comments, (comment) => comment.user)
-  public comments : Comments[];
+  public comments: Comments[] | undefined
 
   @Column({
     type: 'enum',
@@ -59,6 +61,6 @@ export class Users extends BaseEntity {
 
   @OneToOne(() => Profile, (profile) => profile.user)
   @JoinColumn()
-  public profile: Profile
+  public profile: Profile | undefined
 
 }

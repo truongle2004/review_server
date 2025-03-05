@@ -2,11 +2,11 @@ import { Comments } from '../../../entities/comments.entity'
 import { AppDataSource } from '../../../config/data-source'
 import { Reviews } from '../../../entities/reviews.entity'
 import { Users } from '../../../entities/users.entity'
-import { ICreateCommentDatabase } from './ICreateCommentDatabase'
+import { ICommentDatabase } from './ICommentDatabase'
 import { CreateCommentInputDTO } from '../dtos/CreateCommentDTO'
 
-export class CreateCommentDatabase implements ICreateCommentDatabase {
-  async execute(data: CreateCommentInputDTO): Promise<Comments> {
+export class CommentDatabase implements ICommentDatabase {
+  async create(data: CreateCommentInputDTO): Promise<Comments> {
     const commentRepo = AppDataSource.getRepository(Comments);
     let lft: number;
     let rgt: number;
@@ -16,13 +16,14 @@ export class CreateCommentDatabase implements ICreateCommentDatabase {
       const maxRight = await commentRepo
         .createQueryBuilder("comment")
         .select("MAX(comment.rgt)", "maxRight")
+        .where("comment.reviews = :reviewId", { reviewId: data.reviewId }) // Lọc theo review
         .getRawOne();
 
       lft = (maxRight?.maxRight || 0) + 1;
       rgt = lft + 1;
     } else {
       // Bình luận con
-      const parentComment = await commentRepo.findOne({
+      const parentComment:Comments | null = await commentRepo.findOne({
         where: { id: data.parentId }
       });
 
@@ -54,28 +55,42 @@ export class CreateCommentDatabase implements ICreateCommentDatabase {
     comment.text = data.content;
     comment.lft = lft;
     comment.rgt = rgt;
-    comment.parentId = data.parentId || null;
+    comment.parentId = data.parentId;
     comment.user = await this.findUser(data.userId);
     comment.reviews = await this.findReview(data.reviewId);
-
     return await commentRepo.save(comment);
   }
 
+  async getListCommentByReviewId(reviewId: string): Promise<any> {
+    const commentRepo = AppDataSource.getRepository(Comments);
+    const response = await commentRepo.find({
+      where: { reviews: { id: reviewId } },
+      order: { lft: "ASC" },
+      relations: ["user", "parent"], // Thêm parent để lấy parentId
+    });
+
+    return response;
+  }
+
+
+
   async findReview(reviewId: string): Promise<Reviews> {
     const reviewRepo = AppDataSource.getRepository(Reviews);
-    const review = await reviewRepo.findOne({ where: { id: reviewId } });
+    const review = await reviewRepo.findOne({ where: { id: reviewId } ,
+      relations: ["user"],  // Thêm relations để lấy dữ liệu
+      select: ["id", "rating", "content"]
+    });
+    console.log(review)
     if (!review) throw new Error("Review not found");
     return review;
   }
 
   async findUser(userId: string): Promise<Users> {
     const userRepo = AppDataSource.getRepository(Users);
-    const user = await userRepo.findOne({ where: { id: userId } });
+    const user = await userRepo.findOne({ where: { id: userId } ,
+    select: ["id","username","email", "password", "roles"] });
     if (!user) throw new Error("User not found");
     return user;
   }
 
-  updateLeftAndRight(commentId: string, left: number, right: number): Promise<any> {
-    return Promise.resolve(undefined)
-  }
 }
