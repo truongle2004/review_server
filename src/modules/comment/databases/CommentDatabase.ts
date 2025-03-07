@@ -23,6 +23,7 @@ export class CommentDatabase implements ICommentDatabase {
 
 
   async create(data: CreateCommentInputDTO): Promise<Comments> {
+    if (!data.content) throw new Error("Content is required");
     const commentRepo = AppDataSource.getRepository(Comments);
     let lft: number;
     let rgt: number;
@@ -78,6 +79,7 @@ export class CommentDatabase implements ICommentDatabase {
   }
 
   async getListCommentByReviewId(reviewId: string): Promise<any> {
+    
     const commentRepo = AppDataSource.getRepository(Comments);
     const response = await commentRepo.find({
       where: { reviews: { id: reviewId } },
@@ -91,6 +93,7 @@ export class CommentDatabase implements ICommentDatabase {
 
 
   async findReview(reviewId: string): Promise<Reviews> {
+    if (!reviewId) throw new Error("ReviewId not found");
     const reviewRepo = AppDataSource.getRepository(Reviews);
     const review = await reviewRepo.findOne({
       where: { id: reviewId },
@@ -101,6 +104,7 @@ export class CommentDatabase implements ICommentDatabase {
   }
 
   async findUser(userId: string): Promise<Users> {
+    if (!userId) throw new Error("UserId not found");
     const userRepo = AppDataSource.getRepository(Users);
     const user = await userRepo.findOne({
       where: { id: userId },
@@ -111,6 +115,8 @@ export class CommentDatabase implements ICommentDatabase {
   }
 
   async findComment(commentId: string): Promise<Comments> {
+    if (!commentId) throw new Error("CommentId not found");
+    
     const commentRepo = AppDataSource.getRepository(Comments);
     const comment = await commentRepo.findOne({
       where: { id: commentId }, // Lọc theo commentId

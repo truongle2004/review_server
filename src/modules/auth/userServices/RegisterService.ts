@@ -69,7 +69,7 @@ export class RegisterService implements IRegisterService {
                     console.log(responseFromDatabase)
                     if (responseFromDatabase) {
                         const dto = new RegisterOutputDTO()
-                        const responseData = new RegisterResponseData(200, 'Register successfully', dto)
+                        const responseData = new RegisterResponseData(201, 'Register successfully', dto)
                         this.presenter.execute(responseData)
                         return
                     } else {
@@ -93,7 +93,7 @@ export class RegisterService implements IRegisterService {
             }
         } catch (error) {
             const dto = new RegisterOutputDTO()
-            const responseData = new RegisterResponseData(400, error.message, dto)
+            const responseData = new RegisterResponseData(409, error.message, dto)
             this.presenter.execute(responseData)
             return
         }

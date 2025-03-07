@@ -1,5 +1,6 @@
 import { AppDataSource } from "../../../config/data-source";
 import { Users } from "../../../entities/users.entity";
+import { NotFoundException } from "../../product/exception/notFound.exeception";
 import { ILoginDatase } from "./ILoginDatabase";
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -9,6 +10,8 @@ export class LoginDatabase implements ILoginDatase {
     }
  async findAccountByEmail(email: string): Promise<any> {
         const userRepo = AppDataSource.getRepository(Users);
-        return await userRepo.findOne({ where: { email: email } });
+        const user = await userRepo.findOne({ where: { email: email } });
+        if (!user) throw new Error("User not found");
+        return user;
     }
 }

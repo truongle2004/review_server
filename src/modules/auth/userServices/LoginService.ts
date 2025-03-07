@@ -39,13 +39,6 @@ export class LoginService implements ILoginService {
 
     try {
       const result = await this.database.findAccountByEmail(email)
-      if (!result) {
-        const dto = new LoginOutputDTO('')
-        dto.jwtCode = ''
-        const responseData = new LoginResponseData(404, 'User not found', dto)
-        await this.presenter.execute(responseData)
-        return
-      } else {
         if (!(await comparePassword(password, result.password))) {
           const dto = new LoginOutputDTO('')
           const responseData = new LoginResponseData(
@@ -57,7 +50,7 @@ export class LoginService implements ILoginService {
           return
         } else {
           const payload = {
-            userId: result.userId,
+            userId: result.id,
             username: result.username,
             email: result.email,
             roles: result.roles
@@ -75,9 +68,9 @@ export class LoginService implements ILoginService {
           return
         }
       }
-    } catch (error) {
+     catch (error) {
       const dto = new LoginOutputDTO('')
-      const responseData = new LoginResponseData(400, error.message, dto)
+      const responseData = new LoginResponseData(404, error.message, dto)
       await this.presenter.execute(responseData)
       return
     }

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  BeforeInsert,
   Column,
   Entity,
   JoinColumn,
@@ -12,9 +11,6 @@ import { BaseEntity } from '../shared/baseEntity'
 import { Reviews } from './reviews.entity'
 import { Profile } from './profile.entity'
 import {Comments} from "./comments.entity";
-import { profile } from 'winston'
-import { id } from 'inversify'
-
 export enum Status {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',

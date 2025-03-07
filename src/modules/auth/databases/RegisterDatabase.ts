@@ -11,6 +11,10 @@ export class RegisterDatabase implements IRegisterDatabase {
     }
     async findAccountByEmail(email: string): Promise<any> {
         const userRepo = AppDataSource.getRepository(Users);
-        return await userRepo.findOne({ where: { email: email } });
+        const user = await userRepo.findOne({ where: { email: email } });
+        if (user){
+            throw new Error("User already exists");
+        }
+        return 
     }
 }
