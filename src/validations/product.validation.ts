@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from 'express'
 import Joi from 'joi'
 import logger from '../config/logger'
-import { BadRequestException } from '../shared/badRequest.exeception'
+import { BadRequestException } from '../shared/BadRequest.exeception'
 
 const getProduct = async (req: Request, res: Response, next: NextFunction) => {
   const correctConditions = Joi.object({
@@ -16,7 +16,7 @@ const getProduct = async (req: Request, res: Response, next: NextFunction) => {
     await correctConditions.validateAsync(req.body, { abortEarly: false })
     next()
   } catch (err) {
-    throw new BadRequestException('Bad request')
+    next(new BadRequestException('Bad request'))
   }
 }
 

@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'tsyringe'
-import { NotFoundException } from '../../exception/notFound.exeception'
 import { IDeleteCategoryRepository } from '../../repositories/deleteCategory.repository.interface'
 import { IDeleteCategoryService } from '../deleteCategory.service.interface'
+import { NotFoundException } from '../../../../shared/NotFound.exeception'
 
 @injectable()
 export class DeleteCategoryService implements IDeleteCategoryService {
