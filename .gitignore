@@ -4,5 +4,6 @@ dist
 .vscode
 app.log
 .idea
+launch.json
 .vscode
 *.ts~

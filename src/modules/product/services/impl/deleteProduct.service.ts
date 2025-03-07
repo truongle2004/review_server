@@ -1,9 +1,9 @@
 import type { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { inject, injectable } from 'tsyringe'
-import { NotFoundException } from '../../exception/notFound.exeception'
 import type { IDeleteProductRepository } from '../../repositories/deleteProduct.repository.interface'
 import type { IDeleteProductService } from '../deleteProduct.service.interface'
+import { NotFoundException } from '../../../../shared/NotFound.exeception'
 
 @injectable()
 export class DeleteProductService implements IDeleteProductService {

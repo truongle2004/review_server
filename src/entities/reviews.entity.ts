@@ -1,5 +1,4 @@
 import {
-  BeforeInsert,
   Column,
   Entity,
   ManyToOne,
@@ -11,14 +10,19 @@ import { Products } from './products.entity'
 import { Users } from './users.entity'
 import { Comments } from './comments.entity'
 
-
 @Entity('reviews')
 export class Reviews extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string
 
   @Column({
-    type: 'tinyint'
+    type: 'text'
+  })
+  public title: string
+
+  @Column({
+    type: 'tinyint',
+    default: 0
   })
   public rating: number
 
@@ -35,8 +39,11 @@ export class Reviews extends BaseEntity {
   @ManyToOne(() => Users, (user) => user.reviews)
   public user: Users
 
-  @OneToMany(() => Comments, (comment) => comment.reviews)
-  public comments:Comments
+
+  @OneToMany(() => Comments, (comment) => comment.reviews, {
+    nullable: true
+  })
+  public comments: Comments
 
 
   constructor(
@@ -45,7 +52,8 @@ export class Reviews extends BaseEntity {
     content: string,
     product: Products,
     user: Users,
-    comments:Comments
+    comments: Comments,
+    title: string
   ) {
     super()
     this.id = id
@@ -54,10 +62,6 @@ export class Reviews extends BaseEntity {
     this.product = product
     this.user = user
     this.comments = comments
-  }
-
-  @BeforeInsert()
-  public hashPassword() {
-    // TODO hash password here
+    this.title = title
   }
 }
