@@ -22,17 +22,16 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     const token = req.header("Authorization")?.split(" ")[1];
     log(token)
     if (!token || token == "") {
-      res.status(401).json({ message: "Không có token, từ chối truy cập!" });
-      return;
+     return  res.status(401).json({ message: "Không có token, từ chối truy cập!" });
     }
 
     const decoded = await jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload;
     req.user = decoded; 
     
-    next(); 
+   return next(); 
   } catch (err) {
     console.log(err)
-    res.status(401).json({ message: "Token không hợp lệ!" });
+    return res.status(401).json({ message: "Token không hợp lệ!" });
   }
 };
 

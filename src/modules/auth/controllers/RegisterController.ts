@@ -1,22 +1,23 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
 import { RegisterInputDTO, RegisterOutputDTO } from "../dtos/RegisterDTO";
-import { InputBoundary } from "../../../shared/interfaces/InputBoundary";
-import { OutputBoundary } from "../../../shared/interfaces/OutputBoundary";
 import { Request, Response } from "express";
 import { RegisterRequestData } from '../request/RegisterRequestData'
+import { IRegisterPresenter } from "../presenters/IRegisterPresenter";
+import { IRegisterService } from "../userServices/IRegisterService";
 export class RegisterController {
-    private inputBoundary: InputBoundary;
-    private presenter: OutputBoundary;
+    private inputBoundary: IRegisterService;
+    private presenter: IRegisterPresenter;
 
-    constructor(inputBoundary: InputBoundary, presenter: OutputBoundary) {
+    constructor(inputBoundary: IRegisterService, presenter: IRegisterPresenter) {
         this.inputBoundary = inputBoundary;
         this.presenter = presenter;
     }
 
-    execute = async (req:Request<{},{},RegisterInputDTO,{}>,res:Response<RegisterOutputDTO>) => {
+    execute = async (req:Request<RegisterInputDTO>,res:Response<RegisterOutputDTO>) => {
         const inputData = new RegisterInputDTO(req.body.username,req.body.email, req.body.password, req.body.confirmPassword)
         const inputRequestData = new RegisterRequestData(inputData)
-       await this.inputBoundary.execute(inputRequestData)
-        res.send(this.presenter.getDataViewModel())
+        await this.inputBoundary.execute(inputRequestData)
+        const viewModel = this.presenter.getData()
+
+        res.status(viewModel.status).send(viewModel)
     }
 }

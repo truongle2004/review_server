@@ -1,25 +1,25 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
 import { Request, Response } from 'express'
-import { InputBoundary } from '../../../shared/interfaces/InputBoundary';
-import { OutputBoundary } from '../../../shared/interfaces/OutputBoundary';
 import { LoginInputDTO, LoginOutputDTO } from '../dtos/LoginDTO';
 import { LoginRequestData } from '../request/LoginRequestData';
-
+import { ILoginPresenter } from '../presenters/ILoginPresenter';
+import { ILoginService } from '../userServices/ILoginService';
 export class LoginController{
-  loginService:InputBoundary;
-  presenter:OutputBoundary;
+  loginService:ILoginService;
+  presenter:ILoginPresenter;
 
-  constructor(loginService: InputBoundary, presenter:OutputBoundary){
+  constructor(loginService: ILoginService, presenter:ILoginPresenter){
     this.loginService = loginService;
     this.presenter = presenter
   }
 
-  execute = async (req:Request<{}, {}, LoginInputDTO>, res:Response<LoginOutputDTO>) => {
+  execute = async (req:Request<LoginInputDTO>, res:Response<LoginOutputDTO>) => {
     const inputData = new LoginInputDTO(req.body.email, req.body.password)
+    
     const loginRequestData = new LoginRequestData(inputData)
     await this.loginService.execute(loginRequestData)
-    await res.send(this.presenter.getDataViewModel())
-    console.log(this.presenter.getDataViewModel())
+
+    const viewModel = this.presenter.getData()
+    res.status(viewModel.status).send(viewModel)
   }
 }
 

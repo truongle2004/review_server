@@ -1,16 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { OutputBoundary } from "../../../shared/interfaces/OutputBoundary";
-import {RegisterViewModel} from "../view_model/RegisterViewModel";
 import { RegisterResponseData } from '../response/RegisterResponseData'
+import { IRegisterPresenter } from "./IRegisterPresenter";
 
-export class RegisterPresenter implements OutputBoundary{
-    private _registerViewModel!: RegisterViewModel;
+export class RegisterPresenter implements IRegisterPresenter{
+    registerViewModel: RegisterResponseData;
 
+    constructor() {
+        this.registerViewModel = new RegisterResponseData()
+    }
     execute(data: RegisterResponseData): void {
-        this._registerViewModel = new RegisterViewModel(data.status >= 200 && data.status < 399 ? "true" : "false", data.message);
+        this.registerViewModel = data
     }
 
-    getDataViewModel(): any {
-        return this._registerViewModel
+    getData() {
+        return this.registerViewModel
     }
 }

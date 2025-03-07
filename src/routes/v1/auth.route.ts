@@ -3,9 +3,6 @@ import 'reflect-metadata'
 import { LoginService } from '../../modules/auth/userServices/LoginService'
 import { LoginPresenter } from '../../modules/auth/presenters/LoginPresenter'
 import { LoginDatabase } from '../../modules/auth/databases/LoginDatabase'
-import { FindAccountService } from '../../modules/auth/userServices/FindAccountService'
-import { FindAccountByEmailPresenter } from '../../modules/auth/presenters/FindAccountByEmailPresenter'
-import { FindAccountByEmailDatabase } from '../../modules/auth/databases/FindAccountByEmailDatabase'
 import { LoginController } from '../../modules/auth/controllers/LoginController'
 import { RegisterPresenter } from '../../modules/auth/presenters/RegisterPresenter'
 import { RegisterService } from '../../modules/auth/userServices/RegisterService'
@@ -14,20 +11,17 @@ import { RegisterController } from '../../modules/auth/controllers/RegisterContr
 
 const router = Router()
 
-const findAccountDatabase = new FindAccountByEmailDatabase();
-const findAccountPresenter = new FindAccountByEmailPresenter();
-const findAccountService = new FindAccountService(findAccountPresenter,findAccountDatabase);
 
 const loginPresenter = new LoginPresenter();
 const loginDatabase = new LoginDatabase();
-const loginInputBoundary = new LoginService(loginPresenter,loginDatabase,findAccountService,findAccountPresenter);
+const loginInputBoundary = new LoginService(loginPresenter,loginDatabase);
 const loginController = new LoginController(loginInputBoundary,loginPresenter);
 router.post("/login",loginController.execute)
 
 
 const registerPresenter = new RegisterPresenter()
 const registerDatabase = new RegisterDatabase()
-const registerInputBoundary = new RegisterService(registerDatabase,registerPresenter,findAccountService,findAccountPresenter)
+const registerInputBoundary = new RegisterService(registerDatabase,registerPresenter)
 const registerController = new RegisterController(registerInputBoundary,registerPresenter)
 router.post("/register",registerController.execute)
 

@@ -3,6 +3,7 @@ import { CommentController } from '../../modules/comment/controllers/CommentCont
 import { CommentService } from '../../modules/comment/services/CommentService'
 import { CommentDatabase } from '../../modules/comment/databases/CommentDatabase'
 import { CommentPresenter } from '../../modules/comment/presenters/CommentPresenter'
+import { authMiddleware, userMiddleware } from '../../modules/auth/authMiddleware'
 
 const router = Router()
 
@@ -12,8 +13,10 @@ const createCommentPresenter = new CommentPresenter()
 const commentService = new CommentService(createCommentPresenter,commentDatabase)
 const commentController = new CommentController(commentService,createCommentPresenter)
 
-router.post("/", commentController.createComment)
+router.post("/",authMiddleware,userMiddleware,commentController.createComment)
+
 router.get("/:reviewId",commentController.getListCommentByReviewId)
 
+router.put("/",authMiddleware,userMiddleware,commentController.updateComment)
 
 export const commentRouter = router

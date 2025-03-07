@@ -1,18 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { OutputBoundary } from "../../../shared/interfaces/OutputBoundary";
-import { LoginViewModel } from "../view_model/LoginViewModel";
 import { LoginResponseData } from '../response/LoginResponseData'
+import { ILoginPresenter } from "./ILoginPresenter";
 
-export class LoginPresenter implements OutputBoundary {
-  private _dataViewModel!: LoginViewModel;
-
+export class LoginPresenter implements ILoginPresenter {
+  private _dataViewModel!: LoginResponseData;
 
   execute(data2: LoginResponseData): void {
-    const {status, message, data} = data2
-      this._dataViewModel = new LoginViewModel(status >= 200 && status < 399 ? "true" : "false", message, data.getJwtCode());
+    this._dataViewModel = data2
   }
 
-  getDataViewModel(): any {
-  return this._dataViewModel
+  getData() {
+    return this._dataViewModel
   }
 }

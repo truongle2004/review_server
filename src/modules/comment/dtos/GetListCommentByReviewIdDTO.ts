@@ -1,6 +1,5 @@
 export class GetListCommentByReviewIdInputDTO {
   reviewId: string;
-
   constructor(reviewId: string) {
     this.reviewId = reviewId
   }

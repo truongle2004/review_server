@@ -6,4 +6,6 @@ export interface ICommentPresenter{
   getCreateCommentViewModel():any;
   getListCommentByReviewIdPresenter(data: GetListCommentByReviewIdResponseData):void
   getListCommentByReviewIdViewModel():any;
+  updateCommentPresenter(data: CreateCommentResponseData):void
+  getUpdateCommentViewModel():any
 }

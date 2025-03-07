@@ -6,6 +6,22 @@ import { ICommentDatabase } from './ICommentDatabase'
 import { CreateCommentInputDTO } from '../dtos/CreateCommentDTO'
 
 export class CommentDatabase implements ICommentDatabase {
+
+  async update(userId: string, commentId: string, content: string): Promise<Comments | null> {
+    const commentRepo = AppDataSource.getRepository(Comments);
+      const comment = await commentRepo.findOne({ where: { id: commentId, user: { id: userId } } });
+
+      if (!comment) {
+        throw new Error("Comment not found");
+      }
+
+      comment.text = content;
+      comment.updatedAt = new Date();
+
+      return await commentRepo.save(comment);
+  }
+
+
   async create(data: CreateCommentInputDTO): Promise<Comments> {
     const commentRepo = AppDataSource.getRepository(Comments);
     let lft: number;
@@ -23,7 +39,7 @@ export class CommentDatabase implements ICommentDatabase {
       rgt = lft + 1;
     } else {
       // Bình luận con
-      const parentComment:Comments | null = await commentRepo.findOne({
+      const parentComment: Comments | null = await commentRepo.findOne({
         where: { id: data.parentId }
       });
 
@@ -68,7 +84,7 @@ export class CommentDatabase implements ICommentDatabase {
       order: { lft: "ASC" },
       relations: ["user", "parent"], // Thêm parent để lấy parentId
     });
-
+    if (!response) throw new Error("Comment not found");
     return response;
   }
 
@@ -76,21 +92,32 @@ export class CommentDatabase implements ICommentDatabase {
 
   async findReview(reviewId: string): Promise<Reviews> {
     const reviewRepo = AppDataSource.getRepository(Reviews);
-    const review = await reviewRepo.findOne({ where: { id: reviewId } ,
-      relations: ["user"],  // Thêm relations để lấy dữ liệu
+    const review = await reviewRepo.findOne({
+      where: { id: reviewId },
       select: ["id", "rating", "content"]
     });
-    console.log(review)
     if (!review) throw new Error("Review not found");
     return review;
   }
 
   async findUser(userId: string): Promise<Users> {
     const userRepo = AppDataSource.getRepository(Users);
-    const user = await userRepo.findOne({ where: { id: userId } ,
-    select: ["id","username","email", "password", "roles"] });
+    const user = await userRepo.findOne({
+      where: { id: userId },
+      select: ["id", "username", "email", "password", "roles"]
+    });
     if (!user) throw new Error("User not found");
     return user;
+  }
+
+  async findComment(commentId: string): Promise<Comments> {
+    const commentRepo = AppDataSource.getRepository(Comments);
+    const comment = await commentRepo.findOne({
+      where: { id: commentId }, // Lọc theo commentId
+      relations: ["user", "parent"], // Thêm parent để lấy parentId
+    });
+    if (!comment) throw new Error("Comment not found");
+    return comment;
   }
 
 }
