@@ -13,4 +13,5 @@ export class CreateCommentInputDTO{
 }
 
 export class CreateCommentOutputDTO{
+
 }

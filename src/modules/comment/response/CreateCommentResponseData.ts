@@ -1,6 +1,5 @@
 import { CreateCommentOutputDTO } from '../dtos/CreateCommentDTO'
 
-
 export class CreateCommentResponseData  {
      status: number
      message: string

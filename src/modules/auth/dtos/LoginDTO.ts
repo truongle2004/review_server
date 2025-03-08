@@ -1,39 +1,18 @@
 
 export class LoginInputDTO {
-    private _email: string
-    private _password: string
-
+    email: string
+    password: string
     constructor(email: string, password: string) {
-        this._email = email
-        this._password = password
-    }
-
-    get email(): string {
-        return this._email
-    }
-
-    set email(value: string) {
-        this._email = value
-    }
-
-    get password(): string {
-        return this._password
-    }
-
-    set password(value: string) {
-        this._password = value
+        this.email = email
+        this.password = password
     }
 }
 
-export class LoginOutputDTO   {
-    private _jwtCode:string
-
-
-    constructor(jwtCode: string) {
-        this._jwtCode = jwtCode;
+export class LoginOutputDTO {
+    accessToken: string
+    refreshToken:string
+    constructor(accessToken: string, refreshToken: string) {
+        this.accessToken = accessToken  
+        this.refreshToken = refreshToken
     }
-    getJwtCode(): string {
-        return this._jwtCode;
-    }
-
 }
