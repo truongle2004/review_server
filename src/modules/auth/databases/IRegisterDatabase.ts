@@ -1,5 +1,6 @@
+import { Users } from "../../../entities/users.entity"
 
 export interface IRegisterDatabase {
-    execute(data: any): Promise<any>
-    findAccountByEmail(email:string):Promise<any>
+    execute(data: Users ): Promise<Users>
+    findAccountByEmail(email:string):Promise<Users|null>
 } 

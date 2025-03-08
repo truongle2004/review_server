@@ -2,16 +2,13 @@ import { RegisterResponseData } from '../response/RegisterResponseData'
 import { IRegisterPresenter } from "./IRegisterPresenter";
 
 export class RegisterPresenter implements IRegisterPresenter{
-    registerViewModel: RegisterResponseData;
+    private registerViewModel!: RegisterResponseData;
 
-    constructor() {
-        this.registerViewModel = new RegisterResponseData()
-    }
     execute(data: RegisterResponseData): void {
         this.registerViewModel = data
     }
 
-    getData() {
+    getData(): RegisterResponseData {
         return this.registerViewModel
     }
 }

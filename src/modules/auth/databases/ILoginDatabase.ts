@@ -1,4 +1,6 @@
+import { Users } from "../../../entities/users.entity"
+
 export interface ILoginDatase{
-    execute(data: any): Promise<any>
-    findAccountByEmail(email:string):Promise<any>
+    execute(data: Users): Promise<void>
+    findAccountByEmail(email:string):Promise<Users>
 }

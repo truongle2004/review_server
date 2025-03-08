@@ -58,4 +58,20 @@ export class Users extends BaseEntity {
   @JoinColumn()
   public profile: Profile | undefined
 
+  constructor( 
+    id: string,
+    username: string,
+    email: string,
+    password: string,
+    status: string,
+    roles: string,
+  ) {
+    super()
+    this.id = id
+    this.username = username
+    this.email = email
+    this.password = password
+    this.status = status
+    this.roles = roles
+  }
 }

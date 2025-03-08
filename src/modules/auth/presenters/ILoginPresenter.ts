@@ -1,4 +1,9 @@
+import { LoginResponseData } from "../response/LoginResponseData"
+import { RefreshTokenResponseData } from "../response/RefreshTokenResponseData"
+
 export interface ILoginPresenter{
-    execute(data: any): void
-    getData(): any
+    login(data: LoginResponseData): void 
+    getLoginViewModel(): LoginResponseData
+    doRefreshToken(data: RefreshTokenResponseData): void
+    getRefreshTokenViewModel(): RefreshTokenResponseData
 }

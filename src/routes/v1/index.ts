@@ -3,7 +3,8 @@ import { todoRouter } from './todo.route'
 import { authRouter } from './auth.route'
 import { reviewRoute } from './review.route'
 import { commentRouter } from './comment.route'
-
+import { productRoute } from './product.route'
+import { categoryRoute } from './category.route'
 
 const router = Router()
 

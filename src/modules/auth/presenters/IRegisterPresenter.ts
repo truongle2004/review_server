@@ -1,4 +1,6 @@
+import { RegisterResponseData } from "../response/RegisterResponseData"
+
 export interface IRegisterPresenter{
-    execute(data: any): void
-    getData():any
+    execute(data: RegisterResponseData): void
+    getData():RegisterResponseData
 }
