@@ -1,11 +1,12 @@
 import { GetListCommentByReviewIdResponseData } from '../response/GetListCommentByReviewIdResponseData'
 import { CreateCommentResponseData } from '../response/CreateCommentResponseData'
+import { UpdateCommentResponseData } from '../response/UpdateCommnetResponseData';
 
 export interface ICommentPresenter{
   createCommentPresenter(data: CreateCommentResponseData):void;
-  getCreateCommentViewModel():any;
+  getCreateCommentViewModel():CreateCommentResponseData;
   getListCommentByReviewIdPresenter(data: GetListCommentByReviewIdResponseData):void
-  getListCommentByReviewIdViewModel():any;
+  getListCommentByReviewIdViewModel():GetListCommentByReviewIdResponseData;
   updateCommentPresenter(data: CreateCommentResponseData):void
-  getUpdateCommentViewModel():any
+  getUpdateCommentViewModel():UpdateCommentResponseData
 }

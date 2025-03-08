@@ -4,9 +4,9 @@ import { GetListCommentByReviewIdResponseData } from '../response/GetListComment
 import { UpdateCommentResponseData } from '../response/UpdateCommnetResponseData'
 
 export class CommentPresenter implements ICommentPresenter {
-  createCommentViewModel: CreateCommentResponseData 
-  getListCommentViewModel: GetListCommentByReviewIdResponseData 
-  updateCommentViewModetl:  UpdateCommentResponseData 
+  createCommentViewModel!: CreateCommentResponseData 
+  getListCommentViewModel!: GetListCommentByReviewIdResponseData 
+  updateCommentViewModetl!:  UpdateCommentResponseData 
   createCommentPresenter(data: CreateCommentResponseData): void {
     this.createCommentViewModel = data
   }

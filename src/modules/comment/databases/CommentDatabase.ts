@@ -4,10 +4,12 @@ import { Reviews } from '../../../entities/reviews.entity'
 import { Users } from '../../../entities/users.entity'
 import { ICommentDatabase } from './ICommentDatabase'
 import { CreateCommentInputDTO } from '../dtos/CreateCommentDTO'
+import { log } from 'console'
 
 export class CommentDatabase implements ICommentDatabase {
 
-  async update(userId: string, commentId: string, content: string): Promise<Comments | null> {
+
+  async update(userId: string, commentId: string, content: string): Promise<Comments> {
     const commentRepo = AppDataSource.getRepository(Comments);
       const comment = await commentRepo.findOne({ where: { id: commentId, user: { id: userId } } });
 
@@ -78,7 +80,7 @@ export class CommentDatabase implements ICommentDatabase {
     return await commentRepo.save(comment);
   }
 
-  async getListCommentByReviewId(reviewId: string): Promise<any> {
+  async getListCommentByReviewId(reviewId: string): Promise<Comments[]> {
     
     const commentRepo = AppDataSource.getRepository(Comments);
     const response = await commentRepo.find({
@@ -125,5 +127,17 @@ export class CommentDatabase implements ICommentDatabase {
     if (!comment) throw new Error("Comment not found");
     return comment;
   }
-
+  async findUserByCommentId(data: string): Promise<Users| null> {
+    const commentRepo = AppDataSource.getRepository(Comments)
+    const comment = await commentRepo.findOne({
+      where: { id: data },
+    })
+    const userRepo = AppDataSource.getRepository(Users)
+    const user = await userRepo.findOne({
+      where: { id: comment?.user.id },
+    }) 
+    if (!user) throw new Error("User do not own this comment");
+    log("USER TIM KIEM DUOC TU COMMENT" +JSON.stringify(user))
+    return user
+  }
 }

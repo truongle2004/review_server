@@ -22,6 +22,7 @@ export class CommentService implements ICommentService {
     this._commentPresenter = createCommentPresenter
     this._commentDatabase = createCommentDatabase
   }
+
   async create(data: CreateCommentRequestData): Promise<void> {
     try {
       const user = await this._commentDatabase.findUser(data.data.userId)
@@ -50,7 +51,11 @@ export class CommentService implements ICommentService {
     try {
       const comment = await this._commentDatabase.create(data.data)
       const outputDTO = new CreateCommentOutputDTO()
-      const resData = new CreateCommentResponseData(201, 'Created success', outputDTO)
+      const resData = new CreateCommentResponseData(
+        201,
+        'Created success',
+        outputDTO
+      )
       await this._commentPresenter.createCommentPresenter(resData)
       return
     } catch (error) {
@@ -129,38 +134,65 @@ export class CommentService implements ICommentService {
 
   async update(data: UpdateCommentRequestData): Promise<void> {
     const { userId, reviewId, commentId, content } = data.data
-    if(!content){
+
+    if (!content) {
       const dto = new UpdateCommentOutputDTO()
-      const resData = new UpdateCommentResponseData(400, 'Content is required', dto)
+      const resData = new UpdateCommentResponseData(
+        400,
+        'Content is required',
+        dto
+      )
       await this._commentPresenter.updateCommentPresenter(resData)
       return
     }
     // Kiem tra User
     try {
-      const response = await this._commentDatabase.findUser(userId)
+      const res = await this._commentDatabase.findUser(userId)
     } catch (err) {
       const dto = new UpdateCommentOutputDTO()
-      const resData = new UpdateCommentResponseData(404, err.message, dto)
+      const resData = new UpdateCommentResponseData(
+        404,
+        (err as Error).message,
+        dto
+      )
       await this._commentPresenter.updateCommentPresenter(resData)
       return
     }
 
     // Kiem tra bai review
     try {
-      const resposne = await this._commentDatabase.findReview(reviewId)
+      const res = await this._commentDatabase.findReview(reviewId)
     } catch (err) {
       const dto = new UpdateCommentOutputDTO()
-      const resData = new UpdateCommentResponseData(404, err.message, dto)
+      const resData = new UpdateCommentResponseData(
+        404,
+        (err as Error).message,
+        dto
+      )
       await this._commentPresenter.updateCommentPresenter(resData)
       return
     }
 
     // kiem tra comment
     try {
-      const comment = await this._commentDatabase.findComment(commentId)
+      const res = await this._commentDatabase.findComment(commentId)
+      if (res.user.id != userId) {
+        const dto = new UpdateCommentOutputDTO()
+        const resData = new UpdateCommentResponseData(
+          400,
+          'You do not own this comment',
+          dto
+        )
+        await this._commentPresenter.updateCommentPresenter(resData)
+        return
+      }
     } catch (error) {
       const dto = new UpdateCommentOutputDTO()
-      const resData = new UpdateCommentResponseData(404, error.message, dto)
+      const resData = new UpdateCommentResponseData(
+        404,
+        (error as Error).message,
+        dto
+      )
       await this._commentPresenter.updateCommentPresenter(resData)
       return
     }
@@ -177,7 +209,7 @@ export class CommentService implements ICommentService {
       const outputDTO = new CreateCommentOutputDTO()
       const resData = new CreateCommentResponseData(
         400,
-        error.message,
+        (error as Error).message,
         outputDTO
       )
       await this._commentPresenter.updateCommentPresenter(resData)

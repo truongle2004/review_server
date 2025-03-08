@@ -1,3 +1,5 @@
+import { Comments } from "../../../entities/comments.entity";
+
 export class GetListCommentByReviewIdInputDTO {
   reviewId: string;
   constructor(reviewId: string) {
@@ -7,9 +9,9 @@ export class GetListCommentByReviewIdInputDTO {
 
 
 export class GetListCommentByReviewIdOutputDTO {
- comments:any[]
+ comments:Comments[]
 
-  constructor(comments: any[]) {
+  constructor(comments: Comments[]) {
     this.comments = comments
   }
 }

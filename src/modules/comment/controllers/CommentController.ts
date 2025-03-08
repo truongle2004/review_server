@@ -6,18 +6,17 @@ import {
 import { ICommentService } from '../services/ICommentService'
 import {
   GetListCommentByReviewIdInputDTO,
-  GetListCommentByReviewIdOutputDTO
 } from '../dtos/GetListCommentByReviewIdDTO'
 import { GetListCommentByReviewIdRequestData } from '../request/GetListCommentByReviewIdRequestData'
 import { ICommentPresenter } from '../presenters/ICommentPresenter'
 import {
   UpdateCommentInputDTO,
-  UpdateCommentOutputDTO
 } from '../dtos/UpdateCommentDTO'
 import { UpdateCommentRequestData } from '../request/UpdateCommentRequestData'
 import { CreateCommentResponseData } from '../response/CreateCommentResponseData'
 import { JwtPayload } from 'jsonwebtoken'
-import { symbol } from 'joi'
+import { UpdateCommentResponseData } from '../response/UpdateCommnetResponseData'
+import { GetListCommentByReviewIdResponseData } from '../response/GetListCommentByReviewIdResponseData'
 
 export class CommentController {
   commentService: ICommentService
@@ -47,7 +46,7 @@ export class CommentController {
 
    getListCommentByReviewId = async(
     req: Request<GetListCommentByReviewIdInputDTO>,
-    res: Response<GetListCommentByReviewIdOutputDTO>
+    res: Response<GetListCommentByReviewIdResponseData>
   ) => {
     const { reviewId } = req.params
     const dto = new GetListCommentByReviewIdInputDTO(reviewId)
@@ -60,7 +59,7 @@ export class CommentController {
 
    updateComment = async(
     req: Request<object,object,UpdateCommentInputDTO,object>,
-    res: Response<UpdateCommentOutputDTO>
+    res: Response<UpdateCommentResponseData>
   ) => {
     const { commentId, reviewId, content } = req.body
     const { userId } = req.user as JwtPayload & { userId: string }
