@@ -12,7 +12,9 @@ import { UpdateCommentRequestData } from '../request/UpdateCommentRequestData'
 import { UpdateCommentOutputDTO } from '../dtos/UpdateCommentDTO'
 import { UpdateCommentResponseData } from '../response/UpdateCommnetResponseData'
 import { DeleteCommentRequestData } from '../request/DeleteCommentRequestData'
-import { Err } from 'joi'
+import { DeleteCommentOutputDTO } from '../dtos/DeleteCommentDTO'
+import { DeleteCommentResponseData } from '../response/DeleteCommentResponseData'
+import { log } from 'console'
 
 export class CommentService implements ICommentService {
   _commentPresenter: ICommentPresenter
@@ -220,8 +222,81 @@ export class CommentService implements ICommentService {
   }
 
   async delete(data: DeleteCommentRequestData): Promise<void> {
-  }
+    const { userId, commentId, reviewId,parentId } = data.data
+    log(userId, commentId, reviewId,parentId)
 
+    // kiểm tra xem bài review có tồn tại hay không ?
+    try {
+      const res = await this._commentDatabase.findReview(reviewId)
+    } catch (err) {
+      const dto = new DeleteCommentOutputDTO()
+      const resData = new DeleteCommentResponseData(
+        404,
+        (err as Error).message,
+        dto
+      )
+      await this._commentPresenter.deleteCommentPresenter(resData)
+      return
+    }
+
+    // kiểm tra xem comment có tồn tại hay không ?
+
+    try {
+      const res = await this._commentDatabase.findComment(commentId)
+    } catch (err) {
+      const dto = new DeleteCommentOutputDTO()
+      const resData = new DeleteCommentResponseData(
+        404,
+        (err as Error).message,
+        dto
+      )
+      await this._commentPresenter.deleteCommentPresenter(resData)
+      return
+    }
+
+    // kiểm tra cái người đó có phải là chủ nhân của comment hay không
+    try {
+      const res = await this._commentDatabase.findComment(commentId)
+      if (res.user.id != userId) {
+        const dto = new DeleteCommentOutputDTO()
+        const resData = new DeleteCommentResponseData(
+          400,
+          'You do not own this comment',
+          dto
+        )
+        await this._commentPresenter.deleteCommentPresenter(resData)
+        return
+      }
+    } catch (error) {
+      const dto = new DeleteCommentOutputDTO()
+      const resData = new DeleteCommentResponseData(
+        404,
+        (error as Error).message,
+        dto
+      )
+      await this._commentPresenter.deleteCommentPresenter(resData)
+      return
+    }
+
+
+    try {
+      await this._commentDatabase.delete(commentId)
+      const outputDTO = new DeleteCommentOutputDTO()
+      const resData = new DeleteCommentResponseData(200, 'Success', outputDTO)
+      await this._commentPresenter.deleteCommentPresenter(resData)
+      return
+    } catch (error) {
+      const outputDTO = new DeleteCommentOutputDTO()
+      const resData = new DeleteCommentResponseData(
+        400,
+        (error as Error).message,
+        outputDTO
+      )
+      await this._commentPresenter.deleteCommentPresenter(resData)
+      return
+    }
+
+  }
   buildCommentTree(comments: Comments[]): any[] {
     const commentMap = new Map<string, any>()
     const tree: any[] = []

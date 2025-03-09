@@ -11,4 +11,5 @@ export interface ICommentDatabase {
   update(userId:string,commentId:string,content:string):Promise<Comments>;
   findComment(commentId:string):Promise<Comments>
   findUserByCommentId(data: string):Promise<Users | null>
+  delete(data:string):Promise<void>
 }
