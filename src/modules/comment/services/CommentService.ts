@@ -11,6 +11,8 @@ import { GetListCommentByReviewIdResponseData } from '../response/GetListComment
 import { UpdateCommentRequestData } from '../request/UpdateCommentRequestData'
 import { UpdateCommentOutputDTO } from '../dtos/UpdateCommentDTO'
 import { UpdateCommentResponseData } from '../response/UpdateCommnetResponseData'
+import { DeleteCommentRequestData } from '../request/DeleteCommentRequestData'
+import { Err } from 'joi'
 
 export class CommentService implements ICommentService {
   _commentPresenter: ICommentPresenter
@@ -80,7 +82,7 @@ export class CommentService implements ICommentService {
       if (!review) {
         const outputDTO = new GetListCommentByReviewIdOutputDTO([])
         const resData = new GetListCommentByReviewIdResponseData(
-          400,
+          404,
           'Review not found',
           outputDTO
         )
@@ -90,8 +92,8 @@ export class CommentService implements ICommentService {
     } catch (err) {
       const outputDTO = new GetListCommentByReviewIdOutputDTO([])
       const resData = new GetListCommentByReviewIdResponseData(
-        400,
-        err.message,
+        404,
+        (err as Error).message,
         outputDTO
       )
       await this._commentPresenter.getListCommentByReviewIdPresenter(resData)
@@ -104,7 +106,7 @@ export class CommentService implements ICommentService {
       if (!comments || comments.length == 0) {
         const outputDTO = new GetListCommentByReviewIdOutputDTO([])
         const resData = new GetListCommentByReviewIdResponseData(
-          400,
+          404,
           'No Comment Found',
           outputDTO
         )
@@ -123,8 +125,8 @@ export class CommentService implements ICommentService {
     } catch (err) {
       const outputDTO = new GetListCommentByReviewIdOutputDTO([])
       const resData = new GetListCommentByReviewIdResponseData(
-        400,
-        err.message,
+        404,
+        (err as Error).message,
         outputDTO
       )
       await this._commentPresenter.getListCommentByReviewIdPresenter(resData)
@@ -215,6 +217,9 @@ export class CommentService implements ICommentService {
       await this._commentPresenter.updateCommentPresenter(resData)
       return
     }
+  }
+
+  async delete(data: DeleteCommentRequestData): Promise<void> {
   }
 
   buildCommentTree(comments: Comments[]): any[] {

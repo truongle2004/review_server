@@ -17,6 +17,9 @@ import { CreateCommentResponseData } from '../response/CreateCommentResponseData
 import { JwtPayload } from 'jsonwebtoken'
 import { UpdateCommentResponseData } from '../response/UpdateCommnetResponseData'
 import { GetListCommentByReviewIdResponseData } from '../response/GetListCommentByReviewIdResponseData'
+import { DeleteCommentInputDTO } from '../dtos/DeleteCommentDTO'
+import { DeleteCommentResponseData } from '../response/DeleteCommentResponseData'
+import { DeleteCommentRequestData } from '../request/DeleteCommentRequestData'
 
 export class CommentController {
   commentService: ICommentService
@@ -70,4 +73,19 @@ export class CommentController {
     res.status(viewModel.status).send(viewModel)
     return
   }
+
+  deleteComment = async (
+    req: Request<object,object,DeleteCommentInputDTO,object>,
+    res: Response<DeleteCommentResponseData>
+  ) => {
+    const {reviewId, parentId, commentId} = req.body
+    const {userId} = req.user as JwtPayload & { userId: string }
+    const dto = new DeleteCommentInputDTO(reviewId, parentId, commentId, userId)
+    const reqData = new DeleteCommentRequestData(dto)
+    await this.commentService.delete(reqData)
+    const viewModel = this.commentPresenter.getDeleteCommentViewModel()
+    res.status(viewModel.status).send(viewModel)
+    return
+  }
+
 }

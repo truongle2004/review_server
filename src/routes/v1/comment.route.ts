@@ -19,4 +19,5 @@ router.get("/:reviewId",commentController.getListCommentByReviewId)
 
 router.put("/",authMiddleware,userMiddleware,commentController.updateComment)
 
+// router.delete("/",authMiddleware,userMiddleware,commentController.)
 export const commentRouter = router

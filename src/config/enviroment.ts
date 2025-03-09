@@ -8,5 +8,8 @@ export const env = {
   DB_PASSWORD: process.env.DB_PASSWORD || '',
   DB_NAME: process.env.DB_NAME || 'review_product_system',
   DB_SYNC: process.env.DB_SYNCHRONIZE || false,
-  DB_LOGGING: process.env.DB_LOGGING || false
+  DB_LOGGING: process.env.DB_LOGGING || false,
+
+  ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET
 }

@@ -11,7 +11,7 @@ import { RefreshTokenRequestData } from '../request/RefreshTokenRequestData'
 import { RefreshTokenOutputDTO } from '../dtos/RefreshTokenDTO'
 import { RefreshTokenResponseData } from '../response/RefreshTokenResponseData'
 dotenv.config()
-
+import {env} from '../../../config/enviroment'
 export class LoginService implements ILoginService {
   presenter: ILoginPresenter
   database: ILoginDatase
@@ -62,16 +62,14 @@ export class LoginService implements ILoginService {
         }
         const accessToken = await jwt.sign(
           payload,
-          (process.env.ACCESSS_TOKEN_SECRET as string) ||
-            'accessTokenSecret2025',
+          env.ACCESS_TOKEN_SECRET as string,
           {
             expiresIn: '30m'
           }
         )
         const refreshToken = await jwt.sign(
           payload,
-          (process.env.REFRESH_TOKEN_SECRET as string) ||
-            'refreshTokenSecret2025',
+          env.REFRESH_TOKEN_SECRET as string,
           {
             expiresIn: '1d'
           }
@@ -119,7 +117,7 @@ export class LoginService implements ILoginService {
     try {
       payload = await jwt.verify(
         refreshToken,
-        (process.env.REFRESH_TOKEN_SECRET as string) || 'refreshTokenSecret2025'
+        env.REFRESH_TOKEN_SECRET as string
       )
     } catch (error) {
       const dto = new RefreshTokenOutputDTO('')
@@ -167,7 +165,7 @@ export class LoginService implements ILoginService {
 
     const accessToken = await jwt.sign(
       newPayload,
-      (process.env.ACCESSS_TOKEN_SECRET as string) || 'accessTokenSecret2025',
+      env.ACCESS_TOKEN_SECRET as string,
       { expiresIn: '30m' }
     )
 
