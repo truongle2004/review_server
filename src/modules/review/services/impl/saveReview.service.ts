@@ -36,7 +36,6 @@ export class SaveReviewService implements ISaveReviewService {
         next(new NotFoundException('Product not found'))
       }
 
-      // WARN: hard code
       const appSoure = AppDataSource.getRepository(Users)
 
       const user = await appSoure.findOne({
@@ -64,7 +63,8 @@ export class SaveReviewService implements ISaveReviewService {
         savedReview.content,
         savedReview.rating || 0,
         {
-          id: user?.id as string
+          id: user?.id as string,
+          username: user?.username as string
         },
         {
           id: product?.id as number,
@@ -72,7 +72,7 @@ export class SaveReviewService implements ISaveReviewService {
         }
       )
 
-      res.status(StatusCodes.CREATED).json(savedReview)
+      res.status(StatusCodes.CREATED).json(response)
     } catch (err) {
       next(new InternalServerException())
     }

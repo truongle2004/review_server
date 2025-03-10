@@ -4,6 +4,8 @@ dist
 .vscode
 app.log
 .idea
+bun.lock
+app.log
 launch.json
 .vscode
 *.ts~

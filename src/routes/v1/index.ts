@@ -18,6 +18,8 @@ router.use('/category', categoryRoute)
 
 router.use('/auth', authRouter)
 
+
 router.use('/comment',commentRouter)
+
 
 export const v1Router = router
