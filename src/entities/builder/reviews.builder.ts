@@ -54,7 +54,6 @@ export class ReviewsBuilder {
       this.content,
       this.product,
       this.user,
-      this.comments,
       this.title
     )
   }

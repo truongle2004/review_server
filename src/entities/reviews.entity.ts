@@ -43,4 +43,21 @@ export class Reviews extends BaseEntity {
   //   nullable: true
   // })
   // public comments: Comments
+
+  constructor(
+    id: string,
+    rating: number,
+    content: string,
+    product: Products,
+    user: Users,
+    title: string
+  ) {
+    super()
+    this.id = id
+    this.rating = rating
+    this.content = content
+    this.product = product
+    this.user = user
+    this.title = title
+  }
 }
