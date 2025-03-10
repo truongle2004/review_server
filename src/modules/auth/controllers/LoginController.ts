@@ -1,27 +1,46 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
 import { Request, Response } from 'express'
-import { InputBoundary } from '../../../shared/interfaces/InputBoundary';
-import { OutputBoundary } from '../../../shared/interfaces/OutputBoundary';
-import { LoginInputDTO, LoginOutputDTO } from '../dtos/LoginDTO';
-import { LoginRequestData } from '../request/LoginRequestData';
+import { LoginInputDTO } from '../dtos/LoginDTO'
+import { LoginRequestData } from '../request/LoginRequestData'
+import { ILoginPresenter } from '../presenters/ILoginPresenter'
+import { ILoginService } from '../userServices/ILoginService'
+import { log } from 'console'
+import { LoginResponseData } from '../response/LoginResponseData'
+import { RefreshTokenInputDTO } from '../dtos/RefreshTokenDTO'
+import { RefreshTokenResponseData } from '../response/RefreshTokenResponseData'
+import { RefreshTokenRequestData } from '../request/RefreshTokenRequestData'
+export class LoginController {
+  loginService: ILoginService
+  presenter: ILoginPresenter
 
-export class LoginController{
-  loginService:InputBoundary;
-  presenter:OutputBoundary;
-
-  constructor(loginService: InputBoundary, presenter:OutputBoundary){
-    this.loginService = loginService;
+  constructor(loginService: ILoginService, presenter: ILoginPresenter) {
+    this.loginService = loginService
     this.presenter = presenter
   }
 
-  execute = async (req:Request<{}, {}, LoginInputDTO>, res:Response<LoginOutputDTO>) => {
+  execute = async (
+    req: Request<object, object, LoginInputDTO, object>,
+    res: Response<LoginResponseData>
+  ) => {
     const inputData = new LoginInputDTO(req.body.email, req.body.password)
     const loginRequestData = new LoginRequestData(inputData)
     await this.loginService.execute(loginRequestData)
-    await res.send(this.presenter.getDataViewModel())
-    console.log(this.presenter.getDataViewModel())
+
+    const viewModel = this.presenter.getLoginViewModel()
+    log('viewModel::::::', JSON.stringify(viewModel))
+    res.cookie('refreshToken', viewModel.data.refreshToken, { httpOnly: true })
+    res.status(viewModel.status).send(viewModel)
+  }
+
+  doRefreshToken = async (
+    req: Request<object, object, RefreshTokenInputDTO, object>,
+    res: Response<RefreshTokenResponseData>
+  ) => {
+    const inputData = new RefreshTokenInputDTO(req.cookies.refreshToken)
+    const refreshTokenRequestData = new RefreshTokenRequestData(inputData)
+
+    await this.loginService.doRefreshToken(refreshTokenRequestData)
+
+    const viewModel = this.presenter.getRefreshTokenViewModel()
+    res.status(viewModel.status).send(viewModel)
   }
 }
-
-
-

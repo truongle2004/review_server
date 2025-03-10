@@ -44,6 +44,7 @@ export class Reviews extends BaseEntity {
   // })
   // public comments: Comments
 
+
   constructor(
     id: string,
     rating: number,
