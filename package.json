@@ -45,7 +45,6 @@
     "inversify": "^6.2.2",
     "nodemon": "^3.1.9",
     "prettier": "^3.4.2",
-    "prisma": "^6.3.1",
     "rimraf": "^6.0.1",
     "tsc-alias": "^1.8.10",
     "tsx": "^4.19.2",

@@ -35,7 +35,7 @@ export class Users extends BaseEntity {
   public email!: string
 
   @Column({ type: 'varchar', nullable: false })
-  public username: string
+  public username!: string
 
   @Column({
     type: 'enum',
