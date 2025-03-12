@@ -5,7 +5,7 @@ export class ReviewResponseDto {
   public rating!: number
   public user!: {
     id: string
-    // username: string
+    username: string
   }
   public product!: {
     id: number
@@ -17,7 +17,7 @@ export class ReviewResponseDto {
     content: string,
     title: string,
     rating: number,
-    user: { id: string },
+    user: { id: string; username: string },
     product: { id: number; title: string }
   ) {
     this.id = id

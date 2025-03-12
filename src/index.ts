@@ -14,7 +14,7 @@ import errorHandle from './middleware/errorHandler'
 import { v1Router } from './routes/v1'
 
 // Server Configuration
-const PORT = env.PORT || 3000
+const PORT = env.PORT
 
 /**
  * Establish Database Connection
