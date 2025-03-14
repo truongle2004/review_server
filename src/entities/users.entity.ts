@@ -1,91 +1,77 @@
 import {
-  BeforeInsert,
   Column,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm'
 import { BaseEntity } from '../shared/baseEntity'
 import { Reviews } from './reviews.entity'
-import { Roles } from './roles.entity'
 import { Profile } from './profile.entity'
-
-enum Status {
+import {Comments} from "./comments.entity";
+export enum Status {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
   DELETED = 'DELETED'
 }
-
+export enum Role{
+  ADMIN = 'ADMIN',
+  USER = 'USER'
+}
 @Entity('users')
 export class Users extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: false })
   public password: string
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: false })
   public email: string
+
+  @Column({ type: 'varchar', nullable: false })
+  public username!: string
 
   @Column({
     type: 'enum',
-    enum: Status
+    enum: Status,
+    default: Status.ACTIVE
   })
   public status: string
 
-  @OneToMany(() => Users, (user) => user.reviews)
-  public reviews: Reviews
+  @OneToMany(() => Reviews, (review) => review.user)
+  public reviews: Reviews[] | undefined
 
-  @ManyToMany(() => Roles, (role) => role.users, {
-    cascade: ['insert', 'update']
+  @OneToMany(() => Comments, (comment) => comment.user)
+  public comments: Comments[] | undefined
+
+  @Column({
+    type: 'enum',
+    enum: Role,
+    default: Role.USER,
+    select: true
   })
-  @JoinTable({
-    name: 'users_roles',
-    joinColumn: {
-      name: 'user_id',
-      referencedColumnName: 'id'
-    },
-    inverseJoinColumn: {
-      name: 'role_id',
-      referencedColumnName: 'id'
-    }
-  })
-  public roles: Roles[]
+  public roles: string
 
   @OneToOne(() => Profile, (profile) => profile.user)
   @JoinColumn()
-  public profile: Profile
+  public profile: Profile | undefined
 
-  constructor(
+  constructor( 
     id: string,
-    password: string,
+    username: string,
     email: string,
+    password: string,
     status: string,
-    reviews: Reviews,
-    roles: Roles[],
-    profile: Profile
+    roles: string,
   ) {
     super()
     this.id = id
-    this.password = password
+    this.username = username
     this.email = email
+    this.password = password
     this.status = status
-    this.reviews = reviews
     this.roles = roles
-    this.profile = profile
-  }
-
-  public isActive(): boolean {
-    return this.status === Status.ACTIVE
-  }
-
-  @BeforeInsert()
-  public hashPassword() {
-    // TODO hash password here
-    // this.password = 'hashed password'
   }
 }

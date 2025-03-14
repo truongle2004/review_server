@@ -1,9 +1,8 @@
 import { injectable } from 'tsyringe'
-import { IGetTodoRepository } from '../get-todo.repository.interface'
+import type { IGetTodoRepository } from '../get-todo.repository.interface'
 import { AppDataSource } from '../../../../config/data-source'
-import { Todo } from '../../../../entities/todo.entity'
 import logger from '../../../../config/logger'
-
+import { Todo } from '../../../../entities/todo.entity'
 @injectable()
 export class GetTodoRepository implements IGetTodoRepository {
   async execute(): Promise<string> {
@@ -14,7 +13,7 @@ export class GetTodoRepository implements IGetTodoRepository {
 
     try {
       res = await todoRepo.findOneBy({
-        id: 2
+        id: 1
       })
 
       if (!res) logger.info('not found')
