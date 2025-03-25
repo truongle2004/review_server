@@ -5,6 +5,7 @@ import { reviewRoute } from './review.route'
 import { commentRouter } from './comment.route'
 import { productRoute } from './product.route'
 import { categoryRoute } from './category.route'
+import { profileRouter } from './profile.route'
 
 const router = Router()
 
@@ -21,5 +22,5 @@ router.use('/auth', authRouter)
 
 router.use('/comment',commentRouter)
 
-
+router.use('/profile',profileRouter)
 export const v1Router = router

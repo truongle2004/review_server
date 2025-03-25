@@ -105,6 +105,7 @@ export class CommentService implements ICommentService {
     try {
       const comments =
         await this._commentDatabase.getListCommentByReviewId(reviewId)
+      console.log(comments)
       if (!comments || comments.length == 0) {
         const outputDTO = new GetListCommentByReviewIdOutputDTO([])
         const resData = new GetListCommentByReviewIdResponseData(
@@ -222,8 +223,8 @@ export class CommentService implements ICommentService {
   }
 
   async delete(data: DeleteCommentRequestData): Promise<void> {
-    const { userId, commentId, reviewId,parentId } = data.data
-    log(userId, commentId, reviewId,parentId)
+    const { userId, commentId, reviewId, parentId } = data.data
+    log(userId, commentId, reviewId, parentId)
 
     // kiểm tra xem bài review có tồn tại hay không ?
     try {
@@ -278,7 +279,6 @@ export class CommentService implements ICommentService {
       return
     }
 
-
     try {
       await this._commentDatabase.delete(commentId)
       const outputDTO = new DeleteCommentOutputDTO()
@@ -295,7 +295,6 @@ export class CommentService implements ICommentService {
       await this._commentPresenter.deleteCommentPresenter(resData)
       return
     }
-
   }
   buildCommentTree(comments: Comments[]): any[] {
     const commentMap = new Map<string, any>()
@@ -309,6 +308,7 @@ export class CommentService implements ICommentService {
           id: comment.user.id,
           name: comment.user.username
         },
+        images: JSON.parse(comment.images),
         children: []
       })
     })
