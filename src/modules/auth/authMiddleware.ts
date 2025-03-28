@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import { Role } from '../../entities/users.entity'
 import { log } from 'console'
+import { env } from '../../config/enviroment'
 
 declare module 'express-serve-static-core' {
   interface Request {
@@ -33,8 +34,7 @@ export const authMiddleware = async (
 
     const decoded = (await jwt.verify(
       token,
-      process.env.JWT_SECRET as string || 'accessTokenSecret2025'
-    ) ) as JwtPayload
+     env.ACCESS_TOKEN_SECRET as string) as JwtPayload)
     req.user = decoded
     log(req.user)
     next()

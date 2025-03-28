@@ -24,9 +24,7 @@ export class LoginController {
     const inputData = new LoginInputDTO(req.body.email, req.body.password)
     const loginRequestData = new LoginRequestData(inputData)
     await this.loginService.execute(loginRequestData)
-
     const viewModel = this.presenter.getLoginViewModel()
-    log('viewModel::::::', JSON.stringify(viewModel))
     res.cookie('refreshToken', viewModel.data.refreshToken, { httpOnly: true })
     res.status(viewModel.status).send(viewModel)
   }
