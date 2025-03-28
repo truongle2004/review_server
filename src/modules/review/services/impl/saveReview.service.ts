@@ -12,6 +12,7 @@ import type { IGetProductByIdRepository } from '../../../product/repositories/ge
 import type { ISaveReviewRepository } from '../../repositories/saveReview.interface.repository'
 import type { ISaveReviewService } from '../saveReview.interface.service'
 import { ReviewResponseDto } from '../../dto/response/review'
+import type { Reviews } from '../../../../entities/reviews.entity'
 
 @injectable()
 export class SaveReviewService implements ISaveReviewService {
@@ -31,11 +32,13 @@ export class SaveReviewService implements ISaveReviewService {
       const title = req.body.title
       const productId = Number(req.body.productId)
       const content = req.body.content
+
       const product = await this.getProductByIdRepository.execute(productId)
       if (!product) {
         next(new NotFoundException('Product not found'))
       }
 
+      // TODO: refactor this to use a repository
       const appSoure = AppDataSource.getRepository(Users)
 
       const user = await appSoure.findOne({
@@ -44,6 +47,10 @@ export class SaveReviewService implements ISaveReviewService {
         }
       })
 
+      if (!user) {
+        next(new NotFoundException('User not found'))
+      }
+
       const review = new ReviewsBuilder()
         .setContent(content)
         .setTitle(title)
@@ -51,7 +58,9 @@ export class SaveReviewService implements ISaveReviewService {
         .setUser(user as Users)
         .build()
 
-      const savedReview = await this.saveReviewRepository.execute(review)
+      const savedReview = (await this.saveReviewRepository.execute(
+        review
+      )) as Reviews
 
       if (!savedReview) {
         next(new BadRequestException('Review not saved. Try again later'))
@@ -69,10 +78,12 @@ export class SaveReviewService implements ISaveReviewService {
         {
           id: product?.id as number,
           title: product?.title as string
-        }
+        },
+        savedReview.createdAt
       )
 
       res.status(StatusCodes.CREATED).json(response)
+      next()
     } catch (err) {
       next(new InternalServerException())
     }

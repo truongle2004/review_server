@@ -2,6 +2,7 @@ import 'dotenv/config'
 import 'reflect-metadata'
 import './modules/product/di'
 import './modules/review/di'
+import './modules/rating/di'
 import './modules/todo/dependencyInjection'
 
 import cookieParser from 'cookie-parser'
@@ -12,6 +13,7 @@ import { env } from './config/enviroment'
 import logger from './config/logger'
 import errorHandle from './middleware/errorHandler'
 import { v1Router } from './routes/v1'
+import path from 'path'
 
 // Server Configuration
 const PORT = env.PORT
@@ -36,12 +38,26 @@ const startServer = () => {
   const app = express()
 
   // Middlewares
-  app.use(cors())
+  app.use(
+    cors({
+      origin: ['http://localhost:3001'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+      credentials: true
+    })
+  )
+
   app.use(cookieParser())
 
   app.use(errorHandle)
 
   app.use(express.json())
+
+  app.use(
+    '/static',
+    // express.static(path.join(__dirname, '../../public/images/'))
+    express.static(path.resolve(__dirname, './public/images/'))
+  )
 
   app.use((req: Request, res: Response, next: NextFunction) => {
     logger.warn(req.method + ' ' + req.originalUrl)
