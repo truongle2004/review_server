@@ -9,13 +9,14 @@ import {
 import { BaseEntity } from '../shared/baseEntity'
 import { Reviews } from './reviews.entity'
 import { Profile } from './profile.entity'
-import {Comments} from "./comments.entity";
+import { Comments } from './comments.entity'
+import { RatingEntity } from './rating.entity'
 export enum Status {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
   DELETED = 'DELETED'
 }
-export enum Role{
+export enum Role {
   ADMIN = 'ADMIN',
   USER = 'USER'
 }
@@ -58,13 +59,17 @@ export class Users extends BaseEntity {
   @JoinColumn()
   public profile: Profile | undefined
 
-  constructor( 
+  @OneToMany(() => RatingEntity, (rating) => rating.user)
+  public ratings: RatingEntity[]
+
+  constructor(
     id: string,
     username: string,
     email: string,
     password: string,
     status: string,
     roles: string,
+    ratings: RatingEntity[]
   ) {
     super()
     this.id = id
@@ -73,5 +78,6 @@ export class Users extends BaseEntity {
     this.password = password
     this.status = status
     this.roles = roles
+    this.ratings = ratings
   }
 }

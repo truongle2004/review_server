@@ -8,7 +8,7 @@ enum Gender {
   OTHER = 'OTHER'
 }
 
-@Entity()
+@Entity('profile')
 export class Profile extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string

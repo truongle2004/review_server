@@ -6,5 +6,5 @@ export interface ISaveReviewRepository {
    * @param review
    * @returns  {Promise<Reviews>}
    */
-  execute: (review: Reviews) => Promise<Reviews>
+  execute: (review: Reviews) => Promise<Reviews | null>
 }

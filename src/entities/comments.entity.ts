@@ -39,5 +39,7 @@ export class Comments extends BaseEntity {
   @OneToMany(() => Comments, (comment) => comment.parent, {cascade: true})
   public replies: Comments[];
 
+  
+
 }
 

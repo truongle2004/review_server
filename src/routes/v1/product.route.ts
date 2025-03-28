@@ -3,14 +3,18 @@ import { ProductController } from '../../modules/product/controllers/product.con
 import { container } from 'tsyringe'
 import 'reflect-metadata'
 import { productValidation } from '../../validations/product.validation'
+import {
+  adminMiddleware,
+  authMiddleware
+} from '../../modules/auth/authMiddleware'
 
 const router = Router()
 
 const productController = container.resolve(ProductController)
 
-router
-  .route('/')
-  .get(productValidation.getProduct, productController.getProducts)
+// router
+//   .route('/')
+//   .get(productValidation.getProduct, productController.getProducts)
 
 router
   .route('/:id')
@@ -25,6 +29,11 @@ router
 
 router
   .route('/:id')
-  .delete(productValidation.deleteProduct, productController.deleteProductById)
+  .delete(
+    productValidation.deleteProduct,
+    authMiddleware,
+    adminMiddleware,
+    productController.deleteProductById
+  )
 
 export const productRoute = router
