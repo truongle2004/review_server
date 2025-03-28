@@ -18,11 +18,6 @@ const profileController = new ProfileController(
   profilePresenter
 )
 
-router.post(
-  '/',
-  authMiddleware,
-  userMiddleware,
-  profileController.updateProfile
-)
+router.put('/', authMiddleware, userMiddleware, profileController.updateProfile)
 
 export const profileRouter = router
