@@ -1,45 +1,48 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn
+} from 'typeorm'
 import { BaseEntity } from '../shared/baseEntity'
 import { Reviews } from './reviews.entity'
 import { Users } from './users.entity'
 
-
-
 @Entity('comments')
 export class Comments extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-
-  public id: string;
+  public id!: string
 
   @Column({ type: 'text' })
-  public text: string;
+  public text!: string
 
   @Column({ type: 'int', unsigned: true })
-  public lft: number;
+  public lft!: number
 
   @Column({ type: 'int', unsigned: true })
-  public rgt: number;
+  public rgt!: number
 
   @Column({ type: 'uuid', nullable: true })
-  public parentId: string;
+  public parentId!: string
 
   @ManyToOne(() => Comments, (comment) => comment.replies, {
     onDelete: 'CASCADE', // Khi comment cha bị xoá, comment con cũng bị xoá
-    nullable: true,
+    nullable: true
   })
-  @JoinColumn({ name: 'parentId'})
-  public parent: Comments | null;
+  @JoinColumn({ name: 'parentId' })
+  public parent!: Comments | null
 
   @ManyToOne(() => Users, (user) => user.comments, { nullable: false })
-  public user: Users;
+  public user!: Users
 
   @ManyToOne(() => Reviews, (review) => review.comments, { nullable: false })
-  public reviews: Reviews;
+  public reviews!: Reviews
 
-  @OneToMany(() => Comments, (comment) => comment.parent, {cascade: true})
-  public replies: Comments[];
+  @OneToMany(() => Comments, (comment) => comment.parent, { cascade: true })
+  public replies!: Comments[]
 
-  
-
+  @Column({ type: 'text', nullable: true })
+  public images!: string
 }
-

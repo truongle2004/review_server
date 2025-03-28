@@ -5,7 +5,7 @@ export const env = {
   DB_HOST: process.env.DB_HOST || 'localhost',
   DB_PORT: Number(process.env.DB_PORT) || 3306,
   DB_USER: process.env.DB_USER || 'root',
-  DB_PASSWORD: process.env.DB_PASSWORD || '',
+  DB_PASSWORD: process.env.DB_PASSWORD || 'nguyenvu',
   DB_NAME: process.env.DB_NAME || 'review_product_system',
   DB_SYNC: process.env.DB_SYNCHRONIZE || true,
   DB_LOGGING: process.env.DB_LOGGING || false,

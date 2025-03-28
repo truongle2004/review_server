@@ -54,7 +54,8 @@ export class Reviews extends BaseEntity {
     content: string,
     product: Products,
     user: Users,
-    title: string
+    title: string,
+    comments: Comments
   ) {
     super()
     this.id = id
@@ -63,5 +64,6 @@ export class Reviews extends BaseEntity {
     this.product = product
     this.user = user
     this.title = title
+    this.comments = comments
   }
 }

@@ -47,17 +47,22 @@ const startServer = () => {
     })
   )
 
+
   app.use(cookieParser())
 
   app.use(errorHandle)
 
   app.use(express.json())
 
+
+  app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
+
   app.use(
     '/static',
     // express.static(path.join(__dirname, '../../public/images/'))
     express.static(path.resolve(__dirname, './public/images/'))
   )
+
 
   app.use((req: Request, res: Response, next: NextFunction) => {
     logger.warn(req.method + ' ' + req.originalUrl)

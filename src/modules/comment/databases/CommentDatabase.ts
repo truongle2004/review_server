@@ -79,6 +79,7 @@ export class CommentDatabase implements ICommentDatabase {
     comment.parentId = data.parentId
     comment.user = await this.findUser(data.userId)
     comment.reviews = await this.findReview(data.reviewId)
+    comment.images = JSON.stringify(data.imagesUrl).toString().trim()
     return await commentRepo.save(comment)
   }
 
