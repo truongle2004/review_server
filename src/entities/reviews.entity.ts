@@ -9,6 +9,7 @@ import { BaseEntity } from '../shared/baseEntity'
 import { Products } from './products.entity'
 import { Users } from './users.entity'
 import { Comments } from './comments.entity'
+import { RatingEntity } from './rating.entity'
 
 @Entity('reviews')
 export class Reviews extends BaseEntity {
@@ -39,10 +40,13 @@ export class Reviews extends BaseEntity {
   @ManyToOne(() => Users, (user) => user.reviews)
   public user!: Users
 
+  @OneToMany(() => RatingEntity, (rating) => rating.reviews)
+  public rating_entity!: RatingEntity[]
+
   @OneToMany(() => Comments, (comment) => comment.reviews, {
     nullable: true
   })
-  public comments: Comments
+  public comments!: Comments
 
   constructor(
     id: string,

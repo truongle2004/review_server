@@ -36,4 +36,5 @@ router.delete(
   userMiddleware,
   commentController.deleteComment
 )
+
 export const commentRouter = router

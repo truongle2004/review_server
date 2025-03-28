@@ -34,7 +34,9 @@ export const authMiddleware = async (
 
     const decoded = (await jwt.verify(
       token,
+
      env.ACCESS_TOKEN_SECRET as string) as JwtPayload)
+
     req.user = decoded
     log(req.user)
     next()

@@ -2,6 +2,7 @@ import 'dotenv/config'
 import 'reflect-metadata'
 import './modules/product/di'
 import './modules/review/di'
+import './modules/rating/di'
 import './modules/todo/dependencyInjection'
 
 import cookieParser from 'cookie-parser'
@@ -37,7 +38,15 @@ const startServer = () => {
   const app = express()
 
   // Middlewares
-  app.use(cors())
+  app.use(
+    cors({
+      origin: ['http://localhost:3001'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+      credentials: true
+    })
+  )
+
 
   app.use(cookieParser())
 
@@ -45,7 +54,15 @@ const startServer = () => {
 
   app.use(express.json())
 
+
   app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
+
+  app.use(
+    '/static',
+    // express.static(path.join(__dirname, '../../public/images/'))
+    express.static(path.resolve(__dirname, './public/images/'))
+  )
+
 
   app.use((req: Request, res: Response, next: NextFunction) => {
     logger.warn(req.method + ' ' + req.originalUrl)

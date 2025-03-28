@@ -6,10 +6,10 @@ import { IGetAllCategoriesRepository } from '../getAllCategories.repository.inte
 @injectable()
 export class GetAllCategoriesRepository implements IGetAllCategoriesRepository {
   public execute = async (): Promise<Categories[]> => {
-    const databaseSource = AppDataSource.getRepository(Categories)
-
-    const categories = await databaseSource.find()
-
-    return categories.length > 0 ? categories : []
+    return await AppDataSource.getRepository(Categories)
+      .createQueryBuilder('categories')
+      .select(['categories.id', 'categories.name', 'categories.description'])
+      .orderBy('categories.name', 'ASC')
+      .getMany()
   }
 }
