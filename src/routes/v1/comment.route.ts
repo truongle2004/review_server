@@ -7,12 +7,18 @@ import {
   authMiddleware,
   userMiddleware
 } from '../../modules/auth/authMiddleware'
+import { ProfileDatabase } from '../../modules/profile/databases/ProfileDatabase'
 
 const router = Router()
 
 const commentDatabase = new CommentDatabase()
 const commentPresenter = new CommentPresenter()
-const commentService = new CommentService(commentPresenter, commentDatabase)
+const profileDatabase = new ProfileDatabase()
+const commentService = new CommentService(
+  commentPresenter,
+  commentDatabase,
+  profileDatabase
+)
 const commentController = new CommentController(
   commentService,
   commentPresenter
