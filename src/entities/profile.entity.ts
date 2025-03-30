@@ -25,7 +25,7 @@ export class Profile extends BaseEntity {
   @Column({ type: 'varchar', length: 50 })
   public country?: string
 
-  @Column({ type: 'date' })
+  @Column({ type: 'datetime' })
   public birthday?: Date
 
   @Column({ type: 'enum', enum: Gender })

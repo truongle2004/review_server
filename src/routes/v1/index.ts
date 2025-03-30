@@ -8,7 +8,6 @@ import { categoryRoute } from './category.route'
 import { profileRouter } from './profile.route'
 import { ratingRoute } from './rating.route'
 
-
 const router = Router()
 
 router.use('/todo', todoRouter)
@@ -23,8 +22,8 @@ router.use('/category', categoryRoute)
 
 router.use('/auth', authRouter)
 
-router.use('/comment',commentRouter)
+router.use('/comment', commentRouter)
 
-router.use('/profile',profileRouter)
+router.use('/profile', profileRouter)
 
 export const v1Router = router
