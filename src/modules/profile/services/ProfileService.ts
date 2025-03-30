@@ -1,4 +1,3 @@
-import { log } from 'console'
 import { IProfileDatabase } from '../databases/IProfileDatabase'
 import { IProfilePresenter } from '../presenters/IProfilePresenter'
 import { UpdateProfileRequestData } from '../request/UpdateProfileRequestData'
@@ -15,7 +14,6 @@ export class ProfileService implements IProfileService {
     this._profilePresenter = createCommentPresenter
     this._profileDatabase = createCommentDatabase
   }
-
   async update(data: UpdateProfileRequestData): Promise<void> {
     const { userId, phone, bio, profilePicture, country, gender, birthday } =
       data.data

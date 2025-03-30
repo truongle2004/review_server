@@ -1,9 +1,35 @@
-import { AppDataSource } from '../../../config/data-source'
-import { Gender, Profile } from '../../../entities/profile.entity'
-import { Users } from '../../../entities/users.entity'
-import { IProfileDatabase } from './IProfileDatabase'
+import { In, Repository } from 'typeorm'
+import { AppDataSource } from '../../../config/data-source';
+import { Profile, Gender } from '../../../entities/profile.entity';
+import { Users } from '../../../entities/users.entity';
+import { IProfileDatabase } from './IProfileDatabase';
 
 export class ProfileDatabase implements IProfileDatabase {
+  private userRepository: Repository<Users>;
+  private profileRepository: Repository<Profile>;
+
+  constructor() {
+    this.userRepository = AppDataSource.getRepository(Users);
+    this.profileRepository = AppDataSource.getRepository(Profile);
+  }
+
+  async findUserInfoByUserId(userId: string): Promise<Users> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+    if (!user) throw new Error('User not found');
+    return user;
+  }
+
+  async getProfileByProfileId(profileId: string): Promise<Profile> {
+    const profile = await this.profileRepository.findOne({
+      where: { id: profileId },
+    });
+
+    if (!profile) throw new Error('Profile not found');
+    return profile;
+  }
+
   async update(
     userId: string,
     phone?: string,
@@ -13,48 +39,46 @@ export class ProfileDatabase implements IProfileDatabase {
     gender?: string,
     birthday?: Date
   ): Promise<Profile> {
-    const profileRepo = AppDataSource.getRepository(Profile)
-    const userRepo = AppDataSource.getRepository(Users)
-
-    // Kiểm tra xem user có tồn tại không
-    const user = await userRepo.findOne({
+    const user = await this.userRepository.findOne({
       where: { id: userId },
-      relations: ['profile']
-    })
-    if (!user) throw new Error('User not found')
+      relations: ['profile'],
+    });
+    if (!user) throw new Error('User not found');
 
-    let profile = user.profile
+    let profile = user.profile || new Profile();
 
-    if (!profile) {
-      profile = new Profile()
-    }
-
-    // Chỉ cập nhật nếu dữ liệu không bị rỗng
-    if (bio !== undefined) profile.bio = bio
-    if (birthday !== undefined) profile.birthday = birthday
-    if (country !== undefined) profile.country = country
-    if (profilePicture !== undefined) profile.profile_picture = profilePicture
+    if (bio !== undefined) profile.bio = bio;
+    if (birthday !== undefined) profile.birthday = birthday;
+    if (country !== undefined) profile.country = country;
+    if (profilePicture !== undefined) profile.profile_picture = profilePicture;
     if (gender !== undefined) {
-      if (gender === 'MALE') profile.gender = Gender.MALE
-      else if (gender === 'FEMALE') profile.gender = Gender.FEMALE
-      else profile.gender = Gender.OTHER
+      profile.gender =
+        gender === 'MALE' ? Gender.MALE :
+        gender === 'FEMALE' ? Gender.FEMALE :
+        Gender.OTHER;
     }
     if (phone !== undefined) {
-      if (phone.length == 10) {
-        profile.phone = phone
-      } else throw new Error('Phone number must be 10 digits')
-
+      if (phone.length === 10) {
+        profile.phone = phone;
+      } else {
+        throw new Error('Phone number must be 10 digits');
+      }
     }
 
-    // Lưu profile
-    await profileRepo.save(profile)
+    await this.profileRepository.save(profile);
 
-    // Gán profile vào user nếu là lần đầu
     if (!user.profile) {
-      user.profile = profile
-      await userRepo.save(user)
+      user.profile = profile;
+      await this.userRepository.save(user);
     }
 
-    return profile
+    return profile;
+  }
+
+  async findUsersWithProfiles(userIds: string[]): Promise<Users[]> {
+    return this.userRepository.find({
+      where: { id: In(userIds) },
+      relations: ['profile'],
+    });
   }
 }

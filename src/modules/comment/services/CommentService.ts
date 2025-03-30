@@ -4,8 +4,11 @@ import { CreateCommentOutputDTO } from '../dtos/CreateCommentDTO'
 import { CreateCommentResponseData } from '../response/CreateCommentResponseData'
 import { ICommentService } from './ICommentService'
 import { GetListCommentByReviewIdRequestData } from '../request/GetListCommentByReviewIdRequestData'
-import { Comments } from '../../../entities/comments.entity'
-import { GetListCommentByReviewIdOutputDTO } from '../dtos/GetListCommentByReviewIdDTO'
+import {
+  GetListCommentByReviewIdOutputDTO,
+  ProfileDto,
+  UserDto
+} from '../dtos/GetListCommentByReviewIdDTO'
 import { ICommentPresenter } from '../presenters/ICommentPresenter'
 import { GetListCommentByReviewIdResponseData } from '../response/GetListCommentByReviewIdResponseData'
 import { UpdateCommentRequestData } from '../request/UpdateCommentRequestData'
@@ -15,44 +18,34 @@ import { DeleteCommentRequestData } from '../request/DeleteCommentRequestData'
 import { DeleteCommentOutputDTO } from '../dtos/DeleteCommentDTO'
 import { DeleteCommentResponseData } from '../response/DeleteCommentResponseData'
 import { log } from 'console'
+import { IProfileDatabase } from '../../profile/databases/IProfileDatabase'
 
 export class CommentService implements ICommentService {
   _commentPresenter: ICommentPresenter
   _commentDatabase: ICommentDatabase
+  _profileDatabase: IProfileDatabase
   constructor(
     createCommentPresenter: ICommentPresenter,
-    createCommentDatabase: ICommentDatabase
+    createCommentDatabase: ICommentDatabase,
+    profileDatabase: IProfileDatabase
   ) {
     this._commentPresenter = createCommentPresenter
     this._commentDatabase = createCommentDatabase
+    this._profileDatabase = profileDatabase
   }
 
   async create(data: CreateCommentRequestData): Promise<void> {
     try {
       const user = await this._commentDatabase.findUser(data.data.userId)
-    } catch (error) {
-      const outputDTO = new CreateCommentOutputDTO()
-      const resData = new CreateCommentResponseData(
-        404,
-        error.message,
-        outputDTO
-      )
-      await this._commentPresenter.createCommentPresenter(resData)
-      return
-    }
-    try {
+      if (!user) {
+        this._sendErrorResponse(404, 'User not found')
+        return
+      }
       const review = await this._commentDatabase.findReview(data.data.reviewId)
-    } catch (error) {
-      const outputDTO = new CreateCommentOutputDTO()
-      const resData = new CreateCommentResponseData(
-        404,
-        error.message,
-        outputDTO
-      )
-      await this._commentPresenter.createCommentPresenter(resData)
-      return
-    }
-    try {
+      if (!review) {
+        this._sendErrorResponse(404, 'Review not found')
+        return
+      }
       const comment = await this._commentDatabase.create(data.data)
       const outputDTO = new CreateCommentOutputDTO()
       const resData = new CreateCommentResponseData(
@@ -63,13 +56,7 @@ export class CommentService implements ICommentService {
       await this._commentPresenter.createCommentPresenter(resData)
       return
     } catch (error) {
-      const outputDTO = new CreateCommentOutputDTO()
-      const resData = new CreateCommentResponseData(
-        400,
-        error.message,
-        outputDTO
-      )
-      await this._commentPresenter.createCommentPresenter(resData)
+      this._sendErrorResponse(404, (error as Error).message)
       return
     }
   }
@@ -82,143 +69,98 @@ export class CommentService implements ICommentService {
     try {
       const review = await this._commentDatabase.findReview(reviewId)
       if (!review) {
-        const outputDTO = new GetListCommentByReviewIdOutputDTO([])
-        const resData = new GetListCommentByReviewIdResponseData(
-          404,
-          'Review not found',
-          outputDTO
-        )
-        await this._commentPresenter.getListCommentByReviewIdPresenter(resData)
-        return
+        return this._sendErrorResponse(404, 'Review not found')
       }
-    } catch (err) {
-      const outputDTO = new GetListCommentByReviewIdOutputDTO([])
-      const resData = new GetListCommentByReviewIdResponseData(
-        404,
-        (err as Error).message,
-        outputDTO
-      )
-      await this._commentPresenter.getListCommentByReviewIdPresenter(resData)
-      return
-    }
 
-    try {
       const comments =
         await this._commentDatabase.getListCommentByReviewId(reviewId)
-      console.log(comments)
-      if (!comments || comments.length == 0) {
-        const outputDTO = new GetListCommentByReviewIdOutputDTO([])
-        const resData = new GetListCommentByReviewIdResponseData(
-          404,
-          'No Comment Found',
-          outputDTO
-        )
-        await this._commentPresenter.getListCommentByReviewIdPresenter(resData)
-        return
+      if (!comments || comments.length === 0) {
+        return this._sendErrorResponse(404, 'No Comment Found')
       }
-      const tree = this.buildCommentTree(comments)
-      const outputDTO = new GetListCommentByReviewIdOutputDTO(tree)
-      const resData = new GetListCommentByReviewIdResponseData(
-        200,
-        'Success',
-        outputDTO
+
+      const userIds = [...new Set(comments.map((c) => c.user.id))]
+
+      const usersData =
+        await this._profileDatabase.findUsersWithProfiles(userIds)
+
+      const usersMap = new Map(usersData.map((user) => [user.id, user]))
+
+      const listData: GetListCommentByReviewIdOutputDTO[] = comments.map(
+        (comment) => {
+          const data = new GetListCommentByReviewIdOutputDTO()
+          data.commentId = comment.id
+          data.content = comment.text
+          data.imagesUrl = comment.images
+          data.parentId = comment.parentId
+
+          const userDB = usersMap.get(comment.user.id)
+          if (userDB) {
+            const user = new UserDto()
+            user.id = userDB.id
+            user.username = userDB.username
+            user.email = userDB.email
+            user.roles = userDB.roles
+
+            if (userDB.profile) {
+              const profile = new ProfileDto()
+              profile.id = userDB.profile.id
+              profile.profile_picture = userDB.profile.profile_picture || ''
+              profile.country = userDB.profile.country || ''
+              profile.birthday = userDB.profile.birthday || new Date()
+              profile.gender = userDB.profile.gender || ''
+              profile.bio = userDB.profile.bio || ''
+
+              user.profile = profile
+            } else {
+              user.profile = null
+            }
+
+            data.user = user
+          }
+
+          return data
+        }
       )
-      await this._commentPresenter.getListCommentByReviewIdPresenter(resData)
-      return
+
+      await this._commentPresenter.getListCommentByReviewIdPresenter(
+        new GetListCommentByReviewIdResponseData(200, 'Success', listData)
+      )
     } catch (err) {
-      const outputDTO = new GetListCommentByReviewIdOutputDTO([])
-      const resData = new GetListCommentByReviewIdResponseData(
-        404,
-        (err as Error).message,
-        outputDTO
-      )
-      await this._commentPresenter.getListCommentByReviewIdPresenter(resData)
-      return
+      return this._sendErrorResponse(500, (err as Error).message)
     }
   }
-
   async update(data: UpdateCommentRequestData): Promise<void> {
-    const { userId, reviewId, commentId, content } = data.data
-
-    if (!content) {
-      const dto = new UpdateCommentOutputDTO()
-      const resData = new UpdateCommentResponseData(
-        400,
-        'Content is required',
-        dto
-      )
-      await this._commentPresenter.updateCommentPresenter(resData)
-      return
-    }
-    // Kiem tra User
     try {
-      const res = await this._commentDatabase.findUser(userId)
-    } catch (err) {
-      const dto = new UpdateCommentOutputDTO()
-      const resData = new UpdateCommentResponseData(
-        404,
-        (err as Error).message,
-        dto
-      )
-      await this._commentPresenter.updateCommentPresenter(resData)
-      return
-    }
+      const { userId, reviewId, commentId, content } = data.data
 
-    // Kiem tra bai review
-    try {
-      const res = await this._commentDatabase.findReview(reviewId)
-    } catch (err) {
-      const dto = new UpdateCommentOutputDTO()
-      const resData = new UpdateCommentResponseData(
-        404,
-        (err as Error).message,
-        dto
-      )
-      await this._commentPresenter.updateCommentPresenter(resData)
-      return
-    }
+      // Kiểm tra đầu vào
+      if (!content) throw new Error('Content is required')
+      if (!userId) throw new Error('User id is required')
+      if (!reviewId) throw new Error('Review id is required')
 
-    // kiem tra comment
-    try {
-      const res = await this._commentDatabase.findComment(commentId)
-      if (res.user.id != userId) {
-        const dto = new UpdateCommentOutputDTO()
-        const resData = new UpdateCommentResponseData(
-          400,
-          'You do not own this comment',
-          dto
-        )
-        await this._commentPresenter.updateCommentPresenter(resData)
-        return
+      // Kiểm tra user
+      const resUser = await this._commentDatabase.findUser(userId)
+      if (!resUser) throw new Error('User not found')
+
+      // Kiểm tra review (không cần gán biến nếu chỉ kiểm tra tồn tại)
+      if (!(await this._commentDatabase.findReview(reviewId))) {
+        throw new Error('Review not found')
       }
-    } catch (error) {
-      const dto = new UpdateCommentOutputDTO()
-      const resData = new UpdateCommentResponseData(
-        404,
-        (error as Error).message,
-        dto
-      )
-      await this._commentPresenter.updateCommentPresenter(resData)
-      return
-    }
 
-    // thuc hien cap nhat
-    try {
+      // Kiểm tra comment
+      const res = await this._commentDatabase.findComment(commentId)
+      if (!res) throw new Error('Comment not found')
+      if (res.user.id !== userId) throw new Error('You do not own this comment')
+
+      // Cập nhật comment
       await this._commentDatabase.update(userId, commentId, content)
 
-      const outputDTO = new CreateCommentOutputDTO()
-      const resData = new CreateCommentResponseData(200, 'Success', outputDTO)
+      // Chuẩn bị phản hồi
+      const outputDTO = new UpdateCommentOutputDTO()
+      const resData = new UpdateCommentResponseData(200, 'Success', outputDTO)
       await this._commentPresenter.updateCommentPresenter(resData)
-      return
     } catch (error) {
-      const outputDTO = new CreateCommentOutputDTO()
-      const resData = new CreateCommentResponseData(
-        400,
-        (error as Error).message,
-        outputDTO
-      )
-      await this._commentPresenter.updateCommentPresenter(resData)
-      return
+      await this._sendErrorResponse(400, (error as Error).message)
     }
   }
 
@@ -296,35 +238,39 @@ export class CommentService implements ICommentService {
       return
     }
   }
-  buildCommentTree(comments: Comments[]): any[] {
-    const commentMap = new Map<string, any>()
-    const tree: any[] = []
+  // buildCommentTree(comments: Comments[]): any[] {
+  //   const commentMap = new Map<string, any>()
+  //   const tree: any[] = []
 
-    comments.forEach((comment) => {
-      commentMap.set(comment.id, {
-        id: comment.id,
-        text: comment.text,
-        user: {
-          id: comment.user.id,
-          name: comment.user.username
-        },
-        images: JSON.parse(comment.images),
-        children: []
-      })
-    })
+  //   comments.forEach((comment) => {
+  //     commentMap.set(comment.id, {
+  //       id: comment.id,
+  //       text: comment.text,
+  //       user: {
+  //         id: comment.user.id,
+  //         name: comment.user.username
+  //       },
+  //       images: JSON.parse(comment.images),
+  //       children: []
+  //     })
+  //   })
 
-    comments.forEach((comment) => {
-      const mappedComment = commentMap.get(comment.id)
-      if (comment.parent) {
-        const parent = commentMap.get(comment.parent.id)
-        if (parent) {
-          parent.children.push(mappedComment)
-        }
-      } else {
-        tree.push(mappedComment) // Nếu không có cha, đây là node gốc
-      }
-    })
+  //   comments.forEach((comment) => {
+  //     const mappedComment = commentMap.get(comment.id)
+  //     if (comment.parent) {
+  //       const parent = commentMap.get(comment.parent.id)
+  //       if (parent) {
+  //         parent.children.push(mappedComment)
+  //       }
+  //     } else {
+  //       tree.push(mappedComment) // Nếu không có cha, đây là node gốc
+  //     }
+  //   })
 
-    return tree
+  //   return tree
+  // }
+  async _sendErrorResponse(status: number, message: string): Promise<void> {
+    const resData = new UpdateCommentResponseData(status, message, [])
+    await this._commentPresenter.updateCommentPresenter(resData)
   }
 }

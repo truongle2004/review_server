@@ -72,4 +72,5 @@ router.get('/:userId', async (req, res, next) => {
   }
 })
 
+
 export const profileRouter = router
