@@ -6,7 +6,7 @@ import { DeleteCommentResponseData } from '../response/DeleteCommentResponseData
 
 export class CommentPresenter implements ICommentPresenter {
   createCommentViewModel!: CreateCommentResponseData 
-  getListCommentViewModel!: GetListCommentByReviewIdResponseData 
+  getListCommentViewModel!: GetListCommentByReviewIdResponseData
   updateCommentViewModetl!:  UpdateCommentResponseData 
   deleteCommentViewModetl!: DeleteCommentResponseData 
 
@@ -18,10 +18,11 @@ export class CommentPresenter implements ICommentPresenter {
   }
 
   getListCommentByReviewIdPresenter(
-    data: GetListCommentByReviewIdResponseData
+    data2: GetListCommentByReviewIdResponseData
   ): void {
-    this.getListCommentViewModel = data
+    this.getListCommentViewModel = data2
   }
+
   getListCommentByReviewIdViewModel() {
     return this.getListCommentViewModel
   }
