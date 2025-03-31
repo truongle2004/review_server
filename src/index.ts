@@ -14,6 +14,7 @@ import logger from './config/logger'
 import errorHandle from './middleware/errorHandler'
 import { v1Router } from './routes/v1'
 import path from 'path'
+import { seedDefaultUsers } from './config/seed'
 
 // Server Configuration
 const PORT = env.PORT
@@ -25,6 +26,8 @@ const connectDatabase = async () => {
   try {
     await AppDataSource.initialize()
     logger.info('✅ Database connected successfully!')
+    // Seed default users after database connection
+    await seedDefaultUsers()
   } catch (error) {
     logger.error('❌ Database connection failed:', error)
     process.exit(1) // Exit process on failure
@@ -47,22 +50,22 @@ const startServer = () => {
     })
   )
 
-
   app.use(cookieParser())
 
   app.use(errorHandle)
 
   app.use(express.json())
 
-
-  app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
+  app.use(
+    '/uploads/comments',
+    express.static(path.resolve(__dirname, '../uploads/comments'))
+  )
 
   app.use(
     '/static',
     // express.static(path.join(__dirname, '../../public/images/'))
     express.static(path.resolve(__dirname, './public/images/'))
   )
-
 
   app.use((req: Request, res: Response, next: NextFunction) => {
     logger.warn(req.method + ' ' + req.originalUrl)

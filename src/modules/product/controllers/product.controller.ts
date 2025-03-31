@@ -4,6 +4,7 @@ import type { IGetProductService } from '../services/getAllProduct.interface.ser
 import type { IGetProductByIdService } from '../services/getProductById.service.interface'
 import { IGetProductPaginationService } from '../services/getProductPagination.service.interface'
 import type { IDeleteProductService } from '../services/deleteProduct.service.interface'
+import type { ICreateProductService } from '../services/createProduct.service.interface'
 
 @injectable()
 export class ProductController {
@@ -15,8 +16,18 @@ export class ProductController {
     @inject('IGetProductPaginationService')
     private readonly getProductByCategoryService: IGetProductPaginationService,
     @inject('IDeleteProductService')
-    private readonly deleteProductService: IDeleteProductService
+    private readonly deleteProductService: IDeleteProductService,
+    @inject('ICreateProductService')
+    private readonly createProductService: ICreateProductService
   ) {}
+
+  public createProduct = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    return await this.createProductService.execute(req, res, next)
+  }
 
   public getProducts = async (
     req: Request,

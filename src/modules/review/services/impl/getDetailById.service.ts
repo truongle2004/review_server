@@ -20,6 +20,10 @@ export class GetDetailByIdService implements IGetDetailByIdService {
     try {
       const id = req.params.id
 
+      console.log(id)
+
+      console.log(typeof id)
+
       const review = await this.getDetailByIdRepository.execute(id)
 
       if (!review) {
@@ -33,6 +37,7 @@ export class GetDetailByIdService implements IGetDetailByIdService {
 
       res.status(StatusCodes.OK).json(review)
     } catch (error) {
+      console.log(error)
       next(new BadRequestException('Bad request'))
     }
   }

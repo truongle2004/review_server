@@ -54,7 +54,9 @@ export class CommentController {
 
     // Lấy danh sách đường dẫn ảnh đã upload
     const images = req.files
-      ? (req.files as Express.Multer.File[]).map((file) => file.path.replace(/\\/g, '/'))
+      ? (req.files as Express.Multer.File[]).map((file) =>
+          file.path.replace(/\\/g, '/')
+        )
       : []
 
     images.forEach((image) => {

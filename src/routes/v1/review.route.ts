@@ -1,13 +1,14 @@
-import { container } from 'tsyringe'
-import { ReviewController } from '../../modules/review/controllers/review.controller'
 import { Router } from 'express'
+import fs from 'fs'
 import multer from 'multer'
 import path from 'path'
-import fs from 'fs'
+import 'reflect-metadata'
+import { container } from 'tsyringe'
 import {
   authMiddleware,
   userMiddleware
 } from '../../modules/auth/authMiddleware'
+import { ReviewController } from '../../modules/review/controllers/review.controller'
 import { AppConstant } from '../../utils/constant'
 
 const storage = multer.diskStorage({
@@ -69,12 +70,18 @@ router.route('/:reviewId/images').get(async (req, res, next) => {
   }
 })
 
-router
-  .route('/')
-  .post(authMiddleware, userMiddleware, reviewController.saveReview)
+router.route('/').post(authMiddleware, reviewController.saveReview)
 
-router.route('/:id').get(reviewController.getReviewByProductId)
+router.route('/search').get(reviewController.searchReviewByTitle)
+
+router.route('/product/:id').get(reviewController.getReviewByProductId)
+
+router.route('/user/:id').get(reviewController.getReviewByUserId)
 
 router.route('/detail/:id').get(reviewController.getDetailById)
+
+router.route('/:id').delete(authMiddleware, reviewController.deleteReview)
+
+router.route('/:id').put(authMiddleware, reviewController.updateReview)
 
 export const reviewRoute = router

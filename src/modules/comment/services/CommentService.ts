@@ -69,20 +69,30 @@ export class CommentService implements ICommentService {
     try {
       const review = await this._commentDatabase.findReview(reviewId)
       if (!review) {
-        return this._sendErrorResponse(404, 'Review not found')
+        const resData = new GetListCommentByReviewIdResponseData(
+          404,
+          'Review not found',
+          []
+        )
+        await this._commentPresenter.getListCommentByReviewIdPresenter(resData)
+        return
       }
 
       const comments =
         await this._commentDatabase.getListCommentByReviewId(reviewId)
       if (!comments || comments.length === 0) {
-        return this._sendErrorResponse(404, 'No Comment Found')
+        const resData = new GetListCommentByReviewIdResponseData(
+          200,
+          'No comments found',
+          []
+        )
+        await this._commentPresenter.getListCommentByReviewIdPresenter(resData)
+        return
       }
 
       const userIds = [...new Set(comments.map((c) => c.user.id))]
-
       const usersData =
         await this._profileDatabase.findUsersWithProfiles(userIds)
-
       const usersMap = new Map(usersData.map((user) => [user.id, user]))
 
       const listData: GetListCommentByReviewIdOutputDTO[] = comments.map(
@@ -94,39 +104,33 @@ export class CommentService implements ICommentService {
           data.parentId = comment.parentId
 
           const userDB = usersMap.get(comment.user.id)
-          if (userDB) {
+          if (userDB && userDB.profile) {
             const user = new UserDto()
             user.id = userDB.id
             user.username = userDB.username
-            user.email = userDB.email
-            user.roles = userDB.roles
-
-            if (userDB.profile) {
-              const profile = new ProfileDto()
-              profile.id = userDB.profile.id
-              profile.profile_picture = userDB.profile.profile_picture || ''
-              profile.country = userDB.profile.country || ''
-              profile.birthday = userDB.profile.birthday || new Date()
-              profile.gender = userDB.profile.gender || ''
-              profile.bio = userDB.profile.bio || ''
-
-              user.profile = profile
-            } else {
-              user.profile = null
-            }
-
+            const profile = new ProfileDto()
+            profile.id = userDB.profile.id
+            profile.profile_picture = userDB.profile.profile_picture || ''
+            user.profile = profile
             data.user = user
           }
-
           return data
         }
       )
 
-      await this._commentPresenter.getListCommentByReviewIdPresenter(
-        new GetListCommentByReviewIdResponseData(200, 'Success', listData)
+      const resData = new GetListCommentByReviewIdResponseData(
+        200,
+        'Get list comment success',
+        listData
       )
-    } catch (err) {
-      return this._sendErrorResponse(500, (err as Error).message)
+      await this._commentPresenter.getListCommentByReviewIdPresenter(resData)
+    } catch (error) {
+      const resData = new GetListCommentByReviewIdResponseData(
+        500,
+        (error as Error).message,
+        []
+      )
+      await this._commentPresenter.getListCommentByReviewIdPresenter(resData)
     }
   }
   async update(data: UpdateCommentRequestData): Promise<void> {
@@ -269,8 +273,21 @@ export class CommentService implements ICommentService {
 
   //   return tree
   // }
-  async _sendErrorResponse(status: number, message: string): Promise<void> {
-    const resData = new UpdateCommentResponseData(status, message, [])
-    await this._commentPresenter.updateCommentPresenter(resData)
+  async _sendErrorResponse(
+    status: number,
+    message: string,
+    responseType: 'update' | 'list' = 'update'
+  ): Promise<void> {
+    if (responseType === 'list') {
+      const resData = new GetListCommentByReviewIdResponseData(
+        status,
+        message,
+        []
+      )
+      await this._commentPresenter.getListCommentByReviewIdPresenter(resData)
+    } else {
+      const resData = new UpdateCommentResponseData(status, message, [])
+      await this._commentPresenter.updateCommentPresenter(resData)
+    }
   }
 }
