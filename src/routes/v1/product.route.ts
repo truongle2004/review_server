@@ -17,6 +17,10 @@ const productController = container.resolve(ProductController)
 //   .get(productValidation.getProduct, productController.getProducts)
 
 router
+  .route('/')
+  .post(authMiddleware, adminMiddleware, productController.createProduct)
+
+router
   .route('/:id')
   .get(productValidation.getProductById, productController.getProductById)
 

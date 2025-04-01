@@ -7,7 +7,8 @@ import { CreateCommentResponseData } from '../response/CreateCommentResponseData
 import { ICommentService } from './ICommentService'
 import { GetListCommentByReviewIdRequestData } from '../request/GetListCommentByReviewIdRequestData'
 import {
-  GetListCommentByReviewIdOutputDTO, ImagesDto,
+  GetListCommentByReviewIdOutputDTO,
+  ImagesDto,
   ProfileDto,
   UserDto
 } from '../dtos/GetListCommentByReviewIdDTO'
@@ -78,7 +79,24 @@ export class CommentService implements ICommentService {
     }
   }
 
+
   async  getListCommentByReviewId(data: GetListCommentByReviewIdRequestData): Promise<void> {
+    const { reviewId } = data.data;
+
+    try {
+      const review = await this._commentDatabase.findReview(reviewId)
+      if (!review) {
+        this._commentPresenter.getListCommentByReviewIdPresenter(
+            new GetListCommentByReviewIdResponseData(404, 'Review not found', [])
+        );
+        return;
+      }
+
+      const comments =
+        await this._commentDatabase.getListCommentByReviewId(reviewId)
+      if (!comments || comments.length === 0) {
+
+      async  getListCommentByReviewId(data: GetListCommentByReviewIdRequestData): Promise<void> {
     const { reviewId } = data.data;
 
     try {
@@ -162,7 +180,9 @@ export class CommentService implements ICommentService {
           new GetListCommentByReviewIdResponseData(400, (err as Error).message, [])
       );
     }
-  }
+      
+        
+   
 
   async update(data: UpdateCommentRequestData): Promise<void> {
     try {

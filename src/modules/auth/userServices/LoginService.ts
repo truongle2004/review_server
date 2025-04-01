@@ -11,7 +11,7 @@ import { RefreshTokenRequestData } from '../request/RefreshTokenRequestData'
 import { RefreshTokenOutputDTO } from '../dtos/RefreshTokenDTO'
 import { RefreshTokenResponseData } from '../response/RefreshTokenResponseData'
 dotenv.config()
-import {env} from '../../../config/enviroment'
+import { env } from '../../../config/enviroment'
 export class LoginService implements ILoginService {
   presenter: ILoginPresenter
   database: ILoginDatase
@@ -182,7 +182,7 @@ export class LoginService implements ILoginService {
 
   isValidEmail(email: string): boolean {
     console.log(email)
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
     return emailRegex.test(email)
   }
 

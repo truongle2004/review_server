@@ -127,9 +127,49 @@ const deleteProduct = async (
   }
 }
 
+const createProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const correctConditions = Joi.object({
+    title: Joi.string().required().messages({
+      'string.base': 'Title must be a string',
+      'string.empty': 'Title cannot be empty',
+      'any.required': 'Title is required'
+    }),
+    description: Joi.string().required().messages({
+      'string.base': 'Description must be a string',
+      'string.empty': 'Description cannot be empty',
+      'any.required': 'Description is required'
+    }),
+    categoryId: Joi.number().required().messages({
+      'number.base': 'Category ID must be a number',
+      'number.integer': 'Category ID must be an integer',
+      'number.positive': 'Category ID must be a positive number',
+      'any.required': 'Category ID is required'
+    }),
+    images: Joi.array().items(Joi.string().uri()).required().min(1).messages({
+      'array.base': 'Images must be an array',
+      'array.empty': 'At least one image is required',
+      'array.min': 'At least one image is required',
+      'string.uri': 'Image URL must be a valid URI',
+      'any.required': 'Images are required'
+    })
+  })
+
+  try {
+    await correctConditions.validateAsync(req.body, { abortEarly: false })
+    next()
+  } catch {
+    next(new BadRequestException('Bad request'))
+  }
+}
+
 export const productValidation = {
-  getProductById,
   getProduct,
+  getProductById,
+  getProductByCategory: getProductPagination,
   deleteProduct,
-  getProductByCategory: getProductPagination
+  createProduct
 }

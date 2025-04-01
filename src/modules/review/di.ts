@@ -15,6 +15,12 @@ import type { IGetDetailByIdRepository } from './repositories/getDetailById.inte
 import { GetDetailByIdRepository } from './repositories/impl/getDetailById.repository'
 import { IGetDetailByIdService } from './services/getDetailById.interface.service'
 import { GetDetailByIdService } from './services/impl/getDetailById.service'
+import type { ISearchReviewByTitleService } from './services/searchReviewByTitle.service.interface'
+import { SearchReviewByTitleService } from './services/impl/searchReviewByTitle.service'
+import { IGetAllReviewsRepository } from './repositories/getAllReviews.interface.repository'
+import { GetAllReviewsRepository } from './repositories/impl/getAllReviews.repository'
+import { IGetAllReviewsService } from './services/getAllReviews.interface.service'
+import { GetAllReviewsService } from './services/impl/getAllReviews.service'
 
 container.register<ISaveReviewService>('ISaveReviewService', {
   useClass: SaveReviewService
@@ -45,6 +51,10 @@ container.register<IGetReviewByUserIdRepository>(
   }
 )
 
+container.register<ISearchReviewByTitleService>('ISearchReviewByTitleService', {
+  useClass: SearchReviewByTitleService
+})
+
 container.register<IGetReviewByUserIdService>('IGetReviewByUserIdService', {
   useClass: GetReviewByUserIdService
 })
@@ -55,4 +65,12 @@ container.register<IGetDetailByIdRepository>('IGetDetailByIdRepository', {
 
 container.register<IGetDetailByIdService>('IGetDetailByIdService', {
   useClass: GetDetailByIdService
+})
+
+container.register<IGetAllReviewsRepository>('IGetAllReviewsRepository', {
+  useClass: GetAllReviewsRepository
+})
+
+container.register<IGetAllReviewsService>('IGetAllReviewsService', {
+  useClass: GetAllReviewsService
 })

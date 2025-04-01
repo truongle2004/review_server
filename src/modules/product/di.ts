@@ -29,6 +29,8 @@ import { GetAllCategoriesService } from './services/impl/getAllCategories.servic
 import { GetProductService } from './services/impl/getAllProduct.service'
 import { GetProductByIdService } from './services/impl/getProductById.service'
 import { GetProductPaginationService } from './services/impl/getProductPagination.service'
+import { CreateProductService } from './services/impl/createProduct.service'
+import { ICreateProductService } from './services/createProduct.service.interface'
 
 container.register<IProductRepository>('IProductRepository', {
   useClass: ProductRepository
@@ -90,6 +92,10 @@ container.register<IDeleteCategoryService>('IDeleteCategoryService', {
 
 container.register<IDeleteCategoryRepository>('IDeleteCategoryRepository', {
   useClass: DeleteCategoryRepository
+})
+
+container.register<ICreateProductService>('ICreateProductService', {
+  useClass: CreateProductService
 })
 
 container.resolve(ProductController)
