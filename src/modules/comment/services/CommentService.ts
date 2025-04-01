@@ -1,3 +1,5 @@
+// noinspection ExceptionCaughtLocallyJS
+
 import { CreateCommentRequestData } from '../request/CreateCommentRequestData'
 import { ICommentDatabase } from '../databases/ICommentDatabase'
 import { CreateCommentOutputDTO } from '../dtos/CreateCommentDTO'
@@ -63,7 +65,7 @@ export class CommentService implements ICommentService {
         'Created success',
         outputDTO
       )
-      await this._commentPresenter.createCommentPresenter(resData)
+       this._commentPresenter.createCommentPresenter(resData)
       return
     } catch (error) {
       const outputDTO = new CreateCommentOutputDTO()
@@ -76,37 +78,36 @@ export class CommentService implements ICommentService {
     }
   }
 
-  async getListCommentByReviewId(
-  data: GetListCommentByReviewIdRequestData
-): Promise<void> {
+  async  getListCommentByReviewId(data: GetListCommentByReviewIdRequestData): Promise<void> {
     const { reviewId } = data.data;
 
     try {
       const review = await this._commentDatabase.findReview(reviewId);
       if (!review) {
-        const resData = new GetListCommentByReviewIdResponseData(
-          404,
-          'Review not found',
-          []
-        )
-        this._commentPresenter.getListCommentByReviewIdPresenter(resData)
-         return;
+        this._commentPresenter.getListCommentByReviewIdPresenter(
+            new GetListCommentByReviewIdResponseData(404, 'Review not found', [])
+        );
+        return;
       }
 
       const comments = await this._commentDatabase.getListCommentByReviewId(reviewId);
       if (!comments || comments.length === 0) {
-        const resData = new GetListCommentByReviewIdResponseData(
-          404,
-          'Comment not found',
-          []
-        )
-        this._commentPresenter.getListCommentByReviewIdPresenter(resData)
+        this._commentPresenter.getListCommentByReviewIdPresenter(
+            new GetListCommentByReviewIdResponseData(404, 'Comment not found', [])
+        );
         return;
       }
 
-      const userIds = [...new Set(comments.map((c) => c.user.id))];
+      const userIds: string[] = [];
+      comments.forEach((c) => {
+        if (!userIds.includes(c.user.id)) {
+          userIds.push(c.user.id);
+        }
+      });
+
+      console.log("userIds:", userIds);
+
       const usersData = await this._profileDatabase.findUsersWithProfiles(userIds);
-      const usersMap = new Map(usersData.map((user) => [user.id, user]));
 
       const listData: GetListCommentByReviewIdOutputDTO[] = comments.map((comment) => {
         const data = new GetListCommentByReviewIdOutputDTO();
@@ -116,26 +117,22 @@ export class CommentService implements ICommentService {
         data.createdAt = comment.createdAt;
         data.updatedAt = comment.updatedAt;
 
-       let imageUrls: string[] = [];
-      try {
-        if (comment.images && comment.images !== "null") {
-          imageUrls = JSON.parse(comment.images);
-        } else {
-          imageUrls = [];
+        let imageUrls: string[] = [];
+        try {
+          if (comment.images && comment.images !== "null") {
+            imageUrls = JSON.parse(comment.images);
+          }
+        } catch (error) {
+          console.error("err images:", error);
         }
-      } catch (error) {
-        console.error("err images:", error);
-        imageUrls = [];
-      }
 
-        // Ánh xạ sang ImagesDto[]
         data.images = imageUrls.map((imageUrl) => {
           const imageDto = new ImagesDto();
           imageDto.url = imageUrl;
           return imageDto;
         });
 
-        const userDB = usersMap.get(comment.user.id);
+        const userDB = usersData.find((user) => user.id === comment.user.id);
         if (userDB) {
           const user = new UserDto();
           user.id = userDB.id;
@@ -156,20 +153,14 @@ export class CommentService implements ICommentService {
         return data;
       });
 
-
       this._commentPresenter.getListCommentByReviewIdPresenter(
           new GetListCommentByReviewIdResponseData(200, 'Success', listData)
       );
-      return
+
     } catch (err) {
-      const dto = new GetListCommentByReviewIdOutputDTO()
-      const resData = new GetListCommentByReviewIdResponseData(
-        400,
-        (err as Error).message,
-          []
-      )
-      this._commentPresenter.getListCommentByReviewIdPresenter(resData)
-       return
+      this._commentPresenter.getListCommentByReviewIdPresenter(
+          new GetListCommentByReviewIdResponseData(400, (err as Error).message, [])
+      );
     }
   }
 
@@ -199,10 +190,9 @@ export class CommentService implements ICommentService {
       // Cập nhật comment
       await this._commentDatabase.update(userId, commentId, content)
 
-      // Chuẩn bị phản hồi
       const outputDTO = new UpdateCommentOutputDTO()
       const resData = new UpdateCommentResponseData(200, 'Success', outputDTO)
-      await this._commentPresenter.updateCommentPresenter(resData)
+       this._commentPresenter.updateCommentPresenter(resData)
     } catch (error) {
       const dto = new UpdateCommentOutputDTO()
       const resData = new UpdateCommentResponseData(
@@ -227,7 +217,7 @@ export class CommentService implements ICommentService {
         (err as Error).message,
         dto
       )
-      await this._commentPresenter.deleteCommentPresenter(resData)
+       this._commentPresenter.deleteCommentPresenter(resData)
       return
     }
 
@@ -242,7 +232,7 @@ export class CommentService implements ICommentService {
         (err as Error).message,
         dto
       )
-      await this._commentPresenter.deleteCommentPresenter(resData)
+       this._commentPresenter.deleteCommentPresenter(resData)
       return
     }
 
@@ -256,7 +246,7 @@ export class CommentService implements ICommentService {
           'You do not own this comment',
           dto
         )
-        await this._commentPresenter.deleteCommentPresenter(resData)
+         this._commentPresenter.deleteCommentPresenter(resData)
         return
       }
     } catch (error) {
@@ -266,7 +256,7 @@ export class CommentService implements ICommentService {
         (error as Error).message,
         dto
       )
-      await this._commentPresenter.deleteCommentPresenter(resData)
+       this._commentPresenter.deleteCommentPresenter(resData)
       return
     }
 
@@ -274,7 +264,7 @@ export class CommentService implements ICommentService {
       await this._commentDatabase.delete(commentId)
       const outputDTO = new DeleteCommentOutputDTO()
       const resData = new DeleteCommentResponseData(200, 'Success', outputDTO)
-      await this._commentPresenter.deleteCommentPresenter(resData)
+       this._commentPresenter.deleteCommentPresenter(resData)
       return
     } catch (error) {
       const outputDTO = new DeleteCommentOutputDTO()
@@ -283,7 +273,7 @@ export class CommentService implements ICommentService {
         (error as Error).message,
         outputDTO
       )
-      await this._commentPresenter.deleteCommentPresenter(resData)
+       this._commentPresenter.deleteCommentPresenter(resData)
       return
     }
   }
