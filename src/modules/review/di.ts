@@ -21,6 +21,14 @@ import { IGetAllReviewsRepository } from './repositories/getAllReviews.interface
 import { GetAllReviewsRepository } from './repositories/impl/getAllReviews.repository'
 import { IGetAllReviewsService } from './services/getAllReviews.interface.service'
 import { GetAllReviewsService } from './services/impl/getAllReviews.service'
+import { IDeleteReviewRepository } from './repositories/deleteReview.interface.repository'
+import { DeleteReviewRepository } from './repositories/impl/deleteReview.repository'
+import { IDeleteReviewService } from './services/deleteReview.interface.service'
+import { DeleteReviewService } from './services/impl/deleteReview.service'
+import { IUpdateReviewRepository } from './repositories/updateReview.interface.repository'
+import { UpdateReviewRepository } from './repositories/impl/updateReview.repository'
+import { IUpdateReviewService } from './services/updateReview.interface.service'
+import { UpdateReviewService } from './services/impl/updateReview.service'
 
 container.register<ISaveReviewService>('ISaveReviewService', {
   useClass: SaveReviewService
@@ -73,4 +81,20 @@ container.register<IGetAllReviewsRepository>('IGetAllReviewsRepository', {
 
 container.register<IGetAllReviewsService>('IGetAllReviewsService', {
   useClass: GetAllReviewsService
+})
+
+container.register<IDeleteReviewRepository>('IDeleteReviewRepository', {
+  useClass: DeleteReviewRepository
+})
+
+container.register<IDeleteReviewService>('IDeleteReviewService', {
+  useClass: DeleteReviewService
+})
+
+container.register<IUpdateReviewRepository>('IUpdateReviewRepository', {
+  useClass: UpdateReviewRepository
+})
+
+container.register<IUpdateReviewService>('IUpdateReviewService', {
+  useClass: UpdateReviewService
 })

@@ -6,9 +6,8 @@ import type { IGetReviewByUserIdService } from '../services/getReviewByUserId.in
 import type { IGetDetailByIdService } from '../services/getDetailById.interface.service'
 import type { ISearchReviewByTitleService } from '../services/searchReviewByTitle.service.interface'
 import type { IGetAllReviewsService } from '../services/getAllReviews.interface.service'
-import { AppDataSource } from '../../../config/data-source'
-import { Reviews } from '../../../entities/reviews.entity'
-import { StatusCodes } from 'http-status-codes'
+import type { IDeleteReviewService } from '../services/deleteReview.interface.service'
+import type { IUpdateReviewService } from '../services/updateReview.interface.service'
 
 @injectable()
 export class ReviewController {
@@ -24,7 +23,11 @@ export class ReviewController {
     @inject('ISearchReviewByTitleService')
     private readonly searchReviewByTitleService: ISearchReviewByTitleService,
     @inject('IGetAllReviewsService')
-    private readonly getAllReviewsService: IGetAllReviewsService
+    private readonly getAllReviewsService: IGetAllReviewsService,
+    @inject('IDeleteReviewService')
+    private readonly deleteReviewService: IDeleteReviewService,
+    @inject('IUpdateReviewService')
+    private readonly updateReviewService: IUpdateReviewService
   ) {}
 
   public saveReview = async (
@@ -67,34 +70,20 @@ export class ReviewController {
     return await this.searchReviewByTitleService.execute(req, res, next)
   }
 
-  public deleteReview = async (req: Request, res: Response) => {
-    const appSouce = AppDataSource.getRepository(Reviews)
-    const { id } = req.params
-    await appSouce.delete({ id })
-    res
-      .status(StatusCodes.NO_CONTENT)
-      .json({ message: 'Review deleted successfully' })
+  public deleteReview = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    return await this.deleteReviewService.execute(req, res, next)
   }
 
-  public updateReview = async (req: Request, res: Response) => {
-    const appSouce = AppDataSource.getRepository(Reviews)
-    const title = req.body.title
-    const content = req.body.content
-    const reviewId = req.body.reviewId
-
-    const review = await appSouce.findOne({
-      where: {
-        id: reviewId
-      }
-    })
-    if (!review) {
-      res.status(StatusCodes.NOT_FOUND).json({ message: 'Review not found' })
-      return
-    }
-    review.title = title
-    review.content = content
-    await appSouce.save(review)
-    res.status(StatusCodes.OK).json({ message: 'Review updated successfully' })
+  public updateReview = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    return await this.updateReviewService.execute(req, res, next)
   }
 
   public getAllReviews = async (

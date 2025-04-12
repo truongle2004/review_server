@@ -14,7 +14,7 @@ export class SearchReviewByTitleService implements ISearchReviewByTitleService {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const { title } = req.query
+      const { title } = req.params
 
       if (!title || typeof title !== 'string') {
         next(new BadRequestException('Title query parameter is required'))

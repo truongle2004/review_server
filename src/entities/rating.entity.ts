@@ -14,7 +14,9 @@ export class RatingEntity extends BaseEntity {
   })
   public rating!: number
 
-  @ManyToOne(() => Reviews, (review) => review.rating_entity)
+  @ManyToOne(() => Reviews, (review) => review.rating_entity, {
+    onDelete: 'CASCADE'
+  })
   public reviews!: Reviews
 
   @ManyToOne(() => Users, (user) => user.ratings)

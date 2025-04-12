@@ -72,7 +72,7 @@ router.route('/:reviewId/images').get(async (req, res, next) => {
 
 router.route('/').post(authMiddleware, reviewController.saveReview)
 
-router.route('/search').get(reviewController.searchReviewByTitle)
+router.route('/search/:title').get(reviewController.searchReviewByTitle)
 
 router.route('/product/:id').get(reviewController.getReviewByProductId)
 

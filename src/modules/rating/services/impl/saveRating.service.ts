@@ -41,6 +41,22 @@ export class SaveRatingService implements ISaveRatingServide {
         return
       }
 
+      const isRating = await ratingSource.findOne({
+        where: {
+          user: {
+            id: userId
+          },
+          reviews: { id: reviewId }
+        }
+      })
+
+      if (isRating) {
+        res.status(StatusCodes.CONFLICT).json({
+          message: 'You have already rated this review'
+        })
+        return
+      }
+
       const review = await reviewSource.findOne({
         where: {
           id: reviewId
@@ -59,6 +75,29 @@ export class SaveRatingService implements ISaveRatingServide {
 
       try {
         await ratingSource.save(ratingEntity)
+
+        const list_rating = await ratingSource.find({
+          where: {
+            reviews: {
+              id: reviewId
+            }
+          }
+        })
+
+        let sum = 0
+        let count = 0
+
+        for (const rating of list_rating) {
+          sum += rating.rating
+          count++
+        }
+
+        const averageRating = count > 0 ? sum / count : 0
+
+        await reviewSource.update(reviewId, {
+          rating: averageRating
+        })
+
         res
           .status(StatusCodes.OK)
           .json({ message: 'Rating saved successfully' })
